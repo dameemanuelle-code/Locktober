@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#160b10" />
+  <meta
+    name="description"
+    content="Locktober 2026 — 31 jours sous le contrôle de Dame Émanuelle. Trois niveaux de participation, du suivi de groupe à l'expérience VIP."
+  />
+
+  <title>Locktober 2026 — Dame Émanuelle</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- AVERTISSEMENT 18+ -->
+  <div class="age-gate" id="ageGate" aria-hidden="true">
+    <div class="age-card">
+
+      <span class="eyebrow">Accès réservé aux adultes</span>
+
+      <h2>Vous devez avoir 18 ans ou plus.</h2>
+
+      <p>
+        Ce site présente une expérience BDSM consensuelle destinée
+        exclusivement aux adultes.
+      </p>
+
+      <div class="age-actions">
+
+        <button class="btn btn-primary" id="confirmAge">
+          J’ai 18 ans ou plus
+        </button>
+
+        <a class="btn btn-ghost" href="https://www.google.com">
+          Quitter
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MENU -->
+  <header class="site-header">
+
+    <a class="brand" href="#top" aria-label="Retour en haut">
+
+      <span class="brand-mark">L</span>
+
+      <span>
+        <strong>LOCKTOBER</strong>
+        <small>par Dame Émanuelle</small>
+      </span>
+
+    </a>
+
+    <nav>
+      <a href="#forfaits">Forfaits</a>
+      <a href="#materiel">Matériel</a>
+      <a href="#fonctionnement">Fonctionnement</a>
+      <a href="#faq">FAQ</a>
+      <a class="nav-cta" href="#inscription">S’inscrire</a>
+    </nav>
+
+  </header>
+
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero section">
+
+      <div class="hero-copy">
+
+        <span class="eyebrow">
+          1er au 31 octobre 2026
+        </span>
+
+        <h1>
+          31 jours.<br>
+          <em>Un engagement.</em>
+        </h1>
+
+        <p class="lead">
+          Une expérience virtuelle de Locktober dirigée par
+          <strong>Dame Émanuelle</strong>, avec trois niveaux de participation —
+          du suivi collectif à l’accompagnement personnalisé et à
+          l’expérience VIP.
+        </p>
+
+        <div class="hero-actions">
+
+          <a class="btn btn-primary" href="#forfaits">
+            Choisir mon expérience
+          </a>
+
+          <a class="btn btn-ghost" href="#fonctionnement">
+            Comment ça fonctionne
+          </a>
+
+        </div>
+
+        <div class="hero-note">
+          Participation adulte, volontaire et consensuelle.
+          Le participant reste responsable de son matériel et de sa sécurité.
+        </div>
+
+      </div>
+
+
+      <!-- COMPTE À REBOURS -->
+      <aside class="countdown-card">
+
+        <span class="eyebrow">
+          Le compte à rebours est lancé
+        </span>
+
+        <div class="countdown" id="countdown">
+
+          <div>
+            <strong id="days">--</strong>
+            <span>jours</span>
+          </div>
+
+          <div>
+            <strong id="hours">--</strong>
+            <span>heures</span>
+          </div>
+
+          <div>
+            <strong id="minutes">--</strong>
+            <span>minutes</span>
+          </div>
+
+        </div>
+
+        <p>
+          Les participants doivent avoir reçu, essayé et validé
+          leur matériel avant le 1er octobre.
+        </p>
+
+      </aside>
+
+    </section>
+
+
+    <!-- PHRASE CENTRALE -->
+    <section class="manifesto">
+
+      <p>
+        Vous choisissez jusqu’où vous voulez aller.
+        <strong>
+          Dame Émanuelle choisit comment vous y arriverez.
+        </strong>
+      </p>
+
+    </section>
+
+
+    <!-- FORFAITS -->
+    <section class="section" id="forfaits">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Trois niveaux d’engagement
+        </span>
+
+        <h2>
+          Choisissez votre Locktober
+        </h2>
+
+        <p>
+          La différence entre les forfaits repose sur le niveau
+          d’accès à Dame Émanuelle — pas sur le modèle de cage utilisé.
+        </p>
+
+      </div>
+
+
+      <div class="pricing-grid">
+
+
+        <!-- FORFAIT 1 -->
+        <article class="plan-card">
+
+          <div class="plan-top">
+            <span class="plan-number">01</span>
+            <span class="plan-tag">Gratuit</span>
+          </div>
+
+          <h3>Le Registre</h3>
+
+          <p class="plan-subtitle">
+            Vivre l’expérience en groupe.
+          </p>
+
+          <div class="price">
+            0 $
+          </div>
+
+          <ul>
+            <li>Inscription officielle au Locktober 2026</li>
+            <li>Accès à l’espace participant</li>
+            <li>Consignes générales de départ</li>
+            <li>Suivi collectif pendant le mois</li>
+            <li>Défis et rituels de groupe</li>
+            <li>Tableau de progression personnel</li>
+          </ul>
+
+          <div class="plan-limit">
+            Jusqu’à 50 participants
+          </div>
+
+          <a
+            class="btn btn-ghost full"
+            href="#inscription"
+            data-plan="Le Registre"
+          >
+            Choisir Le Registre
+          </a>
+
+        </article>
+
+
+        <!-- FORFAIT 2 -->
+        <article class="plan-card featured">
+
+          <div class="ribbon">
+            Recommandé
+          </div>
+
+          <div class="plan-top">
+            <span class="plan-number">02</span>
+            <span class="plan-tag">Personnalisé</span>
+          </div>
+
+          <h3>Sous contrôle</h3>
+
+          <p class="plan-subtitle">
+            Dame Émanuelle suit votre parcours.
+          </p>
+
+          <div class="price">
+            129 $
+          </div>
+
+          <ul>
+            <li>Tout ce qui est inclus dans Le Registre</li>
+            <li>Questionnaire et profil privé</li>
+            <li>Objectifs personnels</li>
+            <li>Consignes et défis adaptés</li>
+            <li>2 à 3 interventions personnelles par semaine</li>
+            <li>Bilan individuel en fin de mois</li>
+          </ul>
+
+          <div class="plan-limit">
+            12 places maximum
+          </div>
+
+          <a
+            class="btn btn-primary full"
+            href="#inscription"
+            data-plan="Sous contrôle"
+          >
+            Choisir Sous contrôle
+          </a>
+
+        </article>
+
+
+        <!-- FORFAIT 3 -->
+        <article class="plan-card vip">
+
+          <div class="plan-top">
+            <span class="plan-number">03</span>
+            <span class="plan-tag">VIP</span>
+          </div>
+
+          <h3>L’Engagement</h3>
+
+          <p class="plan-subtitle">
+            Le parcours complet jusqu’à la rencontre finale.
+          </p>
+
+          <div class="price">
+            449 $
+          </div>
+
+          <ul>
+            <li>Tout ce qui est inclus dans Sous contrôle</li>
+            <li>Priorité dans les communications</li>
+            <li>Suivi plus fréquent</li>
+            <li>Parcours VIP exclusif</li>
+            <li>Préparation progressive de la rencontre</li>
+            <li>Rencontre privée d’une heure le 31 octobre</li>
+          </ul>
+
+          <div class="plan-limit">
+            5 places maximum
+          </div>
+
+          <a
+            class="btn btn-ghost full gold"
+            href="#inscription"
+            data-plan="L’Engagement VIP"
+          >
+            Choisir L’Engagement
+          </a>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- MATÉRIEL -->
+    <section class="section split" id="materiel">
+
+      <div>
+
+        <span class="eyebrow">
+          Matériel
+        </span>
+
+        <h2>
+          Vous choisissez votre cage.
+        </h2>
+
+        <p class="lead-small">
+          Une cage de chasteté est requise.
+          Elle peut être connectée ou traditionnelle.
+          L’événement n’impose pas un fabricant particulier.
+        </p>
+
+      </div>
+
+
+      <div class="rules-card">
+
+        <div class="rule">
+
+          <strong>A</strong>
+
+          <span>
+            <b>Cage connectée</b>
+            <small>
+              Pour ceux qui veulent intégrer le contrôle à distance.
+            </small>
+          </span>
+
+        </div>
+
+
+        <div class="rule">
+
+          <strong>B</strong>
+
+          <span>
+            <b>Cage traditionnelle + coffre à clé connecté</b>
+            <small>
+              La cage reste simple, le contrôle de la clé devient distant.
+            </small>
+          </span>
+
+        </div>
+
+
+        <div class="rule">
+
+          <strong>C</strong>
+
+          <span>
+            <b>Cage traditionnelle</b>
+            <small>
+              Participation basée sur l’engagement et les validations demandées.
+            </small>
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RESPONSABILITÉ -->
+    <section class="responsibility section-narrow">
+
+      <span class="eyebrow">
+        Responsabilité du participant
+      </span>
+
+      <h2>
+        Votre matériel. Votre responsabilité.
+      </h2>
+
+      <p>
+        Chaque participant est entièrement responsable du choix,
+        de l’achat, de l’ajustement, de l’utilisation, de l’entretien
+        et du bon fonctionnement de sa cage et de ses accessoires,
+        incluant applications, connexions et dispositifs de contrôle
+        à distance.
+      </p>
+
+      <p>
+        Dame Émanuelle et Cuir & Fantaisies ne fournissent aucun
+        soutien technique et ne garantissent la compatibilité ou
+        le fonctionnement d’aucun appareil.
+        Le matériel doit être testé avant le début de l’événement.
+      </p>
+
+      <p class="safety">
+        Aucune consigne ne doit empêcher un participant de retirer
+        ou cesser d’utiliser son dispositif immédiatement en cas
+        de douleur, engourdissement, blessure, problème circulatoire
+        ou autre enjeu de sécurité.
+      </p>
+
+    </section>
+
+
+    <!-- DÉROULEMENT -->
+    <section class="section" id="fonctionnement">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Le mois en quatre phases
+        </span>
+
+        <h2>
+          31 jours de progression
+        </h2>
+
+      </div>
+
+
+      <div class="timeline">
+
+        <article>
+
+          <span>01–05</span>
+
+          <h3>Engagement</h3>
+
+          <p>
+            Installation du protocole, objectifs
+            et premières validations.
+          </p>
+
+        </article>
+
+
+        <article>
+
+          <span>06–15</span>
+
+          <h3>Discipline</h3>
+
+          <p>
+            La routine s’installe.
+            Les consignes deviennent plus structurées.
+          </p>
+
+        </article>
+
+
+        <article>
+
+          <span>16–25</span>
+
+          <h3>Contrôle</h3>
+
+          <p>
+            Progression, constance et interventions
+            adaptées selon le forfait.
+          </p>
+
+        </article>
+
+
+        <article>
+
+          <span>26–31</span>
+
+          <h3>Dernière ligne droite</h3>
+
+          <p>
+            Clôture du parcours, bilan
+            et rencontre VIP le 31 octobre.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="section faq" id="faq">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Questions fréquentes
+        </span>
+
+        <h2>
+          Avant de vous engager
+        </h2>
+
+      </div>
+
+
+      <details>
+
+        <summary>
+          Une cage connectée est-elle obligatoire?
+        </summary>
+
+        <p>
+          Non. Une cage est obligatoire, mais elle peut être connectée
+          ou traditionnelle. Le niveau technologique choisi ne change
+          pas le forfait.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+          Dame Émanuelle va-t-elle configurer ma cage?
+        </summary>
+
+        <p>
+          Non. Chaque participant est responsable de son matériel,
+          de son application, de ses accès et de son fonctionnement.
+          Aucun soutien technique n’est inclus.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+          Que se passe-t-il si je dois retirer ma cage?
+        </summary>
+
+        <p>
+          La sécurité passe avant le jeu.
+          Le participant peut interrompre l’utilisation de son
+          dispositif dès que nécessaire.
+          Le parcours peut ensuite être adapté sans transformer
+          un problème technique ou physique en échec.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+          Le forfait gratuit comprend-il des messages privés?
+        </summary>
+
+        <p>
+          Non. Le Registre est un suivi de groupe.
+          Les interactions individuelles sont réservées aux forfaits
+          Sous contrôle et VIP.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+          La rencontre VIP dure combien de temps?
+        </summary>
+
+        <p>
+          Une heure, le 31 octobre 2026, sur rendez-vous.
+          Les modalités exactes sont confirmées individuellement
+          avec les participants VIP.
+        </p>
+
+      </details>
+
+    </section>
+
+
+    <!-- INSCRIPTION -->
+    <section class="section signup" id="inscription">
+
+      <div class="signup-copy">
+
+        <span class="eyebrow">
+          Inscription
+        </span>
+
+        <h2>
+          Entrez dans le Registre.
+        </h2>
+
+        <p>
+          Remplissez cette première étape.
+          Le formulaire définitif pourra ensuite être relié
+          à votre système d’inscription.
+        </p>
+
+      </div>
+
+
+      <form id="interestForm" class="signup-form">
+
+        <label>
+
+          Pseudo ou prénom
+
+          <input
+            name="name"
+            type="text"
+            required
+            placeholder="Votre nom ou pseudo"
+          >
+
+        </label>
+
+
+        <label>
+
+          Courriel
+
+          <input
+            name="email"
+            type="email"
+            required
+            placeholder="vous@exemple.com"
+          >
+
+        </label>
+
+
+        <label>
+
+          Forfait
+
+          <select name="plan" id="planSelect" required>
+
+            <option value="">
+              Choisir…
+            </option>
+
+            <option>
+              Le Registre — Gratuit
+            </option>
+
+            <option>
+              Sous contrôle — 129 $
+            </option>
+
+            <option>
+              L’Engagement VIP — 449 $
+            </option>
+
+          </select>
+
+        </label>
+
+
+        <label>
+
+          Type de matériel
+
+          <select name="equipment" required>
+
+            <option value="">
+              Choisir…
+            </option>
+
+            <option>
+              Cage connectée
+            </option>
+
+            <option>
+              Cage traditionnelle + coffre à clé connecté
+            </option>
+
+            <option>
+              Cage traditionnelle
+            </option>
+
+            <option>
+              À déterminer
+            </option>
+
+          </select>
+
+        </label>
+
+
+        <label class="check">
+
+          <input type="checkbox" required>
+
+          <span>
+            Je confirme avoir 18 ans ou plus et comprendre
+            que je suis responsable du choix, de l’ajustement
+            et du fonctionnement de mon matériel.
+          </span>
+
+        </label>
+
+
+        <label class="check">
+
+          <input type="checkbox" required>
+
+          <span>
+            Je comprends que je peux retirer ou cesser
+            d’utiliser mon dispositif immédiatement si ma
+            sécurité ou mon confort physique l’exige.
+          </span>
+
+        </label>
+
+
+        <button
+          class="btn btn-primary full"
+          type="submit"
+        >
+          Demander mon inscription
+        </button>
+
+
+        <p
+          class="form-status"
+          id="formStatus"
+          role="status"
+        ></p>
+
+      </form>
+
+    </section>
+
+  </main>
+
+
+  <!-- PIED DE PAGE -->
+  <footer>
+
+    <div>
+
+      <strong>
+        LOCKTOBER 2026
+      </strong>
+
+      <span>
+        Une expérience de Dame Émanuelle
+      </span>
+
+    </div>
+
+    <p>
+      Réservé aux adultes de 18 ans et plus.
+      Expérience consensuelle.
+      Aucun dispositif n’est vendu ou fourni par l’organisation.
+    </p>
+
+  </footer>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
