@@ -1,0 +1,1349 @@
+:root {
+  --bg: #0c080a;
+  --panel: #151014;
+  --panel2: #1e141a;
+
+  --wine: #6f1d36;
+  --wine2: #952a4d;
+
+  --gold: #c8a768;
+  --steel: #aeb5be;
+
+  --cream: #f4eee8;
+  --muted: #b8afb3;
+
+  --line: #35242d;
+}
+
+
+/* =========================
+   BASE
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      #241018 0,
+      transparent 32%
+    ),
+    var(--bg);
+
+  color: var(--cream);
+
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
+
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+
+.section {
+  max-width: 1180px;
+  margin: auto;
+  padding: 96px 28px;
+}
+
+.section-narrow {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 70px 28px;
+}
+
+
+.eyebrow {
+  display: inline-block;
+
+  color: var(--gold);
+
+  font-size: 0.76rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+
+  margin-bottom: 10px;
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.site-header {
+  position: sticky;
+  top: 0;
+
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 15px 28px;
+
+  background: rgba(12, 8, 10, 0.88);
+
+  backdrop-filter: blur(16px);
+
+  border-bottom:
+    1px solid rgba(200, 167, 104, 0.14);
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+
+  width: 38px;
+  height: 38px;
+
+  border:
+    1px solid var(--gold);
+
+  border-radius: 50%;
+
+  font:
+    700 1.3rem
+    "Cormorant Garamond",
+    serif;
+
+  color: var(--gold);
+}
+
+
+.brand strong {
+  display: block;
+
+  letter-spacing: 0.11em;
+}
+
+
+.brand small {
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 0.7rem;
+}
+
+
+.site-header nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+
+  font-size: 0.88rem;
+}
+
+
+.site-header nav a:hover {
+  color: var(--gold);
+}
+
+
+.nav-cta {
+  border:
+    1px solid var(--gold);
+
+  padding: 9px 15px;
+
+  border-radius: 999px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  min-height: 78vh;
+
+  display: grid;
+
+  grid-template-columns:
+    1.25fr 0.75fr;
+
+  gap: 72px;
+
+  align-items: center;
+}
+
+
+.hero h1,
+.section-heading h2,
+.split h2,
+.responsibility h2,
+.signup h2 {
+
+  font-family:
+    "Cormorant Garamond",
+    serif;
+
+  line-height: 0.95;
+
+  margin:
+    0.1em 0
+    0.28em;
+}
+
+
+.hero h1 {
+  font-size:
+    clamp(
+      4rem,
+      9vw,
+      7.2rem
+    );
+
+  letter-spacing:
+    -0.04em;
+}
+
+
+.hero h1 em {
+  font-weight: 600;
+
+  color: var(--gold);
+}
+
+
+.lead {
+  max-width: 720px;
+
+  color: #d8ced3;
+
+  font-size: 1.16rem;
+}
+
+
+.hero-actions {
+  display: flex;
+
+  gap: 12px;
+
+  margin:
+    34px 0
+    18px;
+}
+
+
+.hero-note {
+  font-size: 0.82rem;
+
+  color: #978b90;
+}
+
+
+/* =========================
+   BOUTONS
+========================= */
+
+.btn {
+  display: inline-flex;
+
+  justify-content: center;
+  align-items: center;
+
+  min-height: 48px;
+
+  padding:
+    0 22px;
+
+  border-radius: 4px;
+
+  border:
+    1px solid transparent;
+
+  cursor: pointer;
+
+  font-weight: 700;
+
+  transition: 0.2s;
+}
+
+
+.btn-primary {
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--wine2),
+      var(--wine)
+    );
+
+  color: white;
+
+  box-shadow:
+    0 10px 30px
+    rgba(111, 29, 54, 0.28);
+}
+
+
+.btn-primary:hover {
+
+  transform:
+    translateY(-1px);
+
+  filter:
+    brightness(1.08);
+}
+
+
+.btn-ghost {
+
+  border-color:
+    #5c4652;
+
+  background:
+    transparent;
+}
+
+
+.btn-ghost:hover {
+
+  border-color:
+    var(--gold);
+
+  color:
+    var(--gold);
+}
+
+
+.gold {
+
+  border-color:
+    var(--gold);
+
+  color:
+    var(--gold);
+}
+
+
+.full {
+  width: 100%;
+}
+
+
+/* =========================
+   COMPTE À REBOURS
+========================= */
+
+.countdown-card {
+
+  background:
+    linear-gradient(
+      155deg,
+      rgba(111, 29, 54, 0.22),
+      rgba(21, 16, 20, 0.96)
+    );
+
+  border:
+    1px solid
+    rgba(200, 167, 104, 0.23);
+
+  padding: 30px;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 25px 80px
+    rgba(0, 0, 0, 0.34);
+}
+
+
+.countdown {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 10px;
+
+  margin:
+    20px 0;
+}
+
+
+.countdown div {
+
+  background:
+    #0f0b0d;
+
+  padding:
+    18px 8px;
+
+  text-align: center;
+
+  border-radius:
+    7px;
+
+  border:
+    1px solid var(--line);
+}
+
+
+.countdown strong {
+
+  display: block;
+
+  font:
+    700 2.4rem
+    "Cormorant Garamond",
+    serif;
+
+  color:
+    var(--gold);
+}
+
+
+.countdown span {
+
+  font-size:
+    0.72rem;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.08em;
+
+  color:
+    var(--muted);
+}
+
+
+.countdown-card p {
+
+  color:
+    var(--muted);
+
+  font-size:
+    0.9rem;
+}
+
+
+/* =========================
+   MANIFESTO
+========================= */
+
+.manifesto {
+
+  border-block:
+    1px solid var(--line);
+
+  padding:
+    38px 28px;
+
+  text-align:
+    center;
+
+  background:
+    rgba(255, 255, 255, 0.015);
+}
+
+
+.manifesto p {
+
+  margin:
+    0;
+
+  font:
+    600
+    clamp(
+      1.4rem,
+      3vw,
+      2rem
+    )
+    "Cormorant Garamond",
+    serif;
+}
+
+
+/* =========================
+   TITRES
+========================= */
+
+.section-heading {
+
+  max-width:
+    760px;
+
+  margin-bottom:
+    38px;
+}
+
+
+.section-heading h2,
+.split h2,
+.responsibility h2,
+.signup h2 {
+
+  font-size:
+    clamp(
+      2.5rem,
+      5vw,
+      4.2rem
+    );
+}
+
+
+.section-heading p {
+
+  color:
+    var(--muted);
+}
+
+
+/* =========================
+   FORFAITS
+========================= */
+
+.pricing-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap:
+    18px;
+}
+
+
+.plan-card {
+
+  position:
+    relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--panel2),
+      var(--panel)
+    );
+
+  border:
+    1px solid var(--line);
+
+  padding:
+    28px;
+
+  border-radius:
+    10px;
+}
+
+
+.plan-card.featured {
+
+  border-color:
+    var(--wine2);
+
+  transform:
+    translateY(-10px);
+
+  box-shadow:
+    0 24px 70px
+    rgba(111, 29, 54, 0.22);
+}
+
+
+.plan-card.vip {
+
+  border-color:
+    rgba(200, 167, 104, 0.45);
+}
+
+
+.ribbon {
+
+  position:
+    absolute;
+
+  right:
+    18px;
+
+  top:
+    -13px;
+
+  background:
+    var(--wine2);
+
+  padding:
+    5px 11px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    0.72rem;
+
+  font-weight:
+    700;
+}
+
+
+.plan-top {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+}
+
+
+.plan-number {
+
+  font:
+    700 2rem
+    "Cormorant Garamond",
+    serif;
+
+  color:
+    #56444e;
+}
+
+
+.plan-tag {
+
+  font-size:
+    0.7rem;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.1em;
+
+  color:
+    var(--gold);
+}
+
+
+.plan-card h3 {
+
+  font:
+    700 2.2rem
+    "Cormorant Garamond",
+    serif;
+
+  margin:
+    0.35em 0
+    0.1em;
+}
+
+
+.plan-subtitle {
+
+  color:
+    var(--muted);
+
+  min-height:
+    52px;
+}
+
+
+.price {
+
+  font-size:
+    2rem;
+
+  font-weight:
+    700;
+
+  margin:
+    12px 0
+    18px;
+}
+
+
+.plan-card ul {
+
+  padding-left:
+    19px;
+
+  color:
+    #d0c7cb;
+
+  min-height:
+    265px;
+}
+
+
+.plan-card li {
+
+  margin:
+    9px 0;
+}
+
+
+.plan-limit {
+
+  border-top:
+    1px solid
+    var(--line);
+
+  padding:
+    14px 0;
+
+  color:
+    var(--gold);
+
+  font-size:
+    0.86rem;
+}
+
+
+/* =========================
+   MATÉRIEL
+========================= */
+
+.split {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    60px;
+
+  align-items:
+    start;
+}
+
+
+.lead-small {
+
+  font-size:
+    1.08rem;
+
+  color:
+    var(--muted);
+}
+
+
+.rules-card {
+
+  display:
+    grid;
+
+  gap:
+    12px;
+}
+
+
+.rule {
+
+  display:
+    flex;
+
+  gap:
+    18px;
+
+  padding:
+    20px;
+
+  border:
+    1px solid
+    var(--line);
+
+  background:
+    var(--panel);
+
+  border-radius:
+    8px;
+}
+
+
+.rule > strong {
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  flex:
+    0 0 42px;
+
+  height:
+    42px;
+
+  border:
+    1px solid
+    var(--gold);
+
+  border-radius:
+    50%;
+
+  color:
+    var(--gold);
+}
+
+
+.rule span {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+}
+
+
+.rule small {
+
+  color:
+    var(--muted);
+
+  margin-top:
+    4px;
+}
+
+
+/* =========================
+   RESPONSABILITÉ
+========================= */
+
+.responsibility {
+
+  border:
+    1px solid
+    rgba(200, 167, 104, 0.25);
+
+  background:
+    linear-gradient(
+      145deg,
+      #171014,
+      #0f0b0d
+    );
+
+  border-radius:
+    12px;
+}
+
+
+.responsibility p {
+
+  color:
+    #cfc5ca;
+}
+
+
+.responsibility .safety {
+
+  color:
+    #f0d7df;
+
+  border-left:
+    3px solid
+    var(--wine2);
+
+  padding-left:
+    16px;
+}
+
+
+/* =========================
+   TIMELINE
+========================= */
+
+.timeline {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap:
+    14px;
+}
+
+
+.timeline article {
+
+  padding:
+    24px;
+
+  border-top:
+    2px solid
+    var(--wine2);
+
+  background:
+    var(--panel);
+}
+
+
+.timeline span {
+
+  color:
+    var(--gold);
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.09em;
+}
+
+
+.timeline h3 {
+
+  font:
+    700 1.8rem
+    "Cormorant Garamond",
+    serif;
+
+  margin:
+    8px 0;
+}
+
+
+.timeline p {
+
+  color:
+    var(--muted);
+
+  font-size:
+    0.9rem;
+}
+
+
+/* =========================
+   FAQ
+========================= */
+
+.faq details {
+
+  max-width:
+    900px;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  padding:
+    18px 0;
+}
+
+
+.faq details:last-child {
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+
+.faq summary {
+
+  cursor:
+    pointer;
+
+  font-weight:
+    700;
+}
+
+
+.faq details p {
+
+  color:
+    var(--muted);
+
+  max-width:
+    780px;
+}
+
+
+/* =========================
+   INSCRIPTION
+========================= */
+
+.signup {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    0.8fr 1.2fr;
+
+  gap:
+    70px;
+
+  align-items:
+    start;
+}
+
+
+.signup-form {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    16px;
+
+  background:
+    var(--panel);
+
+  border:
+    1px solid
+    var(--line);
+
+  padding:
+    28px;
+
+  border-radius:
+    10px;
+}
+
+
+.signup-form label {
+
+  display:
+    grid;
+
+  gap:
+    7px;
+
+  font-size:
+    0.82rem;
+
+  color:
+    #d7cdd2;
+}
+
+
+.signup-form input,
+.signup-form select {
+
+  width:
+    100%;
+
+  background:
+    #0f0b0d;
+
+  color:
+    var(--cream);
+
+  border:
+    1px solid
+    #45323b;
+
+  border-radius:
+    5px;
+
+  padding:
+    13px 12px;
+}
+
+
+.signup-form .check,
+.signup-form button,
+.form-status {
+
+  grid-column:
+    1 / -1;
+}
+
+
+.check {
+
+  grid-template-columns:
+    20px 1fr !important;
+
+  align-items:
+    start;
+}
+
+
+.check input {
+
+  width:
+    auto;
+
+  margin-top:
+    4px;
+}
+
+
+.form-status {
+
+  min-height:
+    20px;
+
+  color:
+    var(--gold);
+
+  font-size:
+    0.86rem;
+}
+
+
+/* =========================
+   18+
+========================= */
+
+.age-gate {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    100;
+
+  background:
+    rgba(8, 5, 6, 0.96);
+
+  display:
+    none;
+
+  place-items:
+    center;
+
+  padding:
+    20px;
+}
+
+
+.age-gate.show {
+
+  display:
+    grid;
+}
+
+
+.age-card {
+
+  max-width:
+    540px;
+
+  background:
+    var(--panel);
+
+  border:
+    1px solid
+    var(--gold);
+
+  padding:
+    34px;
+
+  border-radius:
+    12px;
+}
+
+
+.age-card h2 {
+
+  font:
+    700 2.6rem
+    "Cormorant Garamond",
+    serif;
+
+  margin:
+    0.15em 0;
+}
+
+
+.age-card p {
+
+  color:
+    var(--muted);
+}
+
+
+.age-actions {
+
+  display:
+    flex;
+
+  gap:
+    10px;
+
+  margin-top:
+    24px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  gap:
+    28px;
+
+  padding:
+    34px 28px;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  color:
+    var(--muted);
+
+  font-size:
+    0.78rem;
+}
+
+
+footer strong,
+footer span {
+
+  display:
+    block;
+}
+
+
+footer strong {
+
+  color:
+    var(--cream);
+
+  letter-spacing:
+    0.12em;
+}
+
+
+/* =========================
+   TABLETTES
+========================= */
+
+@media (max-width: 900px) {
+
+  .site-header nav a:not(.nav-cta) {
+    display: none;
+  }
+
+  .hero,
+  .split,
+  .signup {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    gap: 35px;
+    padding-top: 70px;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-card.featured {
+    transform: none;
+  }
+
+  .timeline {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .signup-form {
+    grid-template-columns: 1fr;
+  }
+
+  .signup-form label {
+    grid-column: 1 / -1;
+  }
+
+  .section {
+    padding: 72px 20px;
+  }
+
+  .countdown-card {
+    max-width: 560px;
+  }
+
+}
+
+
+/* =========================
+   MOBILES
+========================= */
+
+@media (max-width: 560px) {
+
+  .hero h1 {
+    font-size: 3.65rem;
+  }
+
+  .hero-actions,
+  .age-actions {
+    flex-direction: column;
+  }
+
+  .countdown strong {
+    font-size: 2rem;
+  }
+
+  .timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .site-header {
+    padding: 12px 16px;
+  }
+
+  .brand small {
+    display: none;
+  }
+
+  footer {
+    flex-direction: column;
+  }
+
+}
