@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta name="theme-color" content="#10090c">
+
+  <title>
+    Portail Locktober 2026 — Dame Émanuelle
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="portal.css"
+  >
+</head>
+
+<body>
+
+  <!-- =========================
+       ÉCRAN DE CONNEXION
+  ========================== -->
+
+  <section
+    class="login-screen"
+    id="loginScreen"
+  >
+
+    <div class="login-card">
+
+      <div class="seal">
+        L
+      </div>
+
+      <span class="eyebrow">
+        LOCKTOBER 2026
+      </span>
+
+      <h1>
+        Portail participant
+      </h1>
+
+      <p>
+        Entrez le code personnel qui vous a été
+        attribué pour accéder à votre espace.
+      </p>
+
+      <form
+        id="loginForm"
+        class="login-form"
+      >
+
+        <label for="accessCode">
+          Code personnel
+        </label>
+
+        <input
+          id="accessCode"
+          type="text"
+          placeholder="DE-0000"
+          autocomplete="off"
+          required
+        >
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Accéder au portail
+        </button>
+
+      </form>
+
+      <p
+        class="login-message"
+        id="loginMessage"
+      ></p>
+
+      <small>
+        Accès réservé aux participants inscrits.
+      </small>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       PORTAIL
+  ========================== -->
+
+  <div
+    class="portal hidden"
+    id="portal"
+  >
+
+    <!-- HEADER -->
+
+    <header class="portal-header">
+
+      <div class="brand">
+
+        <div class="brand-mark">
+          L
+        </div>
+
+        <div>
+
+          <strong>
+            LOCKTOBER 2026
+          </strong>
+
+          <span>
+            sous le contrôle de Dame Émanuelle
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="header-right">
+
+        <span
+          class="plan-badge"
+          id="headerPlan"
+        >
+          —
+        </span>
+
+        <button
+          class="logout-btn"
+          id="logoutBtn"
+        >
+          Quitter
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <main class="portal-main">
+
+      <!-- BIENVENUE -->
+
+      <section class="welcome">
+
+        <div>
+
+          <span class="eyebrow">
+            Votre espace personnel
+          </span>
+
+          <h1>
+            Bonjour,
+            <span id="participantName">
+              —
+            </span>
+          </h1>
+
+          <p>
+            Votre parcours Locktober se poursuit.
+          </p>
+
+        </div>
+
+
+        <div class="date-card">
+
+          <span>
+            Aujourd’hui
+          </span>
+
+          <strong id="todayDate">
+            —
+          </strong>
+
+        </div>
+
+      </section>
+
+
+      <!-- JOUR + PROGRESSION -->
+
+      <section class="progress-card">
+
+        <div class="progress-top">
+
+          <div>
+
+            <span class="label">
+              Progression
+            </span>
+
+            <strong>
+              Jour
+              <span id="currentDay">
+                1
+              </span>
+              / 31
+            </strong>
+
+          </div>
+
+
+          <div class="phase-box">
+
+            <span>
+              Phase actuelle
+            </span>
+
+            <strong id="currentPhase">
+              Engagement
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="progress-bar">
+
+          <div
+            class="progress-fill"
+            id="progressFill"
+          ></div>
+
+        </div>
+
+
+        <div class="progress-bottom">
+
+          <span>
+            <b id="completedDays">
+              0
+            </b>
+            journées validées
+          </span>
+
+          <span>
+            Série actuelle :
+            <b id="currentStreak">
+              0
+            </b>
+            jours
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- GRID PRINCIPAL -->
+
+      <section class="dashboard-grid">
+
+        <!-- CONSIGNE DU JOUR -->
+
+        <article class="dashboard-card instruction-card">
+
+          <span class="eyebrow">
+            Consigne du jour
+          </span>
+
+          <h2 id="dailyTitle">
+            Votre protocole
+          </h2>
+
+          <p id="dailyInstruction">
+            Consultez votre consigne du jour.
+          </p>
+
+          <div
+            class="private-note hidden"
+            id="privateInstructionBlock"
+          >
+
+            <span>
+              Consigne personnalisée
+            </span>
+
+            <p id="privateInstruction">
+              —
+            </p>
+
+          </div>
+
+
+          <button
+            class="btn btn-primary full"
+            id="validateBtn"
+          >
+            Valider ma journée
+          </button>
+
+        </article>
+
+
+        <!-- STATUT -->
+
+        <article class="dashboard-card">
+
+          <span class="eyebrow">
+            Votre statut
+          </span>
+
+          <h2>
+            Aujourd’hui
+          </h2>
+
+          <div class="status-list">
+
+            <div>
+
+              <span class="status-dot"></span>
+
+              <span>
+                Forfait :
+                <b id="planName">
+                  —
+                </b>
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <span class="status-dot"></span>
+
+              <span>
+                Matériel :
+                <b id="equipmentName">
+                  —
+                </b>
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <span class="status-dot"></span>
+
+              <span>
+                Dernière validation :
+                <b id="lastValidation">
+                  Aucune
+                </b>
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- MESSAGE DAME ÉMANUELLE -->
+
+        <article
+          class="dashboard-card hidden"
+          id="privateMessageCard"
+        >
+
+          <span class="eyebrow">
+            Message privé
+          </span>
+
+          <h2>
+            Dame Émanuelle
+          </h2>
+
+          <blockquote
+            id="privateMessage"
+          >
+            —
+          </blockquote>
+
+        </article>
+
+
+        <!-- OBJECTIF PERSONNEL -->
+
+        <article
+          class="dashboard-card hidden"
+          id="objectiveCard"
+        >
+
+          <span class="eyebrow">
+            Objectif personnel
+          </span>
+
+          <h2>
+            Votre progression
+          </h2>
+
+          <p id="personalObjective">
+            —
+          </p>
+
+        </article>
+
+
+        <!-- VIP -->
+
+        <article
+          class="dashboard-card vip-card hidden"
+          id="vipCard"
+        >
+
+          <span class="eyebrow">
+            Accès VIP
+          </span>
+
+          <h2>
+            Rencontre du 31 octobre
+          </h2>
+
+          <p>
+            Votre rencontre privée avec Dame Émanuelle
+            fait partie de votre parcours VIP.
+          </p>
+
+          <div class="vip-info">
+
+            <span>
+              Durée
+            </span>
+
+            <strong>
+              1 heure
+            </strong>
+
+          </div>
+
+
+          <div class="vip-info">
+
+            <span>
+              Heure
+            </span>
+
+            <strong id="vipTime">
+              À confirmer
+            </strong>
+
+          </div>
+
+
+          <div class="vip-info">
+
+            <span>
+              Statut
+            </span>
+
+            <strong id="vipStatus">
+              En préparation
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <!-- MATÉRIEL -->
+
+        <article class="dashboard-card">
+
+          <span class="eyebrow">
+            Matériel
+          </span>
+
+          <h2>
+            Fonctionnement
+          </h2>
+
+          <p>
+            Votre matériel demeure sous votre
+            entière responsabilité.
+          </p>
+
+          <p class="small-muted">
+            Un problème technique n’annule pas votre
+            participation. Signalez simplement votre
+            statut lors de votre validation quotidienne.
+          </p>
+
+        </article>
+
+      </section>
+
+
+      <!-- HISTORIQUE -->
+
+      <section class="history-section">
+
+        <div class="section-header">
+
+          <div>
+
+            <span class="eyebrow">
+              Progression
+            </span>
+
+            <h2>
+              Historique des validations
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="history-grid"
+          id="historyGrid"
+        >
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <footer class="portal-footer">
+
+      <strong>
+        LOCKTOBER 2026
+      </strong>
+
+      <span>
+        Dame Émanuelle
+      </span>
+
+    </footer>
+
+  </div>
+
+
+  <!-- =========================
+       MODALE VALIDATION
+  ========================== -->
+
+  <div
+    class="modal hidden"
+    id="validationModal"
+  >
+
+    <div class="modal-card">
+
+      <button
+        class="modal-close"
+        id="closeModal"
+      >
+        ×
+      </button>
+
+
+      <span class="eyebrow">
+        Validation quotidienne
+      </span>
+
+      <h2>
+        Votre journée
+      </h2>
+
+      <p id="validationDate">
+        —
+      </p>
+
+
+      <form
+        id="validationForm"
+      >
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            name="status"
+            value="completed"
+            required
+          >
+
+          <span>
+            Journée complétée
+          </span>
+
+        </label>
+
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            name="status"
+            value="temporary"
+          >
+
+          <span>
+            Retrait temporaire
+          </span>
+
+        </label>
+
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            name="status"
+            value="technical"
+          >
+
+          <span>
+            Problème de matériel
+          </span>
+
+        </label>
+
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            name="status"
+            value="other"
+          >
+
+          <span>
+            Autre
+          </span>
+
+        </label>
+
+
+        <label class="comment-label">
+
+          Commentaire facultatif
+
+          <textarea
+            id="validationComment"
+            placeholder="Ajouter une note..."
+          ></textarea>
+
+        </label>
+
+
+        <button
+          type="submit"
+          class="btn btn-primary full"
+        >
+          Envoyer ma validation
+        </button>
+
+
+        <p
+          class="validation-message"
+          id="validationMessage"
+        ></p>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <script src="portal.js"></script>
+
+</body>
+</html>
