@@ -1,160 +1,52 @@
 /* ==================================================
    LOCKTOBER 2026
-   PORTAIL PARTICIPANT — VERSION TEST
+   PORTAIL PARTICIPANT — VERSION CONNECTÉE
 ================================================== */
 
-
-/* ==================================================
-   PARTICIPANTS TEST
-
-   Pour l'instant, les profils sont ici.
-   On les remplacera ensuite par Google Sheets
-   ou une vraie base de données.
-================================================== */
-
-const participants = {
-
-  "DE-1047": {
-
-    pseudo: "Soumis47",
-
-    plan: "Sous contrôle",
-
-    level: "personal",
-
-    equipment:
-      "Cage connectée",
-
-    objective:
-      "Maintenir une participation constante et compléter les validations quotidiennes.",
-
-    privateInstruction:
-      "Aujourd’hui, concentrez-vous sur la constance de votre protocole et complétez votre validation avant la fin de la journée.",
-
-    privateMessage:
-      "Votre progression est satisfaisante. La discipline repose maintenant sur votre constance.",
-
-    vipTime: null
-
-  },
-
-
-  "DE-3821": {
-
-    pseudo: "Alpha",
-
-    plan: "L’Engagement VIP",
-
-    level: "vip",
-
-    equipment:
-      "Cage traditionnelle + coffre à clé connecté",
-
-    objective:
-      "Maintenir le protocole établi jusqu’à la préparation finale de votre rencontre.",
-
-    privateInstruction:
-      "Votre consigne personnelle du jour est active. Respectez votre protocole et complétez votre validation.",
-
-    privateMessage:
-      "Vous êtes maintenant engagé dans la partie la plus personnelle de votre parcours.",
-
-    vipTime:
-      "14 h"
-
-  },
-
-
-  "DE-7719": {
-
-    pseudo: "S73",
-
-    plan: "Le Registre",
-
-    level: "group",
-
-    equipment:
-      "Cage traditionnelle",
-
-    objective: null,
-
-    privateInstruction: null,
-
-    privateMessage: null,
-
-    vipTime: null
-
-  }
-
-};
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbxJPrnViWoVCYPe8KzC_DgSNKLrjReJI2BTrVrC3wXgbvzD5tcji4MZGOpn8wSaTvj2/exec";
 
 
 /* ==================================================
    CONSIGNES DE GROUPE
-
-   Elles peuvent être modifiées facilement.
 ================================================== */
 
 const dailyInstructions = [
 
   "Aujourd’hui marque le début de votre engagement. Prenez connaissance du protocole et préparez votre mois.",
-
   "La constance commence maintenant. Complétez votre journée et votre validation.",
-
   "Maintenez votre engagement et prenez quelques minutes pour observer votre discipline.",
-
   "Votre participation repose aujourd’hui sur la régularité.",
-
   "Première phase presque terminée. Maintenez votre engagement.",
 
   "La phase Discipline commence. Le défi devient maintenant la constance.",
-
   "Respectez votre routine et complétez votre validation.",
-
   "Une journée simple, mais importante : ne laissez pas votre discipline diminuer.",
-
   "Maintenez le protocole que vous avez accepté.",
-
   "Dixième journée. Prenez conscience du chemin déjà parcouru.",
 
   "Poursuivez sans chercher à accélérer le parcours.",
-
   "La régularité vaut davantage que l’intensité.",
-
   "Votre validation demeure attendue aujourd’hui.",
-
   "Maintenez votre engagement.",
-
   "Vous atteignez le milieu du mois. Continuez.",
 
   "La phase Contrôle commence aujourd’hui.",
-
   "Prenez votre progression au sérieux.",
-
   "Le protocole reste en place.",
-
   "Votre engagement se mesure désormais dans la durée.",
-
   "Vingtième journée. La constance devient votre principal défi.",
 
   "Continuez votre parcours.",
-
   "Votre validation quotidienne reste essentielle.",
-
   "Maintenez votre discipline.",
-
   "Ne relâchez pas votre engagement maintenant.",
-
   "Dernière journée de la phase Contrôle.",
 
   "La dernière ligne droite commence.",
-
   "Cinq jours restent à compléter.",
-
   "Maintenez votre parcours jusqu’au bout.",
-
   "Votre Locktober approche de sa conclusion.",
-
   "Avant-dernière journée. Complétez votre protocole.",
 
   "31 octobre. Votre Locktober arrive à son terme."
@@ -167,7 +59,6 @@ const dailyInstructions = [
 ================================================== */
 
 let currentParticipant = null;
-
 let currentCode = null;
 
 
@@ -176,39 +67,69 @@ let currentCode = null;
 ================================================== */
 
 const loginScreen =
-  document.getElementById(
-    "loginScreen"
-  );
-
+  document.getElementById("loginScreen");
 
 const portal =
-  document.getElementById(
-    "portal"
-  );
-
+  document.getElementById("portal");
 
 const loginForm =
-  document.getElementById(
-    "loginForm"
-  );
-
+  document.getElementById("loginForm");
 
 const loginMessage =
-  document.getElementById(
-    "loginMessage"
-  );
-
+  document.getElementById("loginMessage");
 
 const accessCode =
-  document.getElementById(
-    "accessCode"
-  );
-
+  document.getElementById("accessCode");
 
 const validationModal =
-  document.getElementById(
-    "validationModal"
+  document.getElementById("validationModal");
+
+
+/* ==================================================
+   AJOUT DU CHAMP COURRIEL
+================================================== */
+
+const loginButton =
+  loginForm.querySelector(
+    'button[type="submit"]'
   );
+
+const emailLabel =
+  document.createElement("label");
+
+emailLabel.htmlFor =
+  "accessEmail";
+
+emailLabel.textContent =
+  "Courriel utilisé lors de l’inscription";
+
+const accessEmail =
+  document.createElement("input");
+
+accessEmail.id =
+  "accessEmail";
+
+accessEmail.type =
+  "email";
+
+accessEmail.placeholder =
+  "votre@courriel.com";
+
+accessEmail.autocomplete =
+  "email";
+
+accessEmail.required =
+  true;
+
+loginForm.insertBefore(
+  emailLabel,
+  loginButton
+);
+
+loginForm.insertBefore(
+  accessEmail,
+  loginButton
+);
 
 
 /* ==================================================
@@ -220,51 +141,36 @@ function getLocktoberDay() {
   const now =
     new Date();
 
-
   const start =
     new Date(
       "2026-10-01T00:00:00-04:00"
     );
-
 
   const end =
     new Date(
       "2026-10-31T23:59:59-04:00"
     );
 
-
   if (now < start) {
-
     return 1;
-
   }
-
 
   if (now > end) {
-
     return 31;
-
   }
-
 
   const diff =
     now - start;
-
 
   const day =
     Math.floor(
       diff / 86400000
     ) + 1;
 
-
   return Math.min(
-    Math.max(
-      day,
-      1
-    ),
+    Math.max(day, 1),
     31
   );
-
 }
 
 
@@ -275,33 +181,49 @@ function getLocktoberDay() {
 function getPhase(day) {
 
   if (day <= 5) {
-
     return "Engagement";
-
   }
-
 
   if (day <= 15) {
-
     return "Discipline";
-
   }
-
 
   if (day <= 25) {
-
     return "Contrôle";
-
   }
 
-
   return "Dernière ligne droite";
-
 }
 
 
 /* ==================================================
-   STOCKAGE LOCAL DES VALIDATIONS
+   NIVEAU DU FORFAIT
+================================================== */
+
+function getLevel(plan) {
+
+  const value =
+    String(plan || "")
+      .toLowerCase();
+
+  if (
+    value.includes("engagement")
+  ) {
+    return "vip";
+  }
+
+  if (
+    value.includes("sous contrôle")
+  ) {
+    return "personal";
+  }
+
+  return "group";
+}
+
+
+/* ==================================================
+   STOCKAGE LOCAL VALIDATIONS
 ================================================== */
 
 function getValidationKey() {
@@ -310,7 +232,6 @@ function getValidationKey() {
     "locktober-validations-" +
     currentCode
   );
-
 }
 
 
@@ -321,26 +242,17 @@ function getValidations() {
       getValidationKey()
     );
 
-
   if (!raw) {
-
     return {};
-
   }
 
-
   try {
-
     return JSON.parse(raw);
-
   }
 
   catch {
-
     return {};
-
   }
-
 }
 
 
@@ -354,7 +266,43 @@ function saveValidations(
       validations
     )
   );
+}
 
+
+/* ==================================================
+   CONNEXION API
+================================================== */
+
+async function authenticateParticipant(
+  code,
+  email
+) {
+
+  const params =
+    new URLSearchParams({
+      code: code,
+      email: email
+    });
+
+  const response =
+    await fetch(
+      API_URL +
+      "?" +
+      params.toString(),
+      {
+        method: "GET",
+        cache: "no-store"
+      }
+    );
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Réponse serveur invalide."
+    );
+  }
+
+  return await response.json();
 }
 
 
@@ -364,46 +312,130 @@ function saveValidations(
 
 loginForm.addEventListener(
   "submit",
-  event => {
+  async event => {
 
     event.preventDefault();
-
 
     const code =
       accessCode.value
         .trim()
         .toUpperCase();
 
+    const email =
+      accessEmail.value
+        .trim()
+        .toLowerCase();
 
-    if (!participants[code]) {
+    if (!code || !email) {
 
       loginMessage.textContent =
-        "Code non reconnu.";
+        "Veuillez entrer votre code et votre courriel.";
 
       return;
+    }
+
+    loginButton.disabled =
+      true;
+
+    loginButton.textContent =
+      "Vérification…";
+
+    loginMessage.textContent =
+      "Vérification de votre accès…";
+
+    try {
+
+      const result =
+        await authenticateParticipant(
+          code,
+          email
+        );
+
+      if (!result.ok) {
+
+        loginMessage.textContent =
+          result.error ||
+          "Accès refusé.";
+
+        return;
+      }
+
+      const p =
+        result.participant;
+
+      currentCode =
+        code;
+
+      currentParticipant = {
+
+        id:
+          p.id,
+
+        pseudo:
+          p.pseudo,
+
+        plan:
+          p.forfait,
+
+        level:
+          getLevel(
+            p.forfait
+          ),
+
+        equipment:
+          p.materiel,
+
+        preparation:
+          p.preparation,
+
+        objective:
+          p.objectifs || null,
+
+        privateInstruction:
+          null,
+
+        privateMessage:
+          null,
+
+        vipTime:
+          p.rencontreVip || null,
+
+        lastValidation:
+          p.derniereValidation || null
+      };
+
+      sessionStorage.setItem(
+        "locktober-session",
+        JSON.stringify({
+          code: code,
+          email: email
+        })
+      );
+
+      loginMessage.textContent =
+        "";
+
+      openPortal();
 
     }
 
+    catch (error) {
 
-    loginMessage.textContent =
-      "";
+      console.error(error);
 
+      loginMessage.textContent =
+        "Connexion au portail impossible. Veuillez réessayer.";
 
-    currentCode =
-      code;
+    }
 
+    finally {
 
-    currentParticipant =
-      participants[code];
+      loginButton.disabled =
+        false;
 
-
-    sessionStorage.setItem(
-      "locktober-access",
-      code
-    );
-
-
-    openPortal();
+      loginButton.textContent =
+        "Accéder au portail";
+    }
 
   }
 );
@@ -419,14 +451,11 @@ function openPortal() {
     "hidden"
   );
 
-
   portal.classList.remove(
     "hidden"
   );
 
-
   renderParticipant();
-
 }
 
 
@@ -439,10 +468,8 @@ function renderParticipant() {
   const participant =
     currentParticipant;
 
-
   const day =
     getLocktoberDay();
-
 
   const phase =
     getPhase(day);
@@ -494,19 +521,14 @@ function renderParticipant() {
 
   const progress =
     Math.round(
-      (
-        day /
-        31
-      ) *
-      100
+      (day / 31) * 100
     );
 
 
   document.getElementById(
     "progressFill"
   ).style.width =
-    progress +
-    "%";
+    progress + "%";
 
 
   document.getElementById(
@@ -524,59 +546,67 @@ function renderParticipant() {
     );
 
 
-  /* PERSONNALISÉ */
+  /* CACHE TOUT D’ABORD */
+
+  document
+    .getElementById(
+      "privateInstructionBlock"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "privateMessageCard"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "objectiveCard"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "vipCard"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  /* OBJECTIF PERSONNALISÉ */
 
   if (
     participant.level ===
-    "personal" ||
+      "personal" ||
     participant.level ===
-    "vip"
+      "vip"
   ) {
 
-    document
-      .getElementById(
-        "privateInstructionBlock"
-      )
-      .classList.remove(
-        "hidden"
-      );
+    if (
+      participant.objective
+    ) {
 
+      document
+        .getElementById(
+          "objectiveCard"
+        )
+        .classList.remove(
+          "hidden"
+        );
 
-    document
-      .getElementById(
-        "privateMessageCard"
-      )
-      .classList.remove(
-        "hidden"
-      );
-
-
-    document
-      .getElementById(
-        "objectiveCard"
-      )
-      .classList.remove(
-        "hidden"
-      );
-
-
-    document.getElementById(
-      "privateInstruction"
-    ).textContent =
-      participant.privateInstruction;
-
-
-    document.getElementById(
-      "privateMessage"
-    ).textContent =
-      participant.privateMessage;
-
-
-    document.getElementById(
-      "personalObjective"
-    ).textContent =
-      participant.objective;
-
+      document.getElementById(
+        "personalObjective"
+      ).textContent =
+        participant.objective;
+    }
   }
 
 
@@ -595,18 +625,15 @@ function renderParticipant() {
         "hidden"
       );
 
-
     document.getElementById(
       "vipTime"
     ).textContent =
       participant.vipTime ||
       "À confirmer";
-
   }
 
 
   updateValidationDisplay();
-
 }
 
 
@@ -619,12 +646,10 @@ function updateValidationDisplay() {
   const validations =
     getValidations();
 
-
   const completedDays =
     Object.keys(
       validations
     ).length;
-
 
   document.getElementById(
     "completedDays"
@@ -651,9 +676,7 @@ function updateValidationDisplay() {
       );
 
 
-  if (
-    days.length
-  ) {
+  if (days.length) {
 
     document.getElementById(
       "lastValidation"
@@ -669,19 +692,17 @@ function updateValidationDisplay() {
       "lastValidation"
     ).textContent =
       "Aucune";
-
   }
 
 
   renderHistory(
     validations
   );
-
 }
 
 
 /* ==================================================
-   STREAK
+   SÉRIE
 ================================================== */
 
 function calculateStreak(
@@ -691,17 +712,12 @@ function calculateStreak(
   const currentDay =
     getLocktoberDay();
 
-
   let streak =
     0;
 
-
   for (
-    let day =
-      currentDay;
-
+    let day = currentDay;
     day >= 1;
-
     day--
   ) {
 
@@ -716,14 +732,10 @@ function calculateStreak(
     else {
 
       break;
-
     }
-
   }
 
-
   return streak;
-
 }
 
 
@@ -740,10 +752,8 @@ function renderHistory(
       "historyGrid"
     );
 
-
   grid.innerHTML =
     "";
-
 
   const today =
     getLocktoberDay();
@@ -760,14 +770,11 @@ function renderHistory(
         "div"
       );
 
-
     div.className =
       "history-day";
 
-
     div.textContent =
       day;
-
 
     if (
       validations[day]
@@ -776,9 +783,7 @@ function renderHistory(
       div.classList.add(
         "completed"
       );
-
     }
-
 
     if (
       day === today
@@ -787,21 +792,17 @@ function renderHistory(
       div.classList.add(
         "today"
       );
-
     }
-
 
     grid.appendChild(
       div
     );
-
   }
-
 }
 
 
 /* ==================================================
-   MODALE
+   MODALE VALIDATION
 ================================================== */
 
 document
@@ -812,10 +813,11 @@ document
     "click",
     () => {
 
-      validationModal.classList.remove(
-        "hidden"
-      );
-
+      validationModal
+        .classList
+        .remove(
+          "hidden"
+        );
 
       document.getElementById(
         "validationDate"
@@ -829,7 +831,6 @@ document
         ).format(
           new Date()
         );
-
     }
   );
 
@@ -842,16 +843,18 @@ document
     "click",
     () => {
 
-      validationModal.classList.add(
-        "hidden"
-      );
-
+      validationModal
+        .classList
+        .add(
+          "hidden"
+        );
     }
   );
 
 
 /* ==================================================
    ENVOI VALIDATION
+   Pour l'instant local seulement
 ================================================== */
 
 document
@@ -864,29 +867,22 @@ document
 
       event.preventDefault();
 
-
       const status =
         document.querySelector(
           'input[name="status"]:checked'
         );
 
-
       if (!status) {
-
         return;
-
       }
-
 
       const day =
         getLocktoberDay();
-
 
       const comment =
         document.getElementById(
           "validationComment"
         ).value.trim();
-
 
       const validations =
         getValidations();
@@ -903,7 +899,6 @@ document
         timestamp:
           new Date()
             .toISOString()
-
       };
 
 
@@ -924,17 +919,17 @@ document
       setTimeout(
         () => {
 
-          validationModal.classList.add(
-            "hidden"
-          );
-
+          validationModal
+            .classList
+            .add(
+              "hidden"
+            );
 
           document
             .getElementById(
               "validationForm"
             )
             .reset();
-
 
           document.getElementById(
             "validationMessage"
@@ -944,13 +939,12 @@ document
         },
         1000
       );
-
     }
   );
 
 
 /* ==================================================
-   LOGOUT
+   DÉCONNEXION
 ================================================== */
 
 document
@@ -962,41 +956,117 @@ document
     () => {
 
       sessionStorage.removeItem(
-        "locktober-access"
+        "locktober-session"
       );
 
-
       location.reload();
-
     }
   );
 
 
 /* ==================================================
-   SESSION EXISTANTE
+   RESTAURATION SESSION
 ================================================== */
 
-const savedCode =
-  sessionStorage.getItem(
-    "locktober-access"
-  );
+async function restoreSession() {
 
+  const raw =
+    sessionStorage.getItem(
+      "locktober-session"
+    );
 
-if (
-  savedCode &&
-  participants[savedCode]
-) {
+  if (!raw) {
+    return;
+  }
 
-  currentCode =
-    savedCode;
+  try {
 
+    const saved =
+      JSON.parse(raw);
 
-  currentParticipant =
-    participants[
-      savedCode
-    ];
+    if (
+      !saved.code ||
+      !saved.email
+    ) {
 
+      return;
+    }
 
-  openPortal();
+    const result =
+      await authenticateParticipant(
+        saved.code,
+        saved.email
+      );
 
+    if (!result.ok) {
+
+      sessionStorage.removeItem(
+        "locktober-session"
+      );
+
+      return;
+    }
+
+    const p =
+      result.participant;
+
+    currentCode =
+      saved.code;
+
+    currentParticipant = {
+
+      id:
+        p.id,
+
+      pseudo:
+        p.pseudo,
+
+      plan:
+        p.forfait,
+
+      level:
+        getLevel(
+          p.forfait
+        ),
+
+      equipment:
+        p.materiel,
+
+      preparation:
+        p.preparation,
+
+      objective:
+        p.objectifs || null,
+
+      privateInstruction:
+        null,
+
+      privateMessage:
+        null,
+
+      vipTime:
+        p.rencontreVip || null,
+
+      lastValidation:
+        p.derniereValidation || null
+    };
+
+    openPortal();
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Restauration de session impossible :",
+      error
+    );
+
+    sessionStorage.removeItem(
+      "locktober-session"
+    );
+  }
 }
+
+
+restoreSession();
