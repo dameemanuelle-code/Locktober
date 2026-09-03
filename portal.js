@@ -391,11 +391,13 @@ loginForm.addEventListener(
         objective:
           p.objectifs || null,
 
-        privateInstruction:
-          null,
+        
+         privateInstruction:
+         p.instructionPrivee || null,
 
-        privateMessage:
-          null,
+         privateMessage:
+         p.messagePrive ||  null,
+
 
         vipTime:
           p.rencontreVip || null,
