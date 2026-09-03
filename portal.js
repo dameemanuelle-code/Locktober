@@ -611,7 +611,45 @@ function renderParticipant() {
     }
   }
 
+  /* CONTENU PRIVÉ — SOUS CONTRÔLE ET VIP */
 
+  if (
+    participant.level === "personal" ||
+    participant.level === "vip"
+  ) {
+
+    if (participant.privateInstruction) {
+
+      document
+        .getElementById(
+          "privateInstructionBlock"
+        )
+        .classList.remove(
+          "hidden"
+        );
+
+      document.getElementById(
+        "privateInstruction"
+      ).textContent =
+        participant.privateInstruction;
+    }
+
+    if (participant.privateMessage) {
+
+      document
+        .getElementById(
+          "privateMessageCard"
+        )
+        .classList.remove(
+          "hidden"
+        );
+
+      document.getElementById(
+        "privateMessage"
+      ).textContent =
+        participant.privateMessage;
+    }
+  }
   /* VIP */
 
   if (
