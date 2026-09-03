@@ -632,7 +632,40 @@ function renderParticipant() {
       "À confirmer";
   }
 
+  /* MODE PRÉPARATION AVANT LE 1er OCTOBRE */
 
+  const locktoberStart =
+    new Date("2026-10-01T00:00:00-04:00");
+
+  if (new Date() < locktoberStart) {
+
+    document.getElementById(
+      "currentDay"
+    ).textContent = "—";
+
+    document.getElementById(
+      "currentPhase"
+    ).textContent = "Préparation";
+
+    document.getElementById(
+      "dailyInstruction"
+    ).textContent =
+      "Votre inscription est confirmée. Profitez de cette période pour préparer et tester votre matériel. Le parcours officiel commencera automatiquement le 1er octobre.";
+
+    document.getElementById(
+      "progressFill"
+    ).style.width = "0%";
+
+    const validateBtn =
+      document.getElementById(
+        "validateBtn"
+      );
+
+    validateBtn.disabled = true;
+
+    validateBtn.textContent =
+      "Validation disponible le 1er octobre";
+  }
   updateValidationDisplay();
 }
 
