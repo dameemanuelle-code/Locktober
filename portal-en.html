@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta name="theme-color" content="#10090c">
+
+  <title>
+    Locktober 2026 Participant Portal — Dame Émanuelle
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="portal.css"
+  >
+</head>
+
+<body>
+
+  <!-- LOGIN SCREEN -->
+
+  <section
+    class="login-screen"
+    id="loginScreen"
+  >
+
+    <div class="login-card">
+
+      <div class="seal">
+        L
+      </div>
+
+      <span class="eyebrow">
+        LOCKTOBER 2026
+      </span>
+
+      <h1>
+        Participant Portal
+      </h1>
+
+      <p>
+        Enter the personal code assigned to you
+        to access your participant space.
+      </p>
+
+      <form
+        id="loginForm"
+        class="login-form"
+      >
+
+        <label for="accessCode">
+          Personal code
+        </label>
+
+        <input
+          id="accessCode"
+          type="text"
+          placeholder="LK26-XXXXXX"
+          autocomplete="off"
+          required
+        >
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Access the portal
+        </button>
+
+      </form>
+
+      <p
+        class="login-message"
+        id="loginMessage"
+      ></p>
+
+      <small>
+        Access reserved for registered participants.
+      </small>
+
+    </div>
+
+  </section>
+
+
+  <!-- PORTAL -->
+
+  <div
+    class="portal hidden"
+    id="portal"
+  >
+
+    <header class="portal-header">
+
+      <div class="brand">
+
+        <div class="brand-mark">
+          L
+        </div>
+
+        <div>
+
+          <strong>
+            LOCKTOBER 2026
+          </strong>
+
+          <span>
+            under the control of Dame Émanuelle
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="header-right">
+
+        <span
+          class="plan-badge"
+          id="headerPlan"
+        >
+          —
+        </span>
+
+        <a
+          href="portal.html"
+          class="logout-btn"
+        >
+          FR
+        </a>
+
+        <button
+          class="logout-btn"
+          id="logoutBtn"
+        >
+          Log out
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <main class="portal-main">
+
+      <!-- WELCOME -->
+
+      <section class="welcome">
+
+        <div>
+
+          <span class="eyebrow">
+            Your personal space
+          </span>
+
+          <h1>
+            Hello,
+            <span id="participantName">
+              —
+            </span>
+          </h1>
+
+          <p>
+            Your Locktober journey continues.
+          </p>
+
+        </div>
+
+
+        <div class="date-card">
+
+          <span>
+            Today
+          </span>
+
+          <strong id="todayDate">
+            —
+          </strong>
+
+        </div>
+
+      </section>
+
+
+      <!-- PROGRESS -->
+
+      <section class="progress-card">
+
+        <div class="progress-top">
+
+          <div>
+
+            <span class="label">
+              Progress
+            </span>
+
+            <strong>
+              Day
+              <span id="currentDay">
+                1
+              </span>
+              / 31
+            </strong>
+
+          </div>
+
+
+          <div class="phase-box">
+
+            <span>
+              Current phase
+            </span>
+
+            <strong id="currentPhase">
+              Commitment
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="progress-bar">
+
+          <div
+            class="progress-fill"
+            id="progressFill"
+          ></div>
+
+        </div>
+
+
+        <div class="progress-bottom">
+
+          <span>
+            <b id="completedDays">
+              0
+            </b>
+            days validated
+          </span>
+
+          <span>
+            Current streak:
+            <b id="currentStreak">
+              0
+            </b>
+            days
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- DASHBOARD -->
+
+      <section class="dashboard-grid">
+
+        <!-- DAILY INSTRUCTION -->
+
+        <article class="dashboard-card instruction-card">
+
+          <span class="eyebrow">
+            Today's instruction
+          </span>
+
+          <h2 id="dailyTitle">
+            Your protocol
+          </h2>
+
+          <p id="dailyInstruction">
+            Review today's instruction.
+          </p>
+
+          <div
+            class="private-note hidden"
+            id="privateInstructionBlock"
+          >
+
+            <span>
+              Personalized instruction
+            </span>
+
+            <p id="privateInstruction">
+              —
+            </p>
+
+          </div>
+
+
+          <button
+            class="btn btn-primary full"
+            id="validateBtn"
+          >
+            Validate my day
+          </button>
+
+        </article>
+
+
+        <!-- STATUS -->
+
+        <article class="dashboard-card">
+
+          <span class="eyebrow">
+            Your status
+          </span>
+
+          <h2>
+            Today
+          </h2>
+
+          <div class="status-list">
+
+            <div>
+
+              <span class="status-dot"></span>
+
+              <span>
+                Plan:
+                <b id="planName">
+                  —
+                </b>
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <span class="status-dot"></span>
+
+              <span>
+                Equipment:
+                <b id="equipmentName">
+                  —
+                </b>
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <span class="status-dot"></span>
+
+              <span>
+                Last validation:
+                <b id="lastValidation">
+                  None
+                </b>
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- PRIVATE MESSAGE -->
+
+        <article
+          class="dashboard-card hidden"
+          id="privateMessageCard"
+        >
+
+          <span class="eyebrow">
+            Private message
+          </span>
+
+          <h2>
+            Dame Émanuelle
+          </h2>
+
+          <blockquote
+            id="privateMessage"
+          >
+            —
+          </blockquote>
+
+        </article>
+
+
+        <!-- PERSONAL GOAL -->
+
+        <article
+          class="dashboard-card hidden"
+          id="objectiveCard"
+        >
+
+          <span class="eyebrow">
+            Personal goal
+          </span>
+
+          <h2>
+            Your progression
+          </h2>
+
+          <p id="personalObjective">
+            —
+          </p>
+
+        </article>
+
+
+        <!-- VIP -->
+
+        <article
+          class="dashboard-card vip-card hidden"
+          id="vipCard"
+        >
+
+          <span class="eyebrow">
+            VIP access
+          </span>
+
+          <h2>
+            October 31 meeting
+          </h2>
+
+          <p>
+            Your private meeting with Dame Émanuelle
+            is part of your VIP journey.
+          </p>
+
+          <div class="vip-info">
+
+            <span>
+              Duration
+            </span>
+
+            <strong>
+              1 hour
+            </strong>
+
+          </div>
+
+
+          <div class="vip-info">
+
+            <span>
+              Time
+            </span>
+
+            <strong id="vipTime">
+              To be confirmed
+            </strong>
+
+          </div>
+
+
+          <div class="vip-info">
+
+            <span>
+              Status
+            </span>
+
+            <strong id="vipStatus">
+              In preparation
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <!-- EQUIPMENT -->
+
+        <article class="dashboard-card">
+
+          <span class="eyebrow">
+            Equipment
+          </span>
+
+          <h2>
+            Operation
+          </h2>
+
+          <p>
+            Your equipment remains entirely
+            your responsibility.
+          </p>
+
+          <p class="small-muted">
+            A technical problem does not cancel your participation.
+            Simply indicate your situation during your daily validation.
+          </p>
+
+        </article>
+
+      </section>
+
+
+      <!-- HISTORY -->
+
+      <section class="history-section">
+
+        <div class="section-header">
+
+          <div>
+
+            <span class="eyebrow">
+              Progress
+            </span>
+
+            <h2>
+              Validation history
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="history-grid"
+          id="historyGrid"
+        >
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <footer class="portal-footer">
+
+      <strong>
+        LOCKTOBER 2026
+      </strong>
+
+      <span>
+        Dame Émanuelle
+      </span>
+
+    </footer>
+
+  </div>
+
+
+  <!-- VALIDATION MODAL -->
+
+  <div
+    class="modal hidden"
+    id="validationModal"
+  >
+
+    <div class="modal-card">
+
+      <button
+        class="modal-close"
+        id="closeModal"
+      >
+        ×
+      </button>
+
+
+      <span class="eyebrow">
+        Daily validation
+      </span>
+
+      <h2>
+        Your day
+      </h2>
+
+      <p id="validationDate">
+        —
+      </p>
+
+
+      <form
+        id="validationForm"
+      >
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            name="status"
+            value="completed"
+            required
+          >
+
+          <span>
+            Day completed
+          </span>
+
+        </label>
+
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            name="status"
+            value="temporary"
+          >
+
+          <span>
+            Temporary removal
+          </span>
+
+        </label>
+
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            name="status"
+            value="technical"
+          >
+
+          <span>
+            Equipment issue
+          </span>
+
+        </label>
+
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            name="status"
+            value="other"
+          >
+
+          <span>
+            Other
+          </span>
+
+        </label>
+
+
+        <label class="comment-label">
+
+          Optional comment
+
+          <textarea
+            id="validationComment"
+            placeholder="Add a note..."
+          ></textarea>
+
+        </label>
+
+
+        <button
+          type="submit"
+          class="btn btn-primary full"
+        >
+          Send my validation
+        </button>
+
+
+        <p
+          class="validation-message"
+          id="validationMessage"
+        ></p>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <script src="portal-en.js?v=20260904-1"></script>
+
+</body>
+</html>
