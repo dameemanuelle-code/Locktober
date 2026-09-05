@@ -1112,10 +1112,10 @@ async function restoreSession() {
         p.objectifs || null,
 
       privateInstruction:
-        null,
+  p.instructionPrivee || null,
 
-      privateMessage:
-        null,
+privateMessage:
+  p.messagePrive || null,
 
       vipTime:
         p.rencontreVip || null,
