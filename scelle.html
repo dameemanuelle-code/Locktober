@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090608">
+  <meta name="description" content="Le Scellé de Dame Émanuelle — rituel d'entrée dans Locktober 2026.">
+  <title>Le Scellé de Dame Émanuelle — Locktober 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --black: #070506;
+  --deep: #10090c;
+  --wine: #4b1222;
+  --wine-bright: #7a213d;
+  --gold: #c9a15d;
+  --gold-light: #f0d29b;
+  --ivory: #f2ebe2;
+  --muted: #b5a89e;
+  --line: rgba(201, 161, 93, 0.34);
+  --danger: #dfa0b2;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  min-height: 100%;
+  background: var(--black);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  color: var(--ivory);
+  font-family: Inter, system-ui, sans-serif;
+  background:
+    radial-gradient(70% 55% at 50% 110%, rgba(99, 18, 42, 0.38), transparent 72%),
+    radial-gradient(45% 40% at 50% 12%, rgba(201, 161, 93, 0.07), transparent 78%),
+    linear-gradient(180deg, #090607 0%, #11090c 58%, #070506 100%);
+}
+
+button,
+input,
+a { font: inherit; }
+
+button,
+a { -webkit-tap-highlight-color: transparent; }
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--gold-light);
+  outline-offset: 4px;
+}
+
+[hidden] { display: none !important; }
+
+.noscript,
+.test-banner {
+  padding: 10px 18px;
+  color: #1a0c0f;
+  background: var(--gold-light);
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.ritual-shell {
+  width: min(100%, 860px);
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0 auto;
+  border-inline: 1px solid rgba(201, 161, 93, 0.08);
+  background: rgba(5, 4, 5, 0.18);
+}
+
+.ritual-header {
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: max(15px, env(safe-area-inset-top)) 22px 15px;
+  border-bottom: 1px solid rgba(201, 161, 93, 0.16);
+}
+
+.monogram {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold-light);
+  text-decoration: none;
+  font: 700 1.45rem "Cormorant Garamond", serif;
+}
+
+.ritual-name strong,
+.ritual-name span { display: block; }
+
+.ritual-name strong {
+  color: var(--gold-light);
+  letter-spacing: 0.15em;
+  font: 700 0.78rem Inter, sans-serif;
+}
+
+.ritual-name span {
+  color: var(--muted);
+  font: 500 1.05rem "Cormorant Garamond", serif;
+}
+
+.quiet-button,
+.text-button,
+.pause-button {
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.quiet-button { padding: 10px 0 10px 10px; }
+
+.login-view {
+  min-height: calc(100svh - 80px);
+  display: grid;
+  place-items: center;
+  padding: 32px 20px 60px;
+}
+
+.login-card {
+  width: min(100%, 520px);
+  padding: clamp(28px, 6vw, 52px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(41, 13, 23, 0.82), rgba(9, 7, 8, 0.95));
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.login-card h1,
+.ritual-card h1,
+.ritual-card h2,
+.exit-dialog h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  color: var(--gold-light);
+}
+
+.login-card h1 {
+  margin: 12px 0 18px;
+  font-size: clamp(3rem, 10vw, 5rem);
+  line-height: 0.9;
+}
+
+.login-card > p,
+.ritual-card p {
+  color: #ddd3ca;
+  line-height: 1.65;
+}
+
+.gold-rule {
+  width: 86px;
+  height: 1px;
+  margin: 22px auto;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.login-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+  text-align: left;
+}
+
+.login-form label {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.login-form input {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 15px;
+  border: 1px solid #4e3742;
+  border-radius: 6px;
+  color: var(--ivory);
+  background: rgba(7, 5, 6, 0.88);
+}
+
+.login-form input:first-of-type {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.primary-button,
+.secondary-button {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 24px;
+  border-radius: 6px;
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.primary-button {
+  color: #180d0c;
+  background: linear-gradient(180deg, #efd18d, #b98c42);
+  box-shadow: 0 12px 35px rgba(201, 161, 93, 0.12);
+}
+
+.secondary-button {
+  color: var(--ivory);
+  background: rgba(8, 6, 7, 0.48);
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.login-form .primary-button { margin-top: 16px; }
+
+.text-button {
+  padding: 14px;
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.form-message {
+  min-height: 24px;
+  color: var(--danger) !important;
+  font-size: 0.84rem;
+}
+
+.ritual-view { padding-bottom: max(32px, env(safe-area-inset-bottom)); }
+
+.progress-wrap { padding: 22px 28px 0; }
+
+.progress-line {
+  height: 2px;
+  background: rgba(201, 161, 93, 0.17);
+}
+
+.progress-line span {
+  display: block;
+  width: 7.69%;
+  height: 100%;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(201, 161, 93, 0.4);
+  transition: width 0.45s ease;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 10px;
+  color: #8f8279;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ritual-card {
+  min-height: 590px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 44px clamp(22px, 7vw, 70px) 30px;
+  text-align: center;
+}
+
+.ritual-card h1 {
+  margin: 10px 0 12px;
+  font-size: clamp(2.7rem, 9vw, 5rem);
+  line-height: 0.96;
+}
+
+.ritual-card h2 {
+  margin: 8px 0 14px;
+  font-size: clamp(2rem, 7vw, 3.6rem);
+  line-height: 1;
+}
+
+.ritual-card p { max-width: 600px; }
+
+.key-art {
+  width: 74px;
+  height: 140px;
+  margin: 20px;
+  fill: none;
+  stroke: var(--gold-light);
+  stroke-width: 7;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 14px rgba(201, 161, 93, 0.2));
+}
+
+.checklist,
+.confirmation-box {
+  width: min(100%, 570px);
+  margin: 22px auto;
+  padding: 18px;
+  border-block: 1px solid var(--line);
+  text-align: left;
+}
+
+.checklist div { padding: 7px 0; }
+.checklist div::before { content: "◇"; margin-right: 12px; color: var(--gold); }
+
+.confirmation-box label {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  cursor: pointer;
+  line-height: 1.55;
+}
+
+.confirmation-box input {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  margin: 1px 0 0;
+  accent-color: var(--gold);
+}
+
+.key-pair {
+  width: min(100%, 600px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 25px 0;
+}
+
+.key-panel {
+  padding: 20px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.key-panel .key-art { width: 54px; height: 100px; margin: 5px; }
+.key-panel strong { display: block; color: var(--gold-light); }
+.key-panel span { display: block; margin-top: 7px; color: var(--muted); font-size: 0.86rem; }
+
+.seal-number {
+  margin: 22px auto;
+  padding: 18px 24px;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  color: var(--gold-light);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.upload-box {
+  width: min(100%, 500px);
+  margin: 22px 0;
+  padding: 26px;
+  border: 1px dashed var(--gold);
+  border-radius: 12px;
+  background: rgba(43, 17, 26, 0.4);
+}
+
+.upload-box input { width: 100%; margin-top: 18px; color: var(--muted); }
+
+.photo-preview {
+  max-width: min(100%, 430px);
+  max-height: 310px;
+  margin-top: 20px;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+}
+
+.technical-note {
+  padding: 12px 15px;
+  border-left: 2px solid var(--gold);
+  color: var(--muted) !important;
+  background: rgba(201, 161, 93, 0.05);
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+.threshold-line {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: reveal 0.9s forwards;
+}
+
+.threshold-line:nth-of-type(2) { animation-delay: 1.4s; }
+.threshold-line:nth-of-type(3) { animation-delay: 2.8s; }
+.threshold-line:nth-of-type(4) { animation-delay: 4.2s; }
+.threshold-line:nth-of-type(5) { animation-delay: 5.6s; }
+
+.choice-grid {
+  width: min(100%, 580px);
+  display: grid;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.transfer-stage {
+  width: min(100%, 450px);
+  height: 320px;
+  position: relative;
+}
+
+.transfer-stage .key-art {
+  position: absolute;
+  left: calc(50% - 57px);
+  top: 5px;
+  animation: key-drop 3s 0.5s forwards;
+}
+
+.envelope {
+  width: 240px;
+  height: 145px;
+  position: absolute;
+  left: calc(50% - 120px);
+  bottom: 35px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 5px;
+  background: linear-gradient(145deg, #401523, #12090c);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.wax-seal {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #25120d;
+  background: radial-gradient(circle at 35% 30%, #f0d28a, #a87531 72%);
+  font: 700 1.35rem "Cormorant Garamond", serif;
+  opacity: 0;
+  animation: seal-in 0.65s 3.3s forwards;
+}
+
+.acceptance-mark {
+  color: var(--gold-light);
+  font: 700 clamp(5rem, 22vw, 9rem) / 0.85 "Cormorant Garamond", serif;
+}
+
+.video-box {
+  width: min(100%, 620px);
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  margin: 22px 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: radial-gradient(circle, rgba(92, 23, 45, 0.34), #090708 70%);
+}
+
+.video-box strong {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 12px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold-light);
+  font-size: 1.6rem;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: clamp(14px, 5vw, 34px);
+  margin: 28px 0;
+}
+
+.countdown div { min-width: 72px; }
+.countdown strong { display: block; color: var(--gold-light); font: 500 clamp(2.3rem, 9vw, 4.7rem) / 1 "Cormorant Garamond", serif; }
+.countdown span { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+.ritual-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 22px;
+}
+
+.pause-button {
+  display: block;
+  margin: 22px auto 10px;
+  padding: 12px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.safety-reminder {
+  max-width: 620px;
+  margin: 16px auto 0;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(201, 161, 93, 0.12);
+  color: #8f8279;
+  text-align: center;
+  font-size: 0.74rem;
+  line-height: 1.6;
+}
+
+.exit-dialog {
+  width: min(92%, 520px);
+  padding: 30px;
+  border: 1px solid var(--gold);
+  border-radius: 14px;
+  color: var(--ivory);
+  background: #130c0f;
+}
+
+.exit-dialog::backdrop { background: rgba(0, 0, 0, 0.75); }
+.exit-dialog h2 { margin: 0 0 10px; font-size: 2.4rem; }
+.exit-dialog p { color: var(--muted); line-height: 1.6; }
+.dialog-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+@keyframes reveal { to { opacity: 1; transform: none; } }
+@keyframes key-drop { 0% { opacity: 1; transform: translateY(0); } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(145px) scale(0.6) rotate(18deg); } }
+@keyframes seal-in { from { opacity: 0; transform: scale(1.8); } to { opacity: 1; transform: scale(1); } }
+
+@media (max-width: 600px) {
+  .ritual-header { padding-inline: 15px; }
+  .ritual-name span { font-size: 0.9rem; }
+  .quiet-button { font-size: 0.78rem; }
+  .progress-wrap { padding-inline: 18px; }
+  .ritual-card { min-height: 560px; padding: 32px 18px 24px; }
+  .key-pair { gap: 8px; }
+  .key-panel { padding-inline: 5px; }
+  .key-panel strong { font-size: 0.84rem; }
+  .countdown { gap: 8px; }
+  .countdown div { min-width: 60px; }
+  .ritual-actions { align-items: stretch; }
+  .ritual-actions button { flex: 1; padding-inline: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+</style>
+</head>
+<body>
+  <noscript>
+    <div class="noscript">JavaScript doit être activé pour vivre ce parcours.</div>
+  </noscript>
+
+  <main class="ritual-shell">
+    <header class="ritual-header">
+      <a class="monogram" href="index.html" aria-label="Retour au site Locktober">DÉ</a>
+      <div class="ritual-name">
+        <strong>LE SCELLÉ</strong>
+        <span>de Dame Émanuelle</span>
+      </div>
+      <button class="quiet-button" id="leaveButton" type="button">Quitter</button>
+    </header>
+
+    <div class="test-banner" id="testBanner" hidden>
+      Mode démonstration — aucune information n'est envoyée.
+    </div>
+
+    <section class="login-view" id="loginView">
+      <div class="login-card">
+        <span class="eyebrow">30 septembre 2026</span>
+        <h1>Le Scellé de<br>Dame Émanuelle</h1>
+        <div class="gold-rule"></div>
+        <p>
+          Entre avec le code et le courriel liés à ton inscription.
+          Ton parcours sera adapté à ta formule.
+        </p>
+
+        <form class="login-form" id="loginForm">
+          <label for="accessCode">Code personnel</label>
+          <input id="accessCode" name="code" type="text" placeholder="DE-0000" autocomplete="off" required>
+
+          <label for="accessEmail">Courriel utilisé lors de l'inscription</label>
+          <input id="accessEmail" name="email" type="email" placeholder="votre@courriel.com" autocomplete="email" required>
+
+          <button class="primary-button" id="loginButton" type="submit">Entrer dans le Scellé</button>
+        </form>
+
+        <p class="form-message" id="loginMessage" role="status"></p>
+
+        <button class="text-button" id="demoButton" type="button">
+          Essayer la démonstration
+        </button>
+      </div>
+    </section>
+
+    <section class="ritual-view" id="ritualView" hidden>
+      <div class="progress-wrap" aria-hidden="true">
+        <div class="progress-line"><span id="progressFill"></span></div>
+        <div class="progress-label">
+          <span id="stepLabel">Étape 1 sur 13</span>
+          <span id="participantLabel"></span>
+        </div>
+      </div>
+
+      <article class="ritual-card" id="ritualCard" tabindex="-1" aria-live="polite"></article>
+
+      <div class="ritual-actions" id="ritualActions">
+        <button class="secondary-button" id="backButton" type="button">Retour</button>
+        <button class="primary-button" id="nextButton" type="button">Continuer</button>
+      </div>
+
+      <button class="pause-button" id="pauseButton" type="button">
+        Faire une pause ou arrêter
+      </button>
+
+      <p class="safety-reminder">
+        Ta clef d'urgence reste accessible en tout temps. Tu peux interrompre le parcours et retirer la cage lorsque ta sécurité ou ta santé l'exige.
+      </p>
+    </section>
+  </main>
+
+  <dialog class="exit-dialog" id="exitDialog">
+    <h2>Quitter le parcours?</h2>
+    <p>Ta progression sur cet appareil sera conservée. Aucune remise ne sera enregistrée simplement parce que tu quittes la page.</p>
+    <div class="dialog-actions">
+      <button class="secondary-button" id="resumeButton" type="button">Revenir au parcours</button>
+      <a class="primary-button" href="index.html">Quitter</a>
+    </div>
+  </dialog>
+
+  <script>
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyhhlRxw3miDYY2BF2hC3-Rdf1GQiD8VmMqSwN5dNK91U7o0D4KoL2OfIvYaw8NkHbc/exec";
+
+const LOCKTOBER_START = new Date("2026-10-01T00:00:00-04:00");
+const TOTAL_STEPS = 13;
+
+const keyArt = `
+  <svg class="key-art" viewBox="0 0 100 160" aria-hidden="true">
+    <circle cx="50" cy="35" r="24"></circle>
+    <path d="M50 60v80m0-30h28m-28 25h20"></path>
+  </svg>`;
+
+const state = {
+  step: 0,
+  participant: null,
+  code: "",
+  email: "",
+  demo: false,
+  photoUrl: "",
+  photoReady: false,
+  accepted: false
+};
+
+const loginView = document.getElementById("loginView");
+const ritualView = document.getElementById("ritualView");
+const ritualCard = document.getElementById("ritualCard");
+const loginForm = document.getElementById("loginForm");
+const loginButton = document.getElementById("loginButton");
+const loginMessage = document.getElementById("loginMessage");
+const accessCode = document.getElementById("accessCode");
+const accessEmail = document.getElementById("accessEmail");
+const nextButton = document.getElementById("nextButton");
+const backButton = document.getElementById("backButton");
+const pauseButton = document.getElementById("pauseButton");
+const leaveButton = document.getElementById("leaveButton");
+const exitDialog = document.getElementById("exitDialog");
+const resumeButton = document.getElementById("resumeButton");
+const testBanner = document.getElementById("testBanner");
+
+function getLevel(plan) {
+  const value = String(plan || "").toLowerCase();
+  if (value.includes("engagement") || value.includes("vip")) return "vip";
+  if (value.includes("sous contrôle")) return "personal";
+  return "group";
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function sealNumber() {
+  return escapeHtml(state.code || "DÉ-TEST-0147");
+}
+
+function participantName() {
+  return escapeHtml(state.participant?.pseudo || "participant");
+}
+
+function planName() {
+  return escapeHtml(state.participant?.forfait || "Le Registre");
+}
+
+function storageKey() {
+  return `locktober-scelle-${state.code || "demo"}`;
+}
+
+function saveProgress() {
+  const progress = {
+    step: state.step,
+    accepted: state.accepted,
+    updatedAt: new Date().toISOString()
+  };
+  localStorage.setItem(storageKey(), JSON.stringify(progress));
+}
+
+function restoreProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey()));
+    if (Number.isInteger(saved?.step)) {
+      state.step = Math.min(Math.max(saved.step, 0), TOTAL_STEPS - 1);
+      state.accepted = Boolean(saved.accepted);
+    }
+  } catch {
+    state.step = 0;
+  }
+}
+
+async function authenticateParticipant(code, email) {
+  const params = new URLSearchParams({ code, email });
+  const response = await fetch(`${API_URL}?${params}`, {
+    method: "GET",
+    cache: "no-store"
+  });
+  if (!response.ok) throw new Error("Réponse serveur invalide.");
+  return response.json();
+}
+
+function openRitual() {
+  restoreProgress();
+  loginView.hidden = true;
+  ritualView.hidden = false;
+  testBanner.hidden = !state.demo;
+  renderStep();
+}
+
+loginForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  const code = accessCode.value.trim().toUpperCase();
+  const email = accessEmail.value.trim().toLowerCase();
+  if (!code || !email) return;
+
+  loginButton.disabled = true;
+  loginButton.textContent = "Vérification…";
+  loginMessage.textContent = "Vérification de ton accès…";
+
+  try {
+    const result = await authenticateParticipant(code, email);
+    if (!result.ok) {
+      loginMessage.textContent = result.error || "Accès refusé.";
+      return;
+    }
+
+    state.code = code;
+    state.email = email;
+    state.participant = result.participant;
+    state.demo = false;
+    sessionStorage.setItem("locktober-session", JSON.stringify({ code, email }));
+    loginMessage.textContent = "";
+    openRitual();
+  } catch (error) {
+    console.error(error);
+    loginMessage.textContent = "Connexion impossible pour le moment. Réessaie dans quelques instants.";
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "Entrer dans le Scellé";
+  }
+});
+
+document.getElementById("demoButton").addEventListener("click", () => {
+  state.code = "DÉ-TEST-0147";
+  state.email = "";
+  state.demo = true;
+  state.participant = {
+    pseudo: "Invité d'essai",
+    forfait: "Sous contrôle — démonstration",
+    materiel: "Cage d'essai"
+  };
+  localStorage.removeItem(storageKey());
+  openRitual();
+});
+
+function stepContent(step) {
+  const level = getLevel(state.participant?.forfait);
+  const videoType = level === "vip"
+    ? "Ton message privé de Dame Émanuelle apparaîtra ici."
+    : level === "personal"
+      ? "Ton message personnalisé de Dame Émanuelle apparaîtra ici."
+      : "Le message de Dame Émanuelle pour Le Registre apparaîtra ici.";
+
+  const steps = [
+    `
+      <span class="eyebrow">30 septembre 2026</span>
+      <h1>Entre dans<br>le Scellé</h1>
+      ${keyArt}
+      <p>Bonsoir, <strong>${participantName()}</strong>.</p>
+      <p>Ton parcours <strong>${planName()}</strong> commence ici. Rien ne sera remis sans ton choix explicite.</p>
+      <div class="seal-number">SCELLÉ ${sealNumber()}</div>
+    `,
+    `
+      <span class="eyebrow">Avant de continuer</span>
+      <h2>Prépare ce dont<br>tu auras besoin</h2>
+      <div class="checklist">
+        <div>Ta cage, déjà testée et correctement ajustée</div>
+        <div>Ta clef principale</div>
+        <div>Ta deuxième clef d'urgence</div>
+        <div>Une enveloppe opaque et un stylo</div>
+      </div>
+      <div class="confirmation-box">
+        <label>
+          <input id="safetyCheck" type="checkbox">
+          <span>Ma clef d'urgence est accessible. Elle reste avec moi et peut être utilisée immédiatement si je dois retirer ma cage pour ma sécurité ou ma santé.</span>
+        </label>
+      </div>
+    `,
+    `
+      <span class="eyebrow">Il n'y a rien à précipiter</span>
+      <h2>Prépare-toi</h2>
+      ${keyArt}
+      <p>Installe ta cage comme lors de tes essais. Vérifie ton confort.</p>
+      <p>Lorsque tu seras certain de vouloir poursuivre, reviens vers moi.</p>
+      <div class="confirmation-box">
+        <label>
+          <input id="readyCheck" type="checkbox">
+          <span>Je suis prêt à poursuivre.</span>
+        </label>
+      </div>
+    `,
+    `
+      <span class="eyebrow">Une distinction essentielle</span>
+      <h2>Les deux clefs</h2>
+      <div class="key-pair">
+        <div class="key-panel">${keyArt}<strong>Clef d'urgence</strong><span>Elle reste avec toi.</span></div>
+        <div class="key-panel">${keyArt}<strong>Clef du Scellé</strong><span>Celle-ci peut m'être remise.</span></div>
+      </div>
+      <p>La clef d'urgence ne doit jamais être placée dans l'enveloppe.</p>
+    `,
+    `
+      <span class="eyebrow">Préparation du Scellé</span>
+      <h2>Ferme l'enveloppe</h2>
+      <p>Place uniquement la clef principale dans une enveloppe opaque. Inscris le numéro ci-dessous, puis ferme l'enveloppe.</p>
+      <div class="seal-number">SCELLÉ ${sealNumber()}</div>
+      <div class="confirmation-box">
+        <label>
+          <input id="envelopeCheck" type="checkbox">
+          <span>Mon enveloppe est fermée et ma clef d'urgence reste à part.</span>
+        </label>
+      </div>
+    `,
+    `
+      <span class="eyebrow">Il est préparé, pas encore remis</span>
+      <h2>Présente-moi<br>ton Scellé</h2>
+      <div class="seal-number">SCELLÉ ${sealNumber()}</div>
+      <div class="upload-box">
+        <strong>Photo de l'enveloppe fermée</strong>
+        <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment">
+        <img class="photo-preview" id="photoPreview" alt="Aperçu de l'enveloppe" hidden>
+      </div>
+      <p class="technical-note" id="photoNote">
+        Version de préparation : la photo reste sur cet appareil et n'est pas encore transmise. Le raccordement à ton dossier privé sera ajouté après la validation de ce parcours.
+      </p>
+    `,
+    `
+      <div class="acceptance-mark">DÉ</div>
+      <p class="threshold-line">Tu es arrivé au seuil.</p>
+      <p class="threshold-line">Jusqu'ici, tu t'es préparé.</p>
+      <p class="threshold-line"><strong>La prochaine décision t'appartient entièrement.</strong></p>
+      <p class="threshold-line">Si tu poursuis, tu choisiras de me confier symboliquement ta clef et le contrôle de ton plaisir pour Locktober.</p>
+      <p class="threshold-line">Ta clef d'urgence restera toujours accessible.</p>
+    `,
+    `
+      ${keyArt}
+      <span class="eyebrow">La décision t'appartient</span>
+      <h2>Le choix</h2>
+      <p>Ta clef d'urgence reste avec toi. La clef du Scellé peut maintenant être remise symboliquement à Dame Émanuelle pour Locktober.</p>
+      <div class="choice-grid">
+        <button class="secondary-button" id="keepKeyButton" type="button">Je garde ma clef</button>
+        <button class="primary-button" id="giveKeyButton" type="button">Je remets ma clef à Dame Émanuelle</button>
+      </div>
+    `,
+    `
+      <span class="eyebrow">La remise</span>
+      <h2>Le geste est posé</h2>
+      <div class="transfer-stage">
+        ${keyArt}
+        <div class="envelope"><div class="wax-seal">DÉ</div></div>
+      </div>
+      <p>Ta décision a été exprimée. Passe à l'écran suivant pour recevoir l'acceptation de Dame Émanuelle.</p>
+    `,
+    `
+      <div class="acceptance-mark">DÉ</div>
+      <h2>J'ai ta clef.</h2>
+      <p>Tu viens de me confier quelque chose qui ne tient pas réellement dans cette enveloppe.</p>
+      <p><strong>Ton choix.</strong></p>
+      <p>Pour ce Locktober, tu as choisi de me laisser contrôler ton plaisir.</p>
+      <p><strong>J'accepte.</strong></p>
+      <div class="seal-number">SCELLÉ ${sealNumber()}</div>
+    `,
+    `
+      <span class="eyebrow">Pour toi</span>
+      <h2>Message de<br>Dame Émanuelle</h2>
+      <div class="video-box">
+        <div><strong>▶</strong><span>Vidéo finale à intégrer</span></div>
+      </div>
+      <p>${videoType}</p>
+      <p class="technical-note">La zone vidéo est prête. La vidéo finale sera ajoutée avant l'ouverture du parcours officiel.</p>
+    `,
+    `
+      <span class="eyebrow">Scellé ${sealNumber()}</span>
+      <h2>Sous clef</h2>
+      <p>Locktober commence dans</p>
+      <div class="countdown" id="countdown">
+        <div><strong id="countDays">00</strong><span>jours</span></div>
+        <div><strong id="countHours">00</strong><span>heures</span></div>
+        <div><strong id="countMinutes">00</strong><span>minutes</span></div>
+        <div><strong id="countSeconds">00</strong><span>secondes</span></div>
+      </div>
+      <p>Ta deuxième clef d'urgence reste accessible en tout temps.</p>
+    `,
+    `
+      <span class="eyebrow">1er octobre 2026</span>
+      <h1>Jour 1</h1>
+      <p>Le mois commence, <strong>${participantName()}</strong>.</p>
+      <p>Retrouve maintenant les consignes et le suivi de ton parcours.</p>
+      <a class="primary-button" href="portal.html">Entrer dans mon portail</a>
+      <button class="text-button" id="restartButton" type="button">Recommencer la démonstration</button>
+    `
+  ];
+
+  return steps[step];
+}
+
+function updateStepControls() {
+  const isChoice = state.step === 7;
+  const isFinal = state.step === 12;
+  nextButton.hidden = isChoice || isFinal;
+  backButton.hidden = state.step === 0 || state.step === 8 || state.step === 9 || isFinal;
+  nextButton.disabled = [1, 2, 4, 5].includes(state.step);
+  nextButton.textContent = state.step === 10 ? "Continuer la répétition" : "Continuer";
+}
+
+function bindStepEvents() {
+  const gates = [
+    [1, "safetyCheck"],
+    [2, "readyCheck"],
+    [4, "envelopeCheck"]
+  ];
+
+  gates.forEach(([step, id]) => {
+    if (state.step !== step) return;
+    const input = document.getElementById(id);
+    input.addEventListener("change", () => {
+      nextButton.disabled = !input.checked;
+    });
+  });
+
+  if (state.step === 5) {
+    const input = document.getElementById("photoInput");
+    const preview = document.getElementById("photoPreview");
+    const note = document.getElementById("photoNote");
+
+    input.addEventListener("change", () => {
+      const file = input.files[0];
+      state.photoReady = false;
+      nextButton.disabled = true;
+
+      if (state.photoUrl) URL.revokeObjectURL(state.photoUrl);
+      state.photoUrl = "";
+      preview.hidden = true;
+
+      if (!file) return;
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 10 * 1024 * 1024) {
+        note.textContent = "Choisis une image JPEG, PNG ou WebP de moins de 10 Mo.";
+        return;
+      }
+
+      state.photoUrl = URL.createObjectURL(file);
+      preview.onload = () => {
+        state.photoReady = true;
+        nextButton.disabled = false;
+        note.textContent = "Photo prête pour cet essai. Elle reste sur cet appareil et n'a pas été envoyée.";
+      };
+      preview.onerror = () => {
+        note.textContent = "Cette image ne peut pas être lue. Choisis-en une autre.";
+      };
+      preview.src = state.photoUrl;
+      preview.hidden = false;
+    });
+  }
+
+  if (state.step === 7) {
+    document.getElementById("keepKeyButton").addEventListener("click", showRespectedChoice);
+    document.getElementById("giveKeyButton").addEventListener("click", () => {
+      state.accepted = true;
+      state.step = 8;
+      saveProgress();
+      renderStep();
+    });
+  }
+
+  if (state.step === 11) updateCountdown();
+
+  if (state.step === 12) {
+    document.getElementById("restartButton").addEventListener("click", resetDemo);
+  }
+}
+
+function renderStep() {
+  ritualCard.innerHTML = stepContent(state.step);
+  document.getElementById("stepLabel").textContent = `Étape ${state.step + 1} sur ${TOTAL_STEPS}`;
+  document.getElementById("participantLabel").textContent = participantName();
+  document.getElementById("progressFill").style.width = `${((state.step + 1) / TOTAL_STEPS) * 100}%`;
+  updateStepControls();
+  bindStepEvents();
+  ritualCard.focus({ preventScroll: true });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showRespectedChoice() {
+  state.accepted = false;
+  saveProgress();
+  ritualCard.innerHTML = `
+    <div class="acceptance-mark">DÉ</div>
+    <h2>Ton choix est respecté</h2>
+    <p>Le Scellé n'a pas été activé. Aucune remise n'a été enregistrée.</p>
+    <button class="primary-button" id="returnChoiceButton" type="button">Revenir au choix</button>
+  `;
+  nextButton.hidden = true;
+  backButton.hidden = true;
+  document.getElementById("returnChoiceButton").addEventListener("click", renderStep);
+}
+
+function updateCountdown() {
+  if (state.step !== 11) return;
+  const remaining = LOCKTOBER_START - new Date();
+
+  if (remaining <= 0) {
+    state.step = 12;
+    saveProgress();
+    renderStep();
+    return;
+  }
+
+  let seconds = Math.floor(remaining / 1000);
+  const days = Math.floor(seconds / 86400);
+  seconds %= 86400;
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  const values = { countDays: days, countHours: hours, countMinutes: minutes, countSeconds: secs };
+  Object.entries(values).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = String(value).padStart(2, "0");
+  });
+}
+
+function resetDemo() {
+  localStorage.removeItem(storageKey());
+  state.step = 0;
+  state.accepted = false;
+  state.photoReady = false;
+  if (state.photoUrl) URL.revokeObjectURL(state.photoUrl);
+  state.photoUrl = "";
+  renderStep();
+}
+
+nextButton.addEventListener("click", () => {
+  state.step = Math.min(state.step + 1, TOTAL_STEPS - 1);
+  saveProgress();
+  renderStep();
+});
+
+backButton.addEventListener("click", () => {
+  state.step = Math.max(state.step - 1, 0);
+  saveProgress();
+  renderStep();
+});
+
+function openExitDialog() {
+  if (typeof exitDialog.showModal === "function") exitDialog.showModal();
+  else window.location.href = "index.html";
+}
+
+pauseButton.addEventListener("click", openExitDialog);
+leaveButton.addEventListener("click", openExitDialog);
+resumeButton.addEventListener("click", () => exitDialog.close());
+
+setInterval(updateCountdown, 1000);
+
+
+</script>
+</body>
+</html>
