@@ -1,853 +1,751 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>La Roue de Dame Émanuelle</title>
 
 <style>
-:root{
-  --bg:#090708;
-  --burg:#3a0e1c;
-  --gold:#d9b66b;
-  --gold2:#f0d89a;
-  --cream:#f4ead8;
-  --muted:#b9aa9d;
-  --line:rgba(217,182,107,.28)
+:root {
+  --bg: #090708;
+  --burgundy: #64172c;
+  --gold: #d9b66b;
+  --light-gold: #f0d89a;
+  --cream: #f4ead8;
+  --muted: #b9aa9d;
+  --line: rgba(217, 182, 107, 0.28);
 }
 
-*{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  background:radial-gradient(circle at 50% 10%,#2a0b16 0,#12090d 30%,#080708 72%);
-  color:var(--cream);
-  font-family:Georgia,'Times New Roman',serif
+* {
+  box-sizing: border-box;
 }
 
-body{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  padding:24px 14px 44px
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      #2a0b16 0,
+      #12090d 30%,
+      #080708 72%
+    );
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
 }
 
-.app{width:min(720px,100%)}
-
-.brand{text-align:center;margin:8px 0 18px}
-
-.monogram{
-  width:62px;height:62px;
-  border:1px solid var(--gold);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  margin:auto;
-  color:var(--gold2);
-  font-size:24px;
-  letter-spacing:-2px;
-  box-shadow:0 0 30px rgba(217,182,107,.12)
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px 14px 44px;
 }
 
-h1{
-  font-size:clamp(26px,6vw,42px);
-  font-weight:500;
-  letter-spacing:.05em;
-  margin:14px 0 6px;
-  color:var(--gold2)
+.app {
+  width: min(720px, 100%);
 }
 
-.sub{
-  color:var(--muted);
-  font-size:15px;
-  line-height:1.5;
-  margin:0 auto;
-  max-width:560px
+.brand {
+  text-align: center;
+  margin: 8px 0 18px;
 }
 
-.date{
-  margin-top:9px;
-  color:var(--gold);
-  font-size:13px;
-  letter-spacing:.12em;
-  text-transform:uppercase
+.monogram {
+  width: 62px;
+  height: 62px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  color: var(--light-gold);
+  font-size: 24px;
+  letter-spacing: -2px;
+  box-shadow: 0 0 30px rgba(217, 182, 107, 0.12);
 }
 
-.card{
-  background:linear-gradient(180deg,rgba(31,13,19,.96),rgba(14,9,11,.97));
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 20px 70px rgba(0,0,0,.38)
+h1 {
+  margin: 14px 0 6px;
+  color: var(--light-gold);
+  font-size: clamp(26px, 6vw, 42px);
+  font-weight: 500;
+  letter-spacing: 0.05em;
 }
 
-.wheel-wrap{
-  position:relative;
-  width:min(520px,88vw);
-  aspect-ratio:1;
-  margin:14px auto 10px;
-  display:grid;
-  place-items:center
+.sub {
+  max-width: 560px;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
 }
 
-/* MARQUEUR DORÉ = POINT GAGNANT */
-.pointer{
-  position:absolute;
-  top:-7px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:6;
-  width:0;
-  height:0;
-  border-left:19px solid transparent;
-  border-right:19px solid transparent;
-  border-top:38px solid var(--gold2);
+.date {
+  margin-top: 9px;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card {
+  padding: 18px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(31, 13, 19, 0.96),
+      rgba(14, 9, 11, 0.97)
+    );
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.38);
+}
+
+.wheel-wrap {
+  position: relative;
+  width: min(520px, 88vw);
+  aspect-ratio: 1;
+  margin: 14px auto 10px;
+  display: grid;
+  place-items: center;
+}
+
+.pointer {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  z-index: 6;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 19px solid transparent;
+  border-right: 19px solid transparent;
+  border-top: 38px solid var(--light-gold);
   filter:
     drop-shadow(0 3px 6px #000)
-    drop-shadow(0 0 7px rgba(240,216,154,.45))
+    drop-shadow(0 0 7px rgba(240, 216, 154, 0.45));
 }
 
-.pointer::after{
-  content:"";
-  position:absolute;
-  left:-4px;
-  top:-37px;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#fff0bd;
+.pointer::after {
+  content: "";
+  position: absolute;
+  top: -37px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background: #fff0bd;
+  border-radius: 50%;
   box-shadow:
     0 0 0 2px #9d742e,
-    0 0 10px rgba(240,216,154,.7)
+    0 0 10px rgba(240, 216, 154, 0.7);
 }
 
-.wheel{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  position:relative;
-  overflow:hidden;
-  border:7px solid #b88b3c;
+.wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 7px solid #b88b3c;
+  border-radius: 50%;
   box-shadow:
     0 0 0 3px #3b2a15,
-    0 0 45px rgba(217,182,107,.16),
-    inset 0 0 40px rgba(0,0,0,.45);
-  transition:transform 5.2s cubic-bezier(.12,.72,.08,1)
+    0 0 45px rgba(217, 182, 107, 0.16),
+    inset 0 0 40px rgba(0, 0, 0, 0.45);
+  transition: transform 5.2s cubic-bezier(0.12, 0.72, 0.08, 1);
 }
 
-.wheel::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.08);
-  pointer-events:none
+.wheel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+  pointer-events: none;
 }
 
-/* LES MOTS TOURNENT AVEC LA ROUE */
-.labels{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  pointer-events:none;
-  transition:transform 5.2s cubic-bezier(.12,.72,.08,1)
+.labels {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: transform 5.2s cubic-bezier(0.12, 0.72, 0.08, 1);
 }
 
-.label{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:42%;
-  transform-origin:0 0;
-  text-align:right;
-  font:700 clamp(9px,2.4vw,13px)/1.1 Arial,sans-serif;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  color:#fff;
-  text-shadow:0 1px 4px #000
+.label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  transform-origin: 0 0;
+  color: white;
+  font: 700 clamp(9px, 2.4vw, 13px) / 1.1 Arial, sans-serif;
+  letter-spacing: 0.04em;
+  text-align: right;
+  text-shadow: 0 1px 4px #000;
+  text-transform: uppercase;
 }
 
-.label span{
-  display:inline-block;
-  max-width:120px;
-  transform:translateY(-50%);
-  padding-right:12px
+.label span {
+  display: inline-block;
+  max-width: 120px;
+  padding-right: 12px;
+  transform: translateY(-50%);
 }
 
-.hub{
-  position:absolute;
-  z-index:3;
-  width:25%;
-  height:25%;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:radial-gradient(circle,#2a151b,#0e090b 72%);
-  border:3px solid var(--gold);
+.hub {
+  position: absolute;
+  z-index: 3;
+  width: 25%;
+  height: 25%;
+  display: grid;
+  place-items: center;
+  color: var(--light-gold);
+  background:
+    radial-gradient(circle, #2a151b, #0e090b 72%);
+  border: 3px solid var(--gold);
+  border-radius: 50%;
   box-shadow:
-    0 0 0 5px rgba(0,0,0,.45),
-    0 0 22px rgba(217,182,107,.25);
-  color:var(--gold2);
-  font-size:clamp(18px,5vw,30px);
-  letter-spacing:-2px
+    0 0 0 5px rgba(0, 0, 0, 0.45),
+    0 0 22px rgba(217, 182, 107, 0.25);
+  font-size: clamp(18px, 5vw, 30px);
+  letter-spacing: -2px;
 }
 
-.controls{text-align:center;margin:18px 0 4px}
-
-.btn{
-  appearance:none;
-  border:1px solid var(--gold);
-  background:linear-gradient(180deg,#6c1a31,#3a0e1c);
-  color:#fff5df;
-  border-radius:999px;
-  padding:14px 28px;
-  font:700 14px Arial,sans-serif;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color:transparent;
-  box-shadow:0 10px 25px rgba(0,0,0,.25);
-  min-width:230px
+.controls {
+  margin: 18px 0 4px;
+  text-align: center;
 }
 
-.btn:disabled{
-  opacity:.45;
-  cursor:not-allowed
+.btn {
+  min-width: 230px;
+  padding: 14px 28px;
+  appearance: none;
+  color: #fff5df;
+  background:
+    linear-gradient(180deg, #6c1a31, #3a0e1c);
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  font: 700 14px Arial, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.btn.secondary{
-  background:transparent;
-  color:var(--gold2);
-  min-width:0;
-  padding:10px 16px;
-  font-size:11px;
-  margin-top:10px
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
-.status{
-  min-height:24px;
-  text-align:center;
-  color:var(--muted);
-  font:13px Arial,sans-serif;
-  margin-top:9px
+.btn.secondary {
+  min-width: 0;
+  margin-top: 10px;
+  padding: 10px 16px;
+  color: var(--light-gold);
+  background: transparent;
+  font-size: 11px;
 }
 
-.result{
-  display:none;
-  margin-top:18px;
-  padding:22px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:linear-gradient(
-    135deg,
-    rgba(99,22,44,.24),
-    rgba(0,0,0,.18)
-  );
-  text-align:center
+.status {
+  min-height: 24px;
+  margin-top: 9px;
+  color: var(--muted);
+  font: 13px Arial, sans-serif;
+  text-align: center;
 }
 
-.result.show{
-  display:block;
-  animation:reveal .5s ease
+.result {
+  display: none;
+  margin-top: 18px;
+  padding: 22px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(99, 22, 44, 0.24),
+      rgba(0, 0, 0, 0.18)
+    );
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  text-align: center;
 }
 
-.eyebrow{
-  color:var(--gold);
-  font:700 11px Arial,sans-serif;
-  letter-spacing:.18em;
-  text-transform:uppercase
+.result.show {
+  display: block;
+  animation: reveal 0.5s ease;
 }
 
-.result h2{
-  font-weight:500;
-  color:var(--gold2);
-  font-size:28px;
-  margin:8px 0 10px
+.eyebrow {
+  color: var(--gold);
+  font: 700 11px Arial, sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
-.result p{
-  font-size:16px;
-  line-height:1.6;
-  margin:0 auto;
-  max-width:520px
+.result h2 {
+  margin: 8px 0 10px;
+  color: var(--light-gold);
+  font-size: 28px;
+  font-weight: 500;
 }
 
-.lock{
-  margin-top:14px;
-  color:var(--muted);
-  font:12px Arial,sans-serif
+.result p {
+  max-width: 520px;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-.footer{
-  text-align:center;
-  color:#7e716b;
-  font:11px Arial,sans-serif;
-  line-height:1.5;
-  margin-top:18px
+.lock {
+  margin-top: 14px;
+  color: var(--muted);
+  font: 12px Arial, sans-serif;
 }
 
-.testbar{
-  margin-top:18px;
-  padding-top:14px;
-  border-top:1px solid rgba(217,182,107,.12);
-  text-align:center
+.footer {
+  margin-top: 18px;
+  color: #7e716b;
+  font: 11px Arial, sans-serif;
+  line-height: 1.5;
+  text-align: center;
 }
 
-.testbar small{
-  display:block;
-  color:#7e716b;
-  font:11px Arial,sans-serif;
-  margin-bottom:4px
+.testbar {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(217, 182, 107, 0.12);
+  text-align: center;
 }
 
-@keyframes reveal{
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:none}
+.testbar small {
+  display: block;
+  margin-bottom: 4px;
+  color: #7e716b;
+  font: 11px Arial, sans-serif;
 }
 
-@media(max-width:520px){
-  body{padding:16px 10px 32px}
-  .card{padding:13px}
-  .wheel-wrap{width:min(430px,91vw)}
-
-  .pointer{
-    border-left-width:14px;
-    border-right-width:14px;
-    border-top-width:28px
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
 
-  .label span{padding-right:7px}
-  .result{padding:18px 14px}
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-@media(prefers-reduced-motion:reduce){
-  .wheel,.labels{transition-duration:1.2s}
-  .result.show{animation:none}
+@media (max-width: 520px) {
+  body {
+    padding: 16px 10px 32px;
+  }
+
+  .card {
+    padding: 13px;
+  }
+
+  .wheel-wrap {
+    width: min(430px, 91vw);
+  }
+
+  .pointer {
+    border-left-width: 14px;
+    border-right-width: 14px;
+    border-top-width: 28px;
+  }
+
+  .label span {
+    padding-right: 7px;
+  }
+
+  .result {
+    padding: 18px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wheel,
+  .labels {
+    transition-duration: 1.2s;
+  }
+
+  .result.show {
+    animation: none;
+  }
 }
 </style>
 </head>
 
 <body>
-
 <main class="app">
 
-<header class="brand">
-  <div class="monogram">DÉ</div>
+  <header class="brand">
+    <div class="monogram">DÉ</div>
 
-  <h1>La Roue de Dame Émanuelle</h1>
+    <h1>La Roue de Dame Émanuelle</h1>
 
-  <p class="sub">
-    Une fois par jour, le hasard choisit le petit défi
-    qui accompagnera ton Locktober.
-    Le marqueur doré désigne le défi gagnant.
-  </p>
+    <p class="sub">
+      Une fois par jour, le hasard choisit le défi qui accompagnera
+      ton Locktober. Le marqueur doré désigne le défi gagnant.
+    </p>
 
-  <div class="date" id="today"></div>
-</header>
+    <div class="date" id="today"></div>
+  </header>
 
-<section class="card">
+  <section class="card">
 
-  <div class="wheel-wrap">
-
-    <div class="pointer" aria-hidden="true"></div>
-
-    <div
-      class="wheel"
-      id="wheel"
-      aria-label="Roue des défis">
+    <div class="wheel-wrap">
+      <div class="pointer" aria-hidden="true"></div>
+      <div class="wheel" id="wheel" aria-label="Roue des défis"></div>
+      <div class="labels" id="labels"></div>
+      <div class="hub">DÉ</div>
     </div>
 
-    <div class="labels" id="labels"></div>
+    <div class="controls">
+      <button class="btn" id="spin">
+        Tourner la roue
+      </button>
 
-    <div class="hub">DÉ</div>
+      <div class="status" id="status">
+        Un seul tirage est permis par jour.
+      </div>
+    </div>
 
+    <article class="result" id="result" aria-live="polite">
+      <div class="eyebrow">Ton défi du jour</div>
+      <h2 id="resultTitle"></h2>
+      <p id="resultText"></p>
+
+      <div class="lock">
+        🔐 Défi attribué pour aujourd’hui — reviens demain.
+      </div>
+    </article>
+
+    <div class="testbar">
+      <small>
+        MODE PROTOTYPE — ce bouton disparaîtra dans le portail final.
+      </small>
+
+      <button class="btn secondary" id="reset">
+        Réinitialiser le tirage
+      </button>
+    </div>
+
+  </section>
+
+  <div class="footer">
+    Le résultat est mémorisé sur cet appareil pour la journée.
   </div>
-
-  <div class="controls">
-
-    <button class="btn" id="spin">
-      Tourner la roue
-    </button>
-
-    <div class="status" id="status">
-      Un seul tirage est permis par jour.
-    </div>
-
-  </div>
-
-  <article
-    class="result"
-    id="result"
-    aria-live="polite">
-
-    <div class="eyebrow">
-      Ton défi du jour
-    </div>
-
-    <h2 id="resultTitle"></h2>
-
-    <p id="resultText"></p>
-
-    <div class="lock">
-      🔐 Défi attribué pour aujourd’hui — reviens demain.
-    </div>
-
-  </article>
-
-  <div class="testbar">
-
-    <small>
-      MODE PROTOTYPE — ce bouton disparaîtra dans le portail final.
-    </small>
-
-    <button
-      class="btn secondary"
-      id="reset">
-      Réinitialiser le tirage
-    </button>
-
-  </div>
-
-</section>
-
-<div class="footer">
-  Prototype autonome • Le résultat est mémorisé
-  sur cet appareil pour la journée.<br>
-  La version finale pourra lier le tirage au code participant.
-</div>
 
 </main>
 
 <script>
-
 const challenges = [
-
-{
-  t:'Patience',
-  d:'Aujourd’hui, choisis un petit plaisir non essentiel et reporte-le volontairement jusqu’à ce soir. Observe simplement ce que l’attente change.'
-},
-
-{
-  t:'Discipline',
-  d:'Choisis une tâche que tu repousses depuis quelques jours et termine-la aujourd’hui. Pas d’excuse, pas de détour.'
-},
-
-{
-  t:'Réflexion',
-  d:'Écris trois phrases sur ce que le fait de ne pas décider de tout provoque chez toi pendant Locktober.'
-},
-
-{
-  t:'Élégance',
-  d:'Accorde une attention particulière à ta tenue, ta présentation ou ton espace aujourd’hui. La discipline passe aussi par les détails.'
-},
-
-{
-  t:'Silence',
-  d:'Accomplis ton défi du jour sans chercher de validation. Garde l’expérience pour toi jusqu’à ce soir.'
-},
-
-{
-  t:'Service',
-  d:'Fais aujourd’hui quelque chose d’utile pour une autre personne, sans attendre de récompense ni de reconnaissance.'
-},
-
-{
-  t:'Contrôle',
-  d:'Choisis une habitude confortable et impose-toi une petite restriction raisonnable pour la journée. Tiens-la jusqu’au bout.'
-},
-
-{
-  t:'Tentateur',
-  d:'Prends un moment pour reconnaître une envie ou une tentation sans agir immédiatement dessus. Laisse-la passer, puis poursuis ta journée.'
-},
-
-{
-  t:'Présence',
-  d:'Accorde-toi dix minutes sans écran ni distraction. Reste simplement attentif à tes pensées et à tes sensations.'
-},
-
-{
-  t:'Rituel',
-  d:'Ce soir, prends deux minutes pour vérifier calmement ton confort, ton matériel et ta préparation pour la suite de Locktober.'
-},
-
-{
-  t:'Clémence',
-  d:'Aucun défi supplémentaire aujourd’hui. Profite de cette faveur — demain, la roue reprendra ses droits.'
-},
-
-{
-  t:'Dame Émanuelle décide',
-  d:'Le hasard s’arrête ici. Aujourd’hui, une consigne spéciale de Dame Émanuelle remplacera le défi automatique.'
-}
-
+  {
+    title: "Patience",
+    description:
+      "Adopte la position nabu pendant cinq minutes devant une fenêtre. " +
+      "Prends une photo et publie-la sur le babillard."
+  },
+  {
+    title: "Discipline",
+    description:
+      "Fais dix squats nu devant un miroir. " +
+      "Prends une photo et publie-la sur le babillard."
+  },
+  {
+    title: "Réflexion",
+    description:
+      "Écris quelques phrases sur ton expérience de la chasteté " +
+      "et envoie-les-moi par l’intermédiaire du portail."
+  },
+  {
+    title: "Élégance",
+    description:
+      "Décore ta cage avec un ruban ou d’autres objets pouvant l’embellir. " +
+      "Prends-en une photo et publie-la sur le babillard du salon de Dame Émanuelle."
+  },
+  {
+    title: "Silence",
+    description:
+      "Accorde-toi cinq minutes de silence complet, les yeux fermés si possible, " +
+      "et laisse les émotions et les sensations t’envahir doucement. " +
+      "Note ce qui ressort en premier et décris-moi le tout ce soir."
+  },
+  {
+    title: "Service",
+    description:
+      "Choisis une personne qui, selon toi, mérite que tu lui rendes un petit service " +
+      "afin de lui offrir un bonheur simple. " +
+      "Donne-moi ensuite les détails de ce qui s’est produit."
+  },
+  {
+    title: "Contrôle",
+    description:
+      "Caresse pendant cinq minutes l’une de tes zones érogènes " +
+      "qui n’est pas située près de ta cage. " +
+      "Décris-moi la sensation en une phrase simple."
+  },
+  {
+    title: "Tentation",
+    description:
+      "Regarde quelque chose d’excitant pendant vingt minutes sans te toucher. " +
+      "Décris-moi ensuite comment s’est déroulée l’expérience."
+  },
+  {
+    title: "Présence",
+    description:
+      "Prends dix minutes pour fermer les yeux et te concentrer " +
+      "sur les sensations liées à ta cage."
+  },
+  {
+    title: "Rituel",
+    description:
+      "Écris une phrase d’appréciation à Dame Émanuelle " +
+      "et envoie-la par l’intermédiaire du portail."
+  },
+  {
+    title: "Clémence",
+    description:
+      "Passe une journée sans ta cage, sans en profiter pour te toucher. " +
+      "Le soir venu, réponds à cette question : " +
+      "étais-tu heureux de la remettre? Pourquoi?"
+  },
+  {
+    title: "Pause de défi",
+    description:
+      "Aujourd’hui, tu peux te détendre, mais tu gardes sagement ta cage… " +
+      "photo à l’appui."
+  }
 ];
 
-const wheel =
-  document.getElementById('wheel');
+const wheel = document.getElementById("wheel");
+const labels = document.getElementById("labels");
+const spinButton = document.getElementById("spin");
+const resetButton = document.getElementById("reset");
+const result = document.getElementById("result");
+const resultTitle = document.getElementById("resultTitle");
+const resultText = document.getElementById("resultText");
+const status = document.getElementById("status");
 
-const labels =
-  document.getElementById('labels');
-
-const spin =
-  document.getElementById('spin');
-
-const result =
-  document.getElementById('result');
-
-const title =
-  document.getElementById('resultTitle');
-
-const desc =
-  document.getElementById('resultText');
-
-const status =
-  document.getElementById('status');
-
-const reset =
-  document.getElementById('reset');
-
-const n = challenges.length;
-
-const slice = 360 / n;
+const numberOfChallenges = challenges.length;
+const sliceAngle = 360 / numberOfChallenges;
 
 const colors = [
-  '#4b1021',
-  '#171014',
-  '#6a1a31',
-  '#221116',
-  '#531326',
-  '#0e0b0c',
-  '#722039',
-  '#281319',
-  '#48101f',
-  '#130e10',
-  '#5f172c',
-  '#201014'
+  "#4b1021",
+  "#171014",
+  "#6a1a31",
+  "#221116",
+  "#531326",
+  "#0e0b0c",
+  "#722039",
+  "#281319",
+  "#48101f",
+  "#130e10",
+  "#5f172c",
+  "#201014"
 ];
 
+const colorStops = [];
 
-/* CRÉATION DES SEGMENTS */
+for (let index = 0; index < numberOfChallenges; index += 1) {
+  const start = index * sliceAngle;
+  const end = (index + 1) * sliceAngle;
 
-let stops = [];
-
-for(let i=0;i<n;i++){
-
-  stops.push(
-    `${colors[i]}
-    ${i*slice}deg
-    ${(i+1)*slice}deg`
+  colorStops.push(
+    `${colors[index]} ${start}deg ${end}deg`
   );
-
 }
 
 wheel.style.background =
-  `conic-gradient(
-    from -${slice/2}deg,
-    ${stops.join(',')}
-  )`;
+  `conic-gradient(from -${sliceAngle / 2}deg, ${colorStops.join(",")})`;
 
+challenges.forEach((challenge, index) => {
+  const label = document.createElement("div");
 
-/* TEXTE DES SEGMENTS */
+  label.className = "label";
+  label.style.transform =
+    `rotate(${index * sliceAngle - 90}deg) translateX(4%)`;
 
-challenges.forEach((c,i)=>{
+  const text = document.createElement("span");
+  text.textContent = challenge.title;
 
-  const el =
-    document.createElement('div');
-
-  el.className = 'label';
-
-  el.style.transform =
-    `rotate(${i*slice-90}deg)
-     translateX(4%)`;
-
-  el.innerHTML =
-    `<span>${c.t}</span>`;
-
-  labels.appendChild(el);
-
+  label.appendChild(text);
+  labels.appendChild(label);
 });
-
-
-/* STOCKAGE DU TIRAGE */
 
 const memoryStore = {};
 
-function safeGet(key){
-
-  try{
-
-    return window.localStorage
-      ? localStorage.getItem(key)
-      : (memoryStore[key] ?? null);
-
-  }catch(e){
-
+function safeGet(key) {
+  try {
+    if (window.localStorage) {
+      return localStorage.getItem(key);
+    }
+  } catch (error) {
     return memoryStore[key] ?? null;
-
   }
 
+  return memoryStore[key] ?? null;
 }
 
-function safeSet(key,val){
-
-  try{
-
-    if(window.localStorage)
-      localStorage.setItem(key,val);
-
-    else
-      memoryStore[key]=val;
-
-  }catch(e){
-
-    memoryStore[key]=val;
-
+function safeSet(key, value) {
+  try {
+    if (window.localStorage) {
+      localStorage.setItem(key, value);
+      return;
+    }
+  } catch (error) {
+    memoryStore[key] = value;
+    return;
   }
 
+  memoryStore[key] = value;
 }
 
-function safeRemove(key){
-
-  try{
-
-    if(window.localStorage)
+function safeRemove(key) {
+  try {
+    if (window.localStorage) {
       localStorage.removeItem(key);
-
-  }catch(e){}
+    }
+  } catch (error) {
+    /* Le stockage local peut être bloqué dans certains aperçus. */
+  }
 
   delete memoryStore[key];
-
 }
 
-
-/* DATE */
-
-const now = new Date();
+const today = new Date();
 
 const dateKey =
-  `DE-wheel-
-   ${now.getFullYear()}-
-   ${String(now.getMonth()+1).padStart(2,'0')}-
-   ${String(now.getDate()).padStart(2,'0')}`
-  .replace(/\s/g,'');
+  `DE-wheel-${today.getFullYear()}-` +
+  `${String(today.getMonth() + 1).padStart(2, "0")}-` +
+  `${String(today.getDate()).padStart(2, "0")}`;
 
-document.getElementById('today')
-  .textContent =
-  now.toLocaleDateString(
-    'fr-CA',
-    {
-      weekday:'long',
-      day:'numeric',
-      month:'long',
-      year:'numeric'
-    }
-  );
-
+document.getElementById("today").textContent =
+  today.toLocaleDateString("fr-CA", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
 
 let spinning = false;
-
 let rotation = 0;
 
+function showResult(index) {
+  resultTitle.textContent = challenges[index].title;
+  resultText.textContent = challenges[index].description;
 
-/* AFFICHAGE DU RÉSULTAT */
+  result.classList.add("show");
 
-function showResult(i){
+  spinButton.disabled = true;
+  spinButton.textContent = "Défi attribué";
 
-  title.textContent =
-    challenges[i].t;
+  status.textContent = "Ton tirage du jour est verrouillé.";
+}
 
-  desc.textContent =
-    challenges[i].d;
+function restoreResult() {
+  const savedResult = safeGet(dateKey);
 
-  result.classList.add('show');
+  if (savedResult === null) {
+    return;
+  }
 
-  spin.disabled = true;
+  const index = Number(savedResult);
 
-  spin.textContent =
-    'Défi attribué';
+  if (
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >= numberOfChallenges
+  ) {
+    safeRemove(dateKey);
+    return;
+  }
+
+  rotation = 720 - index * sliceAngle;
+
+  wheel.style.transition = "none";
+  labels.style.transition = "none";
+
+  wheel.style.transform = `rotate(${rotation}deg)`;
+  labels.style.transform = `rotate(${rotation}deg)`;
+
+  requestAnimationFrame(() => {
+    wheel.style.transition =
+      "transform 5.2s cubic-bezier(.12,.72,.08,1)";
+
+    labels.style.transition =
+      "transform 5.2s cubic-bezier(.12,.72,.08,1)";
+  });
+
+  showResult(index);
+}
+
+spinButton.addEventListener("click", () => {
+  if (spinning || safeGet(dateKey) !== null) {
+    return;
+  }
+
+  spinning = true;
+  spinButton.disabled = true;
+  result.classList.remove("show");
+
+  status.textContent = "La roue décide…";
+
+  const selectedIndex =
+    Math.floor(Math.random() * numberOfChallenges);
+
+  const extraTurns =
+    6 + Math.floor(Math.random() * 3);
+
+  rotation +=
+    extraTurns * 360 +
+    (360 - selectedIndex * sliceAngle) -
+    (rotation % 360);
+
+  wheel.style.transform = `rotate(${rotation}deg)`;
+  labels.style.transform = `rotate(${rotation}deg)`;
+
+  window.setTimeout(() => {
+    safeSet(dateKey, String(selectedIndex));
+    showResult(selectedIndex);
+    spinning = false;
+  }, 5250);
+});
+
+resetButton.addEventListener("click", () => {
+  safeRemove(dateKey);
+
+  spinning = false;
+  rotation = 0;
+
+  wheel.style.transition = "none";
+  labels.style.transition = "none";
+
+  wheel.style.transform = "rotate(0deg)";
+  labels.style.transform = "rotate(0deg)";
+
+  void wheel.offsetWidth;
+
+  wheel.style.transition =
+    "transform 5.2s cubic-bezier(.12,.72,.08,1)";
+
+  labels.style.transition =
+    "transform 5.2s cubic-bezier(.12,.72,.08,1)";
+
+  result.classList.remove("show");
+
+  spinButton.disabled = false;
+  spinButton.textContent = "Tourner la roue";
 
   status.textContent =
-    'Ton tirage du jour est verrouillé.';
+    "Un seul tirage est permis par jour.";
+});
 
-}
-
-
-/* RESTAURATION DU TIRAGE */
-
-function restore(){
-
-  const saved =
-    safeGet(dateKey);
-
-  if(saved !== null){
-
-    const i =
-      Number(saved);
-
-    rotation =
-      360*2-(i*slice);
-
-    wheel.style.transition =
-      'none';
-
-    labels.style.transition =
-      'none';
-
-    wheel.style.transform =
-      `rotate(${rotation}deg)`;
-
-    labels.style.transform =
-      `rotate(${rotation}deg)`;
-
-    requestAnimationFrame(()=>{
-
-      wheel.style.transition =
-        'transform 5.2s cubic-bezier(.12,.72,.08,1)';
-
-      labels.style.transition =
-        'transform 5.2s cubic-bezier(.12,.72,.08,1)';
-
-    });
-
-    showResult(i);
-
-  }
-
-}
-
-
-/* TOURNER LA ROUE */
-
-spin.addEventListener(
-  'click',
-  ()=>{
-
-    if(
-      spinning ||
-      safeGet(dateKey)!==null
-    ) return;
-
-    spinning = true;
-
-    spin.disabled = true;
-
-    result.classList.remove('show');
-
-    status.textContent =
-      'La roue décide…';
-
-
-    /* Choix aléatoire */
-
-    const i =
-      Math.floor(
-        Math.random()*n
-      );
-
-
-    /* Nombre de tours */
-
-    const extra =
-      6 +
-      Math.floor(
-        Math.random()*3
-      );
-
-
-    /*
-      Le segment gagnant
-      vient s'arrêter sous
-      le marqueur doré.
-    */
-
-    rotation +=
-      extra*360 +
-      (360-(i*slice)) -
-      (rotation%360);
-
-
-    /*
-      La roue ET les mots
-      tournent ensemble.
-    */
-
-    wheel.style.transform =
-      `rotate(${rotation}deg)`;
-
-    labels.style.transform =
-      `rotate(${rotation}deg)`;
-
-
-    setTimeout(()=>{
-
-      safeSet(
-        dateKey,
-        String(i)
-      );
-
-      showResult(i);
-
-      spinning = false;
-
-    },5250);
-
-  }
-);
-
-
-/* RÉINITIALISATION POUR LES TESTS */
-
-reset.addEventListener(
-  'click',
-  ()=>{
-
-    safeRemove(dateKey);
-
-    spinning = false;
-
-    rotation = 0;
-
-    wheel.style.transition =
-      'none';
-
-    labels.style.transition =
-      'none';
-
-    wheel.style.transform =
-      'rotate(0deg)';
-
-    labels.style.transform =
-      'rotate(0deg)';
-
-    void wheel.offsetWidth;
-
-    wheel.style.transition =
-      'transform 5.2s cubic-bezier(.12,.72,.08,1)';
-
-    labels.style.transition =
-      'transform 5.2s cubic-bezier(.12,.72,.08,1)';
-
-    result.classList.remove('show');
-
-    spin.disabled = false;
-
-    spin.textContent =
-      'Tourner la roue';
-
-    status.textContent =
-      'Un seul tirage est permis par jour.';
-
-  }
-);
-
-
-restore();
-
+restoreResult();
 </script>
-
 </body>
 </html>
