@@ -249,33 +249,104 @@
   musiqueScelle.preload = "auto";
   musiqueScelle.volume = 0.42;
   let musiqueBloquee = false;
+  let effetEnCours = false;
+  let repriseEffet = null;
+  let pasAlternes = 0;
 
-  // Ponctuations discrètes aux moments importants du parcours.
+  // Sons plus profonds : deux voix filtrées, une courte résonance,
+  // et un léger froissement sur les moments importants.
+  function frappe(freq, depart, duree, niveau) {
+    const ctx = audioContext;
+    const t = ctx.currentTime + depart;
+    const fondamentale = ctx.createOscillator();
+    const couleur = ctx.createOscillator();
+    const mix = ctx.createGain();
+    const filtre = ctx.createBiquadFilter();
+    const enveloppe = ctx.createGain();
+    const echo = ctx.createDelay(0.4);
+    const echoGain = ctx.createGain();
+
+    fondamentale.type = "triangle";
+    fondamentale.frequency.setValueAtTime(freq * 1.012, t);
+    fondamentale.frequency.exponentialRampToValueAtTime(freq, t + 0.1);
+    couleur.type = "sine";
+    couleur.frequency.value = freq * 2.003;
+    mix.gain.value = 0.16;
+    filtre.type = "lowpass";
+    filtre.frequency.value = 690;
+    enveloppe.gain.setValueAtTime(0.0001, t);
+    enveloppe.gain.exponentialRampToValueAtTime(niveau, t + 0.035);
+    enveloppe.gain.exponentialRampToValueAtTime(0.0001, t + duree);
+    echo.delayTime.value = 0.17;
+    echoGain.gain.value = 0.13;
+
+    fondamentale.connect(filtre);
+    couleur.connect(mix).connect(filtre);
+    filtre.connect(enveloppe);
+    enveloppe.connect(ctx.destination);
+    enveloppe.connect(echo).connect(echoGain).connect(ctx.destination);
+    fondamentale.start(t);
+    couleur.start(t);
+    fondamentale.stop(t + duree + 0.03);
+    couleur.stop(t + duree + 0.03);
+  }
+
+  function froissement(depart, niveau) {
+    const ctx = audioContext;
+    const t = ctx.currentTime + depart;
+    const tampon = ctx.createBuffer(1, Math.round(ctx.sampleRate * 0.16), ctx.sampleRate);
+    const data = tampon.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const souffle = ctx.createBufferSource();
+    const filtre = ctx.createBiquadFilter();
+    const gain = ctx.createGain();
+    souffle.buffer = tampon;
+    filtre.type = "lowpass";
+    filtre.frequency.value = 520;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(niveau, t + 0.018);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+    souffle.connect(filtre).connect(gain).connect(ctx.destination);
+    souffle.start(t);
+  }
+
   cue = function(kind) {
-    if (kind === "step") tone(392, 0, .28, .045);
-    if (kind === "threshold") {
-      tone(293.7, 0, .75, .06);
-      tone(440, .32, .8, .04);
-    }
-    if (kind === "choice") {
-      tone(220, 0, .7, .06, "triangle");
-      tone(329.6, .35, 1, .045);
-    }
-    if (kind === "seal") {
-      tone(392, 0, .5, .065);
-      tone(587.3, .17, .9, .045);
-    }
-    if (kind === "open") {
-      tone(261.6, 0, .55, .05);
-      tone(392, .24, .8, .043);
-    }
+    if (soundMuted || !audioContext || audioContext.state !== "running") return;
+    const phrases = {
+      step: [
+        {duree: 0.55, notes: [[146.83, 0, 0.38, 0.012], [220, 0.09, 0.34, 0.006]]},
+        {duree: 0.55, notes: [[130.81, 0, 0.38, 0.012], [196, 0.10, 0.31, 0.006]]}
+      ],
+      threshold: {duree: 1.35, notes: [[110, 0, 1.0, 0.015], [174.61, 0.22, 0.9, 0.011], [220, 0.50, 0.66, 0.007]]},
+      choice: {duree: 1.25, notes: [[130.81, 0, 0.9, 0.016], [164.81, 0.27, 0.75, 0.011], [220, 0.51, 0.56, 0.006]]},
+      seal: {duree: 1.65, notes: [[98, 0, 1.2, 0.017], [146.83, 0.24, 1.08, 0.012], [196, 0.62, 0.72, 0.008]]},
+      open: {duree: 1.40, notes: [[146.83, 0, 1.02, 0.014], [174.61, 0.28, 0.87, 0.010], [220, 0.53, 0.62, 0.006]]}
+    };
+    const phrase = kind === "step" ? phrases.step[pasAlternes++ % 2] : phrases[kind];
+    if (!phrase) return;
+
+    clearTimeout(repriseEffet);
+    effetEnCours = true;
+    musiqueScelle.pause();
+    phrase.notes.forEach(note => frappe(...note));
+    if (kind !== "step") froissement(0.02, 0.007);
+
+    repriseEffet = setTimeout(() => {
+      effetEnCours = false;
+      if (!soundMuted && !document.getElementById("ritual").hidden &&
+          !document.getElementById("exit").open) {
+        musiqueScelle.play().catch(() => {
+          musiqueBloquee = true;
+          document.getElementById("sound").textContent = "Activer le son";
+        });
+      }
+    }, (phrase.duree + 0.23) * 1000);
   };
 
-  // Le clic sur « Entrer » lance la musique pour tout le parcours.
+  // Le geste d'entrée lance l'ambiance; les effets la suspendent brièvement.
   document.getElementById("loginForm").addEventListener("submit", () => {
     if (!TEST_MODE && new Date() < OPEN) return;
     if (soundMuted) return;
-
     musiqueScelle.play().catch(() => {
       musiqueBloquee = true;
       document.getElementById("sound").textContent = "Activer le son";
@@ -293,31 +364,28 @@
       });
       return;
     }
-
-    if (soundMuted) musiqueScelle.play().catch(() => {});
-    else musiqueScelle.pause();
+    if (soundMuted) {
+      if (!effetEnCours) musiqueScelle.play().catch(() => {});
+    } else {
+      musiqueScelle.pause();
+    }
   }, true);
 
   document.addEventListener("play", event => {
     if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.09;
   }, true);
-
   document.addEventListener("pause", event => {
     if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.42;
   }, true);
-
   document.addEventListener("ended", event => {
     if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.42;
   }, true);
 
   for (const id of ["leave", "pause"]) {
-    document.getElementById(id).addEventListener(
-      "click", () => musiqueScelle.pause(), true
-    );
+    document.getElementById(id).addEventListener("click", () => musiqueScelle.pause(), true);
   }
-
   document.getElementById("resume").addEventListener("click", () => {
-    if (!soundMuted) musiqueScelle.play().catch(() => {});
+    if (!soundMuted && !effetEnCours) musiqueScelle.play().catch(() => {});
   }, true);
 
   new MutationObserver(() => {
@@ -326,10 +394,7 @@
         !document.getElementById("message").textContent.includes("Vérification")) {
       musiqueScelle.pause();
     }
-  }).observe(document.getElementById("message"), {
-    childList: true,
-    subtree: true
-  });
+  }).observe(document.getElementById("message"), {childList: true, subtree: true});
 </script>
   <script>
   if (TEST_MODE) {
