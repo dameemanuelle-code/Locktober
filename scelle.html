@@ -331,5 +331,32 @@
     subtree: true
   });
 </script>
+  <script>
+  if (TEST_MODE) {
+    const resetWrap = document.createElement("div");
+    resetWrap.className = "buttons";
+
+    const resetButton = document.createElement("button");
+    resetButton.type = "button";
+    resetButton.className = "button secondary";
+    resetButton.textContent = "Recommencer le test";
+
+    resetWrap.append(resetButton);
+    document.getElementById("ritual").insertBefore(
+      resetWrap,
+      document.querySelector("#ritual .safety-footer")
+    );
+
+    resetButton.addEventListener("click", () => {
+      localStorage.removeItem(storageKey());
+      state.step = 0;
+      state.agreement = false;
+      state.accepted = false;
+      state.photoUrl = "";
+      testCountdownUntil = null;
+      render();
+    });
+  }
+</script>
 </body>
 </html>
