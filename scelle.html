@@ -243,5 +243,93 @@
     $("resume").onclick=()=>$("exit").close();
     setInterval(tick,1000);
   </script>
+  <script>
+  const musiqueScelle = new Audio("ambiance-scelle.mp3");
+  musiqueScelle.loop = true;
+  musiqueScelle.preload = "auto";
+  musiqueScelle.volume = 0.42;
+  let musiqueBloquee = false;
+
+  // Ponctuations discrètes aux moments importants du parcours.
+  cue = function(kind) {
+    if (kind === "step") tone(392, 0, .28, .045);
+    if (kind === "threshold") {
+      tone(293.7, 0, .75, .06);
+      tone(440, .32, .8, .04);
+    }
+    if (kind === "choice") {
+      tone(220, 0, .7, .06, "triangle");
+      tone(329.6, .35, 1, .045);
+    }
+    if (kind === "seal") {
+      tone(392, 0, .5, .065);
+      tone(587.3, .17, .9, .045);
+    }
+    if (kind === "open") {
+      tone(261.6, 0, .55, .05);
+      tone(392, .24, .8, .043);
+    }
+  };
+
+  // Le clic sur « Entrer » lance la musique pour tout le parcours.
+  document.getElementById("loginForm").addEventListener("submit", () => {
+    if (!TEST_MODE && new Date() < OPEN) return;
+    if (soundMuted) return;
+
+    musiqueScelle.play().catch(() => {
+      musiqueBloquee = true;
+      document.getElementById("sound").textContent = "Activer le son";
+    });
+  }, true);
+
+  document.getElementById("sound").addEventListener("click", event => {
+    if (musiqueBloquee) {
+      event.stopImmediatePropagation();
+      musiqueScelle.play().then(() => {
+        musiqueBloquee = false;
+        event.target.textContent = "Son activé";
+      }).catch(() => {
+        event.target.textContent = "Activer le son";
+      });
+      return;
+    }
+
+    if (soundMuted) musiqueScelle.play().catch(() => {});
+    else musiqueScelle.pause();
+  }, true);
+
+  document.addEventListener("play", event => {
+    if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.09;
+  }, true);
+
+  document.addEventListener("pause", event => {
+    if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.42;
+  }, true);
+
+  document.addEventListener("ended", event => {
+    if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.42;
+  }, true);
+
+  for (const id of ["leave", "pause"]) {
+    document.getElementById(id).addEventListener(
+      "click", () => musiqueScelle.pause(), true
+    );
+  }
+
+  document.getElementById("resume").addEventListener("click", () => {
+    if (!soundMuted) musiqueScelle.play().catch(() => {});
+  }, true);
+
+  new MutationObserver(() => {
+    if (!document.getElementById("login").hidden &&
+        document.getElementById("message").textContent &&
+        !document.getElementById("message").textContent.includes("Vérification")) {
+      musiqueScelle.pause();
+    }
+  }).observe(document.getElementById("message"), {
+    childList: true,
+    subtree: true
+  });
+</script>
 </body>
 </html>
