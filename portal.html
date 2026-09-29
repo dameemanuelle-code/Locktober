@@ -75,8 +75,9 @@ blockquote{margin:20px 0 0;padding-left:18px;border-left:2px solid var(--gold);c
 .activity-section,.history-section{margin-top:56px}
 .section-header h2{margin:4px 0 25px;font:700 2.8rem "Cormorant Garamond",serif}
 .challenge-wheel-wrap{position:relative;width:min(310px,76vw);aspect-ratio:1;margin:24px auto}
-.challenge-wheel{width:100%;height:100%;display:grid;place-items:center;border:7px solid var(--gold);border-radius:50%;box-shadow:0 0 30px #0008;background:repeating-conic-gradient(from -15deg,#5b1429 0deg 30deg,#211016 30deg 60deg,#752039 60deg 90deg,#2a111b 90deg 120deg);transition:transform 5.2s cubic-bezier(.12,.72,.08,1)}
-.challenge-wheel span{display:grid;place-items:center;width:25%;aspect-ratio:1;border:2px solid var(--gold);border-radius:50%;background:var(--panel);color:var(--gold-soft);font:700 1.5rem "Cormorant Garamond",serif}
+.challenge-wheel{position:relative;width:100%;height:100%;overflow:hidden;border:7px solid var(--gold);border-radius:50%;box-shadow:0 0 30px #0008;background:repeating-conic-gradient(from -15deg,#5b1429 0deg 30deg,#211016 30deg 60deg,#752039 60deg 90deg,#2a111b 90deg 120deg);transition:transform 5.2s cubic-bezier(.12,.72,.08,1)}
+.wheel-label{position:absolute;top:50%;left:50%;width:88px;transform-origin:0 0;color:#fff6e8;font:700 10px/1 Inter,sans-serif;letter-spacing:.015em;text-align:center;white-space:nowrap;text-shadow:0 1px 3px #000,0 0 5px #000;pointer-events:none}
+.wheel-hub{position:absolute;z-index:3;top:50%;left:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:25%;aspect-ratio:1;border:2px solid var(--gold);border-radius:50%;background:var(--panel);color:var(--gold-soft);font:700 1.5rem "Cormorant Garamond",serif;pointer-events:none}
 .challenge-pointer{position:absolute;z-index:2;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:34px solid var(--gold-soft)}
 .challenge-result{margin-top:16px;padding:16px;border:1px solid var(--gold);border-radius:8px;background:#2b1520}
 .challenge-result strong{color:var(--gold-soft);font:700 1.6rem "Cormorant Garamond",serif}
@@ -226,7 +227,8 @@ textarea{min-height:100px;resize:vertical;padding:12px;color:var(--cream);backgr
           <p id="wheelStatus">Disponible dès le 1er octobre.</p>
           <div class="challenge-wheel-wrap">
             <div class="challenge-pointer" aria-hidden="true"></div>
-            <div class="challenge-wheel" id="challengeWheel" aria-hidden="true"><span>DÉ</span></div>
+            <div class="challenge-wheel" id="challengeWheel" aria-hidden="true"></div>
+            <div class="wheel-hub" aria-hidden="true">DÉ</div>
           </div>
           <button class="btn btn-primary full" id="spinChallenge" type="button">Tourner la roue</button>
           <div class="challenge-result hidden" id="challengeResult" aria-live="polite">
@@ -353,6 +355,17 @@ const challenges = [
   ["Clémence", "Si tu le souhaites et si c’est confortable pour toi, prends une pause de cage. Ce soir, décris ce que tu as ressenti en la remettant."],
   ["Pause de défi", "Aujourd’hui, repose-toi. Tu peux partager une photo de ta cage si tu le souhaites."]
 ];
+
+challenges.forEach(([title], index) => {
+  const label = document.createElement("span");
+  label.className = "wheel-label";
+  label.textContent = title;
+  const angle = index * 30 - 90;
+  label.style.transform = index <= 6
+    ? `rotate(${angle}deg) translateX(50px)`
+    : `rotate(${angle}deg) translateX(138px) rotate(180deg)`;
+  $("challengeWheel").appendChild(label);
+});
 
 function torontoDate() {
   return new Intl.DateTimeFormat("en-CA", {
