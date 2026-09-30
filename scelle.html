@@ -455,3 +455,301 @@ $("loginForm").addEventListener("submit",async event => {
 const confirmation = () => TEST_MODE
   ? '<p class="note">Répétition terminée. Aucun courriel n’est préparé ni envoyé. Le 30 septembre, le parcours officiel repartira au début.</p>'
   : '<a id="send" class="button" href="#">Envoyer ma confirmation</a><p class="note">Ton application de courriel s’ouvrira. Envoie le message et joins la photo de ton enveloppe si tu en as pris une.</p>';
+function screen(n) {
+  const steps = [
+    '<span class="eyebrow">30 septembre 2026</span><h1>Entre dans le Scellé</h1><p>Bonsoir, <strong>' + name() + '</strong>.</p><p>Ce geste ouvre ton parcours <strong>' + plan() + '</strong>. Prends ton temps : chaque étape t’appartient.</p>' + number(),
+
+    '<span class="eyebrow">Préparation</span><h2>Dispose les objets devant toi</h2><ul class="list"><li>Ta cage</li><li>Deux clefs</li><li>Une enveloppe opaque</li><li>Un stylo</li></ul>' + check("ready","Tout est prêt. Je veux poursuivre."),
+
+    '<span class="eyebrow">Le rituel</span><h2>Installe-toi</h2><p>Prends un moment pour entrer dans l’atmosphère. Il n’y a rien à précipiter.</p><p class="gold">Quand tu es prêt, avance.</p>',
+
+    '<span class="eyebrow">Deux clefs, deux rôles</span><h2>Choisis celle du Scellé</h2><p>Une clef reste avec toi. L’autre devient celle de cette enveloppe.</p>',
+
+    '<span class="eyebrow">L’enveloppe</span><h2>Inscris ton numéro</h2><p>Glisse la clef principale dans l’enveloppe, inscris ton numéro et ferme-la.</p>' + number() + check("envelope","L’enveloppe est fermée."),
+
+    '<span class="eyebrow">Le Scellé préparé</span><h2>Garde une trace</h2>' + number() + '<label for="photo">Photo de l’enveloppe fermée</label><input id="photo" type="file" accept="image/jpeg,image/png,image/webp" capture="environment"><img id="photoPreview" alt="Aperçu de l’enveloppe" hidden><p class="note" id="photoNote">La photo reste sur ton appareil. Tu pourras la joindre au courriel final.</p>',
+
+    '<span class="eyebrow">Avant ton choix</span><h2>Notre entente</h2><p>' + name() + ' · ' + plan() + ' · ' + safe(state.code) + '</p><div class="agreement"><p><b>Participation.</b> Tu confirmes avoir au moins 18 ans et choisir librement de participer. Tu peux poser tes limites, demander une pause ou te retirer en tout temps, sans sanction.</p><p><b>Engagement.</b> Du 1er au 31 octobre 2026, tu suis les règles de ta formule et confirmes avoir lu le Guide Locktober 2026.</p><p><b>Confidentialité.</b> Tes renseignements, échanges et photographies demeurent confidentiels. Aucune image identifiable ne sera publiée sans autorisation distincte et explicite.</p><p><b>Fin de participation.</b> Dame Émanuelle peut y mettre fin si les renseignements sont inexacts ou en cas de comportement inapproprié.</p></div>' + check("agreement","J’ai lu cette entente, j’ai au moins 18 ans et j’y consens librement."),
+
+    '<div class="reveal"><span class="eyebrow">Le seuil</span><h2>Jusqu’ici, tu pouvais encore choisir.</h2><p>Dans quelques instants, tu décideras si cette clef devient la mienne pour Locktober.</p><p class="gold">Je te laisse ce moment.</p></div>',
+
+    '<span class="eyebrow">La décision</span><h2>Que choisis-tu?</h2><p>La clef du Scellé peut maintenant m’être remise symboliquement.</p><div class="buttons"><button class="button secondary" id="keep">Je garde ma clef</button><button class="button" id="give">Je remets ma clef à Dame Émanuelle</button></div>',
+
+    '<span class="eyebrow">La remise</span><h2>Le geste est posé</h2><div class="scene"><div class="scene-key" aria-hidden="true">⚿</div><div class="scene-envelope"><div class="wax">DÉ</div></div></div><p>Ton choix vient de franchir le seuil.</p>',
+
+    '<span class="eyebrow">Mon acceptation</span><div class="reveal"><h2>J’ai ta clef.</h2><p>Tu viens de me confier davantage qu’un objet.</p><p class="gold">Ton choix.</p><p>Pour ce Locktober, j’accepte de guider ton plaisir.</p></div>' + number(),
+
+    '<span class="eyebrow">Pour toi</span><h2>Écoute-moi</h2><video id="video" controls playsinline preload="metadata" src="' + safe(VIDEO_FILE) + '">Ton navigateur ne peut pas lire cette vidéo.</video><p id="videoStatus" class="note" role="status">Appuie sur Lecture pour m’écouter.</p>',
+
+    '<span class="eyebrow">Sous clef</span><h2>Locktober commence dans</h2><div id="count" class="count"></div><p>Le Scellé est prêt.</p>' + confirmation(),
+
+    '<span class="eyebrow">1er octobre 2026</span><h1>Jour 1</h1><p>Le mois commence, <strong>' + name() + '</strong>.</p>' + confirmation() + '<div class="buttons"><a class="button secondary" href="portal.html">Entrer dans mon portail</a></div>'
+  ];
+
+  return steps[n];
+}
+
+function emailLink() {
+  if (TEST_MODE) return;
+
+  const subject = encodeURIComponent(
+    "Scellé Locktober 2026 — " + state.code
+  );
+
+  const body = encodeURIComponent(
+    "Dame Émanuelle,\n\n" +
+    "Je confirme avoir lu et accepté l’entente de participation au Locktober 2026. " +
+    "J’ai au moins 18 ans, je participe librement et je te remets symboliquement ma clef principale.\n\n" +
+    "Pseudonyme : " + (state.participant?.pseudo || "") +
+    "\nCode : " + state.code +
+    "\nFormule : " + (state.participant?.forfait || "") +
+    "\nDate : " + new Date().toLocaleString("fr-CA",{
+      timeZone:"America/Toronto"
+    }) +
+    "\n\nPhoto de l’enveloppe : à joindre manuellement si prise."
+  );
+
+  $("send").href =
+    "mailto:cuiretfantaisies@gmail.com?subject=" +
+    subject + "&body=" + body;
+}
+
+function render() {
+  clearTimeout(sealTimer);
+
+  const oldVideo = $("video");
+  if (oldVideo) oldVideo.pause();
+
+  syncMusic();
+
+  $("progress").textContent =
+    "ÉTAPE " + (state.step + 1) + " SUR 14 · " +
+    (state.participant?.pseudo || "participant");
+
+  $("card").innerHTML = screen(state.step);
+  $("card").classList.remove("enter");
+  void $("card").offsetWidth;
+  $("card").classList.add("enter");
+
+  $("next").hidden = [8,12,13].includes(state.step);
+  $("back").hidden = [0,9,10,13].includes(state.step);
+  $("next").disabled = [1,4,6].includes(state.step);
+
+  if (state.step === 6 && state.agreement) {
+    $("agreement").checked = true;
+    $("next").disabled = false;
+  }
+
+  for (const id of ["ready","envelope","agreement"]) {
+    const element = $(id);
+    if (element) {
+      element.addEventListener("change",() => {
+        $("next").disabled = !element.checked;
+        if (id === "agreement") {
+          state.agreement = element.checked;
+          store();
+        }
+      });
+    }
+  }
+
+  if (state.step === 5) {
+    $("photo").addEventListener("change",event => {
+      const file = event.target.files[0];
+      const note = $("photoNote");
+      const preview = $("photoPreview");
+
+      if (state.photoUrl) URL.revokeObjectURL(state.photoUrl);
+      state.photoUrl = "";
+      preview.hidden = true;
+      if (!file) return;
+
+      if (
+        !["image/jpeg","image/png","image/webp"].includes(file.type) ||
+        file.size > 10 * 1024 * 1024
+      ) {
+        note.textContent =
+          "Choisis une image JPEG, PNG ou WebP de moins de 10 Mo.";
+        return;
+      }
+
+      state.photoUrl = URL.createObjectURL(file);
+      preview.src = state.photoUrl;
+      preview.hidden = false;
+      note.textContent =
+        "Photo prête sur cet appareil. Tu pourras la joindre au courriel final.";
+    });
+  }
+
+  if (state.step === 8) {
+    $("keep").onclick = () => {
+      state.accepted = false;
+      store();
+
+      $("card").innerHTML =
+        '<h2>Ton choix est respecté</h2>' +
+        '<p>Le Scellé reste ouvert tant que tu ne choisis pas de me remettre la clef.</p>' +
+        '<button class="button" id="return">Revenir au choix</button>';
+
+      $("back").hidden = true;
+      $("return").onclick = render;
+    };
+
+    $("give").onclick = () => {
+      if (!state.agreement) return;
+
+      state.accepted = true;
+      state.step = 9;
+      store();
+      render();
+      cue("choice");
+
+      sealTimer = setTimeout(() => {
+        if (state.step === 9 && !$("exit").open) cue("seal");
+      },3000);
+    };
+  }
+
+  if (state.step === 11) {
+    const video = $("video");
+    const status = $("videoStatus");
+    video.muted = soundMuted;
+
+    video.addEventListener("error",() => {
+      status.hidden = false;
+      status.textContent =
+        "La vidéo ne peut pas être chargée. Réessaie dans quelques instants.";
+    });
+
+    video.addEventListener("playing",() => {
+      status.hidden = true;
+    });
+
+    video.addEventListener("play",() => {
+      music.pause();
+    });
+  }
+
+  if (state.step === 12) {
+    tick();
+    if (state.step !== 12) return;
+  }
+
+  if (!TEST_MODE && (state.step === 12 || state.step === 13)) {
+    emailLink();
+  }
+
+  $("card").focus({preventScroll:true});
+  scrollTo({
+    top:0,
+    behavior:matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth"
+  });
+}
+
+function tick() {
+  if (state.step !== 12) return;
+
+  const target = TEST_MODE
+    ? (testCountdownUntil ??= Date.now() + 15000)
+    : START;
+
+  let seconds = Math.max(
+    0,Math.ceil((target - new Date()) / 1000)
+  );
+
+  if (seconds === 0) {
+    state.step = 13;
+    store();
+    render();
+    return;
+  }
+
+  const days = Math.floor(seconds / 86400);
+  seconds %= 86400;
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor(seconds % 3600 / 60);
+  const secs = seconds % 60;
+
+  $("count").innerHTML = [
+    [days,"jours"],
+    [hours,"heures"],
+    [minutes,"minutes"],
+    [secs,"secondes"]
+  ].map(([value,label]) =>
+    '<span><b>' + String(value).padStart(2,"0") +
+    '</b>' + label + '</span>'
+  ).join("");
+}
+
+$("next").onclick = () => {
+  if (state.step === 6 && !state.agreement) return;
+  state.step = Math.min(13,state.step + 1);
+  store();
+  render();
+  cue(state.step === 7 ? "threshold" : "step");
+};
+
+$("back").onclick = () => {
+  state.step = Math.max(0,state.step - 1);
+  store();
+  render();
+  cue("step");
+};
+
+$("leave").onclick = $("pause").onclick = () => {
+  clearTimeout(sealTimer);
+  music.pause();
+
+  const video = $("video");
+  if (video) video.pause();
+
+  if (audioContext?.state === "running") {
+    audioContext.suspend().catch(() => {});
+  }
+
+  if ($("exit").showModal) $("exit").showModal();
+  else location.href = "index.html";
+};
+
+$("resume").onclick = () => $("exit").close();
+
+$("exit").addEventListener("close",() => {
+  unlockSound();
+  syncMusic();
+});
+
+setInterval(tick,1000);
+
+if (TEST_MODE) {
+  const resetWrap = document.createElement("div");
+  resetWrap.className = "buttons";
+
+  const resetButton = document.createElement("button");
+  resetButton.type = "button";
+  resetButton.className = "button secondary";
+  resetButton.textContent = "Recommencer le test";
+
+  resetWrap.append(resetButton);
+
+  $("ritual").insertBefore(
+    resetWrap,
+    document.querySelector("#ritual .safety-footer")
+  );
+
+  resetButton.addEventListener("click",() => {
+    localStorage.removeItem(storageKey());
+    if (state.photoUrl) URL.revokeObjectURL(state.photoUrl);
+
+    state.step = 0;
+    state.agreement = false;
+    state.accepted = false;
+    state.photoUrl = "";
+    testCountdownUntil = null;
+    render();
+  });
+}
+</script>
+</body>
+</html>
