@@ -134,3 +134,324 @@ dialog::backdrop{background:#000b}
 </dialog>
 
 <script>
+// Remplacer true par false pour l'ouverture officielle.
+const TEST_MODE = true;
+const VIDEO_FILE = "acceptation.mp4";
+
+const API = "https://script.google.com/macros/s/AKfycbyhhlRxw3miDYY2BF2hC3-Rdf1GQiD8VmMqSwN5dNK91U7o0D4KoL2OfIvYaw8NkHbc/exec";
+const START = new Date("2026-10-01T00:00:00-04:00");
+const OPEN = new Date("2026-09-30T00:00:00-04:00");
+const $ = id => document.getElementById(id);
+
+const state = {
+  step:0,
+  code:"",
+  email:"",
+  participant:null,
+  agreement:false,
+  accepted:false,
+  photoUrl:""
+};
+
+let audioContext = null;
+let soundMuted = false;
+let testCountdownUntil = null;
+let sealTimer = null;
+let musicBlocked = false;
+let musicPending = false;
+let alternatingSteps = 0;
+
+const music = new Audio("ambiance-scelle.mp3");
+music.loop = true;
+music.preload = "auto";
+music.volume = 0.42;
+
+$("testRibbon").hidden = !TEST_MODE;
+
+const safe = value => String(value || "").replace(
+  /[&<>"']/g,
+  character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[character])
+);
+
+const name = () => safe(state.participant?.pseudo || "participant");
+const plan = () => safe(state.participant?.forfait || "Le Registre");
+const number = () => '<div class="seal">SCELLÉ ' + safe(state.code) + '</div>';
+const check = (id,label) =>
+  '<div class="check"><input type="checkbox" id="' + id +
+  '"><label for="' + id + '">' + label + '</label></div>';
+
+const storageKey = () =>
+  `locktober-scelle-${TEST_MODE ? "test-" : "officiel-"}${state.code}`;
+
+const store = () => localStorage.setItem(
+  storageKey(),
+  JSON.stringify({
+    step:state.step,
+    agreement:state.agreement,
+    accepted:state.accepted
+  })
+);
+
+function restore() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey()));
+    if (Number.isInteger(saved?.step)) {
+      state.step = Math.max(0,Math.min(13,saved.step));
+      state.agreement = !!saved.agreement;
+      state.accepted = !!saved.accepted;
+      if (state.step > 6 && !state.agreement) state.step = 6;
+      if (state.step > 8 && !state.accepted) state.step = 8;
+    }
+  } catch {}
+}
+
+function musicAllowed() {
+  return !soundMuted &&
+    !$("ritual").hidden &&
+    !$("exit").open &&
+    state.step < 7;
+}
+
+function updateSoundButton() {
+  $("sound").textContent = soundMuted
+    ? "Son coupé"
+    : musicBlocked && musicAllowed()
+      ? "Activer le son"
+      : "Son activé";
+
+  $("sound").setAttribute("aria-pressed",String(!soundMuted));
+}
+
+function syncMusic() {
+  if (!musicAllowed()) {
+    music.pause();
+    updateSoundButton();
+    return;
+  }
+
+  if (musicPending || !music.paused) return;
+  musicPending = true;
+
+  music.play().then(() => {
+    musicBlocked = false;
+    if (!musicAllowed()) music.pause();
+  }).catch(() => {
+    musicBlocked = musicAllowed();
+  }).finally(() => {
+    musicPending = false;
+    updateSoundButton();
+  });
+}
+
+function unlockSound() {
+  if (soundMuted) return;
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    audioContext ??= new AudioContextClass();
+    if (audioContext.state === "suspended") {
+      audioContext.resume().catch(() => {});
+    }
+  } catch {}
+}
+
+function startMusicOnGesture() {
+  if (soundMuted || musicPending || !music.paused) return;
+  musicPending = true;
+
+  // Démarrage dans le clic d'entrée, avant la vérification réseau.
+  music.play().then(() => {
+    musicBlocked = false;
+  }).catch(() => {
+    musicBlocked = true;
+  }).finally(() => {
+    musicPending = false;
+    updateSoundButton();
+  });
+}
+
+function frappe(freq,depart,duree,niveau) {
+  const ctx = audioContext;
+  const t = ctx.currentTime + depart;
+  const fondamentale = ctx.createOscillator();
+  const couleur = ctx.createOscillator();
+  const mix = ctx.createGain();
+  const filtre = ctx.createBiquadFilter();
+  const enveloppe = ctx.createGain();
+  const echo = ctx.createDelay(0.4);
+  const echoGain = ctx.createGain();
+
+  fondamentale.type = "triangle";
+  fondamentale.frequency.setValueAtTime(freq * 1.012,t);
+  fondamentale.frequency.exponentialRampToValueAtTime(freq,t + 0.1);
+  couleur.type = "sine";
+  couleur.frequency.value = freq * 2.003;
+  mix.gain.value = 0.16;
+  filtre.type = "lowpass";
+  filtre.frequency.value = 690;
+
+  enveloppe.gain.setValueAtTime(0.0001,t);
+  enveloppe.gain.exponentialRampToValueAtTime(niveau,t + 0.035);
+  enveloppe.gain.exponentialRampToValueAtTime(0.0001,t + duree);
+  echo.delayTime.value = 0.17;
+  echoGain.gain.value = 0.13;
+
+  fondamentale.connect(filtre);
+  couleur.connect(mix).connect(filtre);
+  filtre.connect(enveloppe);
+  enveloppe.connect(ctx.destination);
+  enveloppe.connect(echo).connect(echoGain).connect(ctx.destination);
+
+  fondamentale.start(t);
+  couleur.start(t);
+  fondamentale.stop(t + duree + 0.03);
+  couleur.stop(t + duree + 0.03);
+}
+
+function froissement(depart,niveau) {
+  const ctx = audioContext;
+  const t = ctx.currentTime + depart;
+  const tampon = ctx.createBuffer(
+    1,Math.round(ctx.sampleRate * 0.16),ctx.sampleRate
+  );
+  const data = tampon.getChannelData(0);
+
+  for (let i = 0; i < data.length; i++) {
+    data[i] = Math.random() * 2 - 1;
+  }
+
+  const souffle = ctx.createBufferSource();
+  const filtre = ctx.createBiquadFilter();
+  const gain = ctx.createGain();
+
+  souffle.buffer = tampon;
+  filtre.type = "lowpass";
+  filtre.frequency.value = 520;
+  gain.gain.setValueAtTime(0.0001,t);
+  gain.gain.exponentialRampToValueAtTime(niveau,t + 0.018);
+  gain.gain.exponentialRampToValueAtTime(0.0001,t + 0.15);
+  souffle.connect(filtre).connect(gain).connect(ctx.destination);
+  souffle.start(t);
+}
+
+function cue(kind) {
+  if (
+    soundMuted || $("exit").open || !audioContext ||
+    audioContext.state !== "running" || state.step === 11
+  ) return;
+
+  const phrases = {
+    step:[
+      [[146.83,0,0.38,0.012],[220,0.09,0.34,0.006]],
+      [[130.81,0,0.38,0.012],[196,0.10,0.31,0.006]]
+    ],
+    threshold:[
+      [110,0,1,0.015],[174.61,0.22,0.9,0.011],[220,0.5,0.66,0.007]
+    ],
+    choice:[
+      [130.81,0,0.9,0.016],[164.81,0.27,0.75,0.011],[220,0.51,0.56,0.006]
+    ],
+    seal:[
+      [98,0,1.2,0.017],[146.83,0.24,1.08,0.012],[196,0.62,0.72,0.008]
+    ],
+    open:[
+      [146.83,0,1.02,0.014],[174.61,0.28,0.87,0.010],[220,0.53,0.62,0.006]
+    ]
+  };
+
+  const notes = kind === "step"
+    ? phrases.step[alternatingSteps++ % 2]
+    : phrases[kind];
+
+  if (!notes) return;
+  notes.forEach(note => frappe(...note));
+  if (kind !== "step") froissement(0.02,0.007);
+}
+
+$("sound").onclick = () => {
+  if (musicBlocked && !soundMuted && musicAllowed()) {
+    unlockSound();
+    syncMusic();
+    return;
+  }
+
+  soundMuted = !soundMuted;
+  const video = $("video");
+  if (video) video.muted = soundMuted;
+
+  if (soundMuted) {
+    if (audioContext?.state === "running") {
+      audioContext.suspend().catch(() => {});
+    }
+  } else {
+    unlockSound();
+  }
+
+  updateSoundButton();
+  syncMusic();
+};
+
+$("loginForm").addEventListener("submit",async event => {
+  event.preventDefault();
+  unlockSound();
+
+  if (!TEST_MODE && new Date() < OPEN) {
+    $("message").textContent =
+      "Le Scellé ouvrira le 30 septembre, à l'heure du Québec.";
+    return;
+  }
+
+  const code = $("code").value.trim().toUpperCase();
+  const email = $("email").value.trim().toLowerCase();
+  if (!code || !email) return;
+
+  startMusicOnGesture();
+  $("loginButton").disabled = true;
+  $("message").textContent = "Vérification de ton accès…";
+
+  try {
+    const response = await fetch(
+      API + "?" + new URLSearchParams({code,email}),
+      {cache:"no-store"}
+    );
+
+    if (!response.ok) throw Error("Service indisponible");
+    const result = await response.json();
+
+    if (!result.ok) {
+      $("message").textContent = result.error || "Accès refusé.";
+      return;
+    }
+
+    state.code = code;
+    state.email = email;
+    state.participant = result.participant;
+
+    sessionStorage.setItem(
+      "locktober-session",
+      JSON.stringify({code,email})
+    );
+
+    restore();
+    $("login").hidden = true;
+    $("ritual").hidden = false;
+    render();
+    cue("open");
+  } catch {
+    $("message").textContent =
+      "Connexion impossible. Réessaie dans quelques instants.";
+  } finally {
+    $("loginButton").disabled = false;
+    if ($("ritual").hidden) music.pause();
+  }
+});
+
+const confirmation = () => TEST_MODE
+  ? '<p class="note">Répétition terminée. Aucun courriel n’est préparé ni envoyé. Le 30 septembre, le parcours officiel repartira au début.</p>'
+  : '<a id="send" class="button" href="#">Envoyer ma confirmation</a><p class="note">Ton application de courriel s’ouvrira. Envoie le message et joins la photo de ton enveloppe si tu en as pris une.</p>';
