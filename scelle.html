@@ -32,7 +32,7 @@
     .agreement{max-height:42vh;overflow:auto;text-align:left;padding:15px;border:1px solid var(--ligne);border-radius:8px}.agreement p{margin:0 0 12px}.agreement p:last-child{margin:0}
     .count{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin:23px 0}.count span{min-width:65px;color:var(--muted);font-size:.72rem;text-transform:uppercase}
     .count b{display:block;color:var(--clair);font:600 3rem/1 'Cormorant Garamond',serif}
-    video{display:block;width:min(100%,340px);max-height:68vh;margin:20px auto;border:1px solid var(--or);border-radius:9px}
+    video{display:block;width:min(100%,340px);max-height:68vh;margin:20px auto;border:1px solid var(--or);border-radius:9px;background:#090608}
     #message{color:#eab1b8;min-height:1.5em}#progress{color:var(--muted);font-size:.76rem;letter-spacing:.12em;text-align:center}
     #photoPreview{display:block;max-width:100%;max-height:280px;margin:16px auto}#photoPreview[hidden]{display:none}
     .test-ribbon{max-width:760px;margin:0 auto 16px;padding:8px 14px;border:1px solid var(--ligne);border-radius:7px;color:var(--clair);text-align:center;font-size:.76rem;letter-spacing:.13em}
@@ -55,7 +55,7 @@
 <body>
   <header>
     <a href="index.html"><strong>DÉ</strong> · LE SCELLÉ</a>
-    <div class="header-actions"><button id="sound" class="button secondary quiet" type="button">Son activé</button><button id="leave" class="button secondary quiet" type="button">Quitter</button></div>
+    <div class="header-actions"><button id="sound" class="button secondary quiet" type="button" aria-pressed="true">Son activé</button><button id="leave" class="button secondary quiet" type="button">Quitter</button></div>
   </header>
   <main>
     <div id="testRibbon" class="test-ribbon" hidden>RÉPÉTITION · AUCUN COURRIEL ENVOYÉ</div>
@@ -78,14 +78,18 @@
   </main>
   <dialog id="exit"><h2>Quitter le parcours?</h2><p>Ta progression sur cet appareil sera conservée.</p><div class="buttons"><button id="resume" class="button secondary">Revenir</button><a href="index.html" class="button">Quitter</a></div></dialog>
   <script>
-    /* UNE SEULE VALEUR À CHANGER POUR L'OUVERTURE OFFICIELLE */
-    const TEST_MODE = true; // Remplacer true par false le 30 septembre.
+    // Remplacer true par false pour l'ouverture officielle.
+    const TEST_MODE = true;
+    const VIDEO_FILE = "acceptation.mp4";
     const API="https://script.google.com/macros/s/AKfycbyhhlRxw3miDYY2BF2hC3-Rdf1GQiD8VmMqSwN5dNK91U7o0D4KoL2OfIvYaw8NkHbc/exec";
     const START=new Date("2026-10-01T00:00:00-04:00");
     const OPEN=new Date("2026-09-30T00:00:00-04:00");
     const $=id=>document.getElementById(id);
     const state={step:0,code:"",email:"",participant:null,agreement:false,accepted:false,photoUrl:""};
-    let audioContext=null, soundMuted=false, testCountdownUntil=null;
+    let audioContext=null, soundMuted=false, testCountdownUntil=null, sealTimer=null;
+    let musicBlocked=false, musicPending=false, alternatingSteps=0;
+    const music=new Audio("ambiance-scelle.mp3");
+    music.loop=true;music.preload="auto";music.volume=.42;
     $("testRibbon").hidden=!TEST_MODE;
     const safe=v=>String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     const name=()=>safe(state.participant?.pseudo||"participant");
@@ -105,42 +109,89 @@
         }
       }catch{}
     }
+    function updateSoundButton(){
+      $("sound").textContent=soundMuted?"Son coupé":musicBlocked&&musicAllowed()?"Activer le son":"Son activé";
+      $("sound").setAttribute("aria-pressed",String(!soundMuted));
+    }
+    // L'ambiance continue pendant les clics et cesse dès l'étape affichée 8.
+    function musicAllowed(){return !soundMuted&&!$("ritual").hidden&&!$("exit").open&&state.step<7}
+    function syncMusic(){
+      if(!musicAllowed()){music.pause();updateSoundButton();return}
+      if(musicPending||!music.paused)return;
+      musicPending=true;
+      music.play().then(()=>{
+        musicBlocked=false;
+        if(!musicAllowed())music.pause();
+      }).catch(()=>{musicBlocked=musicAllowed()}).finally(()=>{
+        musicPending=false;updateSoundButton();
+      });
+    }
     function unlockSound(){
       if(soundMuted)return;
       try{
-        const Audio=window.AudioContext||window.webkitAudioContext;
-        if(!Audio)return;
-        audioContext??=new Audio();
+        const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+        if(!AudioContextClass)return;
+        audioContext??=new AudioContextClass();
         if(audioContext.state==="suspended")audioContext.resume().catch(()=>{});
       }catch{}
     }
-    function tone(frequency,offset,length,volume=.025,type="sine"){
-      if(!audioContext||soundMuted||audioContext.state!=="running")return;
-      const t=audioContext.currentTime+offset;
-      const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();
-      oscillator.type=type;oscillator.frequency.setValueAtTime(frequency,t);
-      gain.gain.setValueAtTime(.0001,t);
-      gain.gain.exponentialRampToValueAtTime(volume,t+.025);
-      gain.gain.exponentialRampToValueAtTime(.0001,t+length);
-      oscillator.connect(gain).connect(audioContext.destination);
-      oscillator.start(t);oscillator.stop(t+length+.02);
+    function frappe(freq,depart,duree,niveau){
+      const ctx=audioContext,t=ctx.currentTime+depart;
+      const fondamentale=ctx.createOscillator(),couleur=ctx.createOscillator();
+      const mix=ctx.createGain(),filtre=ctx.createBiquadFilter(),enveloppe=ctx.createGain();
+      const echo=ctx.createDelay(.4),echoGain=ctx.createGain();
+      fondamentale.type="triangle";
+      fondamentale.frequency.setValueAtTime(freq*1.012,t);
+      fondamentale.frequency.exponentialRampToValueAtTime(freq,t+.1);
+      couleur.type="sine";couleur.frequency.value=freq*2.003;mix.gain.value=.16;
+      filtre.type="lowpass";filtre.frequency.value=690;
+      enveloppe.gain.setValueAtTime(.0001,t);
+      enveloppe.gain.exponentialRampToValueAtTime(niveau,t+.035);
+      enveloppe.gain.exponentialRampToValueAtTime(.0001,t+duree);
+      echo.delayTime.value=.17;echoGain.gain.value=.13;
+      fondamentale.connect(filtre);couleur.connect(mix).connect(filtre);
+      filtre.connect(enveloppe);enveloppe.connect(ctx.destination);
+      enveloppe.connect(echo).connect(echoGain).connect(ctx.destination);
+      fondamentale.start(t);couleur.start(t);
+      fondamentale.stop(t+duree+.03);couleur.stop(t+duree+.03);
+    }
+    function froissement(depart,niveau){
+      const ctx=audioContext,t=ctx.currentTime+depart;
+      const tampon=ctx.createBuffer(1,Math.round(ctx.sampleRate*.16),ctx.sampleRate);
+      const data=tampon.getChannelData(0);
+      for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+      const souffle=ctx.createBufferSource(),filtre=ctx.createBiquadFilter(),gain=ctx.createGain();
+      souffle.buffer=tampon;filtre.type="lowpass";filtre.frequency.value=520;
+      gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(niveau,t+.018);
+      gain.gain.exponentialRampToValueAtTime(.0001,t+.15);
+      souffle.connect(filtre).connect(gain).connect(ctx.destination);souffle.start(t);
     }
     function cue(kind){
-      if(kind==="step")tone(392,0,.28,.014);
-      if(kind==="threshold"){tone(293.7,0,.75,.025);tone(440,.32,.8,.018)}
-      if(kind==="choice"){tone(220,0,.7,.025,"triangle");tone(329.6,.35,1,.022)}
-      if(kind==="seal"){tone(392,0,.5,.026);tone(587.3,.17,.9,.019)}
-      if(kind==="open"){tone(261.6,0,.55,.018);tone(392,.24,.8,.017)}
+      if(soundMuted||$("exit").open||!audioContext||audioContext.state!=="running"||state.step===11)return;
+      const phrases={
+        step:[[[146.83,0,.38,.012],[220,.09,.34,.006]],[[130.81,0,.38,.012],[196,.10,.31,.006]]],
+        threshold:[[110,0,1,.015],[174.61,.22,.9,.011],[220,.5,.66,.007]],
+        choice:[[130.81,0,.9,.016],[164.81,.27,.75,.011],[220,.51,.56,.006]],
+        seal:[[98,0,1.2,.017],[146.83,.24,1.08,.012],[196,.62,.72,.008]],
+        open:[[146.83,0,1.02,.014],[174.61,.28,.87,.010],[220,.53,.62,.006]]
+      };
+      const notes=kind==="step"?phrases.step[alternatingSteps++%2]:phrases[kind];
+      if(!notes)return;
+      notes.forEach(note=>frappe(...note));
+      if(kind!=="step")froissement(.02,.007);
     }
     $("sound").onclick=()=>{
+      if(musicBlocked&&!soundMuted&&musicAllowed()){
+        unlockSound();syncMusic();return;
+      }
       soundMuted=!soundMuted;
-      $("sound").textContent=soundMuted?"Son coupé":"Son activé";
       const video=$("video");if(video)video.muted=soundMuted;
-      if(!soundMuted){unlockSound();cue("step")}
+      if(soundMuted){if(audioContext?.state==="running")audioContext.suspend().catch(()=>{})}
+      else unlockSound();
+      updateSoundButton();syncMusic();
     };
     $("loginForm").addEventListener("submit",async e=>{
-      e.preventDefault();
-      unlockSound();
+      e.preventDefault();unlockSound();
       if(!TEST_MODE&&new Date()<OPEN){$("message").textContent="Le Scellé ouvrira le 30 septembre, à l'heure du Québec.";return}
       const code=$("code").value.trim().toUpperCase(),email=$("email").value.trim().toLowerCase();
       if(!code||!email)return;
@@ -153,7 +204,7 @@
         state.code=code;state.email=email;state.participant=result.participant;
         sessionStorage.setItem("locktober-session",JSON.stringify({code,email}));
         restore();$("login").hidden=true;$("ritual").hidden=false;
-        cue("open");render();
+        render();cue("open");
       }catch{$("message").textContent="Connexion impossible. Réessaie dans quelques instants."}
       finally{$("loginButton").disabled=false}
     });
@@ -173,7 +224,7 @@
         '<span class="eyebrow">La décision</span><h2>Que choisis-tu?</h2><p>La clef du Scellé peut maintenant m’être remise symboliquement.</p><div class="buttons"><button class="button secondary" id="keep">Je garde ma clef</button><button class="button" id="give">Je remets ma clef à Dame Émanuelle</button></div>',
         '<span class="eyebrow">La remise</span><h2>Le geste est posé</h2><div class="scene"><div class="scene-key" aria-hidden="true">⚿</div><div class="scene-envelope"><div class="wax">DÉ</div></div></div><p>Ton choix vient de franchir le seuil.</p>',
         '<span class="eyebrow">Mon acceptation</span><div class="reveal"><h2>J’ai ta clef.</h2><p>Tu viens de me confier davantage qu’un objet.</p><p class="gold">Ton choix.</p><p>Pour ce Locktober, j’accepte de guider ton plaisir.</p></div>'+number(),
-        '<span class="eyebrow">Pour toi</span><h2>Écoute-moi</h2><video id="video" controls playsinline preload="metadata" src="scelle-acceptation.mp4">Ton navigateur ne peut pas lire cette vidéo.</video><p id="videoStatus" class="note">Si la vidéo est déjà installée, elle démarrera ici.</p>',
+        '<span class="eyebrow">Pour toi</span><h2>Écoute-moi</h2><video id="video" controls playsinline preload="metadata" src="'+safe(VIDEO_FILE)+'">Ton navigateur ne peut pas lire cette vidéo.</video><p id="videoStatus" class="note" role="status">Appuie sur Lecture pour m’écouter.</p>',
         '<span class="eyebrow">Sous clef</span><h2>Locktober commence dans</h2><div id="count" class="count"></div><p>Le Scellé est prêt.</p>'+confirmation(),
         '<span class="eyebrow">1er octobre 2026</span><h1>Jour 1</h1><p>Le mois commence, <strong>'+name()+'</strong>.</p>'+confirmation()+'<div class="buttons"><a class="button secondary" href="portal.html">Entrer dans mon portail</a></div>'
       ];
@@ -186,7 +237,10 @@
       $("send").href="mailto:cuiretfantaisies@gmail.com?subject="+subject+"&body="+body;
     }
     function render(){
-      $("progress").textContent="ÉTAPE "+(state.step+1)+" SUR 14 · "+name();
+      clearTimeout(sealTimer);
+      const oldVideo=$("video");if(oldVideo)oldVideo.pause();
+      syncMusic();
+      $("progress").textContent="ÉTAPE "+(state.step+1)+" SUR 14 · "+(state.participant?.pseudo||"participant");
       $("card").innerHTML=screen(state.step);
       $("card").classList.remove("enter");void $("card").offsetWidth;$("card").classList.add("enter");
       $("next").hidden=[8,12,13].includes(state.step);
@@ -202,7 +256,7 @@
       if(state.step===5)$("photo").addEventListener("change",e=>{
         const file=e.target.files[0],note=$("photoNote"),preview=$("photoPreview");
         if(state.photoUrl)URL.revokeObjectURL(state.photoUrl);
-        preview.hidden=true;if(!file)return;
+        state.photoUrl="";preview.hidden=true;if(!file)return;
         if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>10*1024*1024){note.textContent="Choisis une image JPEG, PNG ou WebP de moins de 10 Mo.";return}
         state.photoUrl=URL.createObjectURL(file);preview.src=state.photoUrl;preview.hidden=false;
         note.textContent="Photo prête sur cet appareil. Tu pourras la joindre au courriel final.";
@@ -213,16 +267,27 @@
           $("card").innerHTML='<h2>Ton choix est respecté</h2><p>Le Scellé reste ouvert tant que tu ne choisis pas de me remettre la clef.</p><button class="button" id="return">Revenir au choix</button>';
           $("back").hidden=true;$("return").onclick=render;
         };
-        $("give").onclick=()=>{if(!state.agreement)return;state.accepted=true;state.step=9;store();cue("choice");render();setTimeout(()=>cue("seal"),3000)};
+        $("give").onclick=()=>{
+          if(!state.agreement)return;
+          state.accepted=true;state.step=9;store();render();cue("choice");
+          sealTimer=setTimeout(()=>{if(state.step===9&&!$("exit").open)cue("seal")},3000);
+        };
       }
       if(state.step===11){
-        const video=$("video");video.muted=soundMuted;
-        video.addEventListener("error",()=>$("videoStatus").textContent="La vidéo sera disponible lorsqu’elle aura été ajoutée au site.");
-        video.play().then(()=>$("videoStatus").hidden=true).catch(()=>$("videoStatus").textContent="Appuie sur Lecture si ton navigateur attend ton geste.");
+        const video=$("video"),status=$("videoStatus");video.muted=soundMuted;
+        const videoError=()=>{
+          status.hidden=false;status.textContent="La vidéo ne peut pas être chargée. Réessaie dans quelques instants.";
+        };
+        video.addEventListener("error",videoError);
+        video.addEventListener("playing",()=>{status.hidden=true});
+        // Lecture sur un geste : la voix reste audible même sur mobile.
+        // Les contrôles permettent aussi de revoir la vidéo.
+        video.addEventListener("play",()=>{music.pause()});
       }
       if(state.step===12){tick();if(state.step!==12)return}
       if(!TEST_MODE&&(state.step===12||state.step===13))emailLink();
-      $("card").focus({preventScroll:true});scrollTo({top:0,behavior:"smooth"});
+      $("card").focus({preventScroll:true});
+      scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
     }
     function tick(){
       if(state.step!==12)return;
@@ -235,193 +300,32 @@
     }
     $("next").onclick=()=>{
       if(state.step===6&&!state.agreement)return;
-      state.step=Math.min(13,state.step+1);store();
-      cue(state.step===7?"threshold":"step");render();
+      state.step=Math.min(13,state.step+1);store();render();
+      cue(state.step===7?"threshold":"step");
     };
-    $("back").onclick=()=>{state.step=Math.max(0,state.step-1);store();render()};
-    $("leave").onclick=$("pause").onclick=()=>{if($("exit").showModal)$("exit").showModal();else location.href="index.html"};
+    $("back").onclick=()=>{state.step=Math.max(0,state.step-1);store();render();cue("step")};
+    $("leave").onclick=$("pause").onclick=()=>{
+      clearTimeout(sealTimer);music.pause();
+      const video=$("video");if(video)video.pause();
+      if(audioContext?.state==="running")audioContext.suspend().catch(()=>{});
+      if($("exit").showModal)$("exit").showModal();else location.href="index.html";
+    };
     $("resume").onclick=()=>$("exit").close();
+    $("exit").addEventListener("close",()=>{unlockSound();syncMusic()});
     setInterval(tick,1000);
-  </script>
-  <script>
-  const musiqueScelle = new Audio("ambiance-scelle.mp3");
-  musiqueScelle.loop = true;
-  musiqueScelle.preload = "auto";
-  musiqueScelle.volume = 0.42;
-  let musiqueBloquee = false;
-  let effetEnCours = false;
-  let repriseEffet = null;
-  let pasAlternes = 0;
-
-  // Sons plus profonds : deux voix filtrées, une courte résonance,
-  // et un léger froissement sur les moments importants.
-  function frappe(freq, depart, duree, niveau) {
-    const ctx = audioContext;
-    const t = ctx.currentTime + depart;
-    const fondamentale = ctx.createOscillator();
-    const couleur = ctx.createOscillator();
-    const mix = ctx.createGain();
-    const filtre = ctx.createBiquadFilter();
-    const enveloppe = ctx.createGain();
-    const echo = ctx.createDelay(0.4);
-    const echoGain = ctx.createGain();
-
-    fondamentale.type = "triangle";
-    fondamentale.frequency.setValueAtTime(freq * 1.012, t);
-    fondamentale.frequency.exponentialRampToValueAtTime(freq, t + 0.1);
-    couleur.type = "sine";
-    couleur.frequency.value = freq * 2.003;
-    mix.gain.value = 0.16;
-    filtre.type = "lowpass";
-    filtre.frequency.value = 690;
-    enveloppe.gain.setValueAtTime(0.0001, t);
-    enveloppe.gain.exponentialRampToValueAtTime(niveau, t + 0.035);
-    enveloppe.gain.exponentialRampToValueAtTime(0.0001, t + duree);
-    echo.delayTime.value = 0.17;
-    echoGain.gain.value = 0.13;
-
-    fondamentale.connect(filtre);
-    couleur.connect(mix).connect(filtre);
-    filtre.connect(enveloppe);
-    enveloppe.connect(ctx.destination);
-    enveloppe.connect(echo).connect(echoGain).connect(ctx.destination);
-    fondamentale.start(t);
-    couleur.start(t);
-    fondamentale.stop(t + duree + 0.03);
-    couleur.stop(t + duree + 0.03);
-  }
-
-  function froissement(depart, niveau) {
-    const ctx = audioContext;
-    const t = ctx.currentTime + depart;
-    const tampon = ctx.createBuffer(1, Math.round(ctx.sampleRate * 0.16), ctx.sampleRate);
-    const data = tampon.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-    const souffle = ctx.createBufferSource();
-    const filtre = ctx.createBiquadFilter();
-    const gain = ctx.createGain();
-    souffle.buffer = tampon;
-    filtre.type = "lowpass";
-    filtre.frequency.value = 520;
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(niveau, t + 0.018);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
-    souffle.connect(filtre).connect(gain).connect(ctx.destination);
-    souffle.start(t);
-  }
-
-  cue = function(kind) {
-    if (soundMuted || !audioContext || audioContext.state !== "running") return;
-    const phrases = {
-      step: [
-        {duree: 0.55, notes: [[146.83, 0, 0.38, 0.012], [220, 0.09, 0.34, 0.006]]},
-        {duree: 0.55, notes: [[130.81, 0, 0.38, 0.012], [196, 0.10, 0.31, 0.006]]}
-      ],
-      threshold: {duree: 1.35, notes: [[110, 0, 1.0, 0.015], [174.61, 0.22, 0.9, 0.011], [220, 0.50, 0.66, 0.007]]},
-      choice: {duree: 1.25, notes: [[130.81, 0, 0.9, 0.016], [164.81, 0.27, 0.75, 0.011], [220, 0.51, 0.56, 0.006]]},
-      seal: {duree: 1.65, notes: [[98, 0, 1.2, 0.017], [146.83, 0.24, 1.08, 0.012], [196, 0.62, 0.72, 0.008]]},
-      open: {duree: 1.40, notes: [[146.83, 0, 1.02, 0.014], [174.61, 0.28, 0.87, 0.010], [220, 0.53, 0.62, 0.006]]}
-    };
-    const phrase = kind === "step" ? phrases.step[pasAlternes++ % 2] : phrases[kind];
-    if (!phrase) return;
-
-    clearTimeout(repriseEffet);
-    effetEnCours = true;
-    musiqueScelle.pause();
-    phrase.notes.forEach(note => frappe(...note));
-    if (kind !== "step") froissement(0.02, 0.007);
-
-    repriseEffet = setTimeout(() => {
-      effetEnCours = false;
-      if (!soundMuted && !document.getElementById("ritual").hidden &&
-          !document.getElementById("exit").open) {
-        musiqueScelle.play().catch(() => {
-          musiqueBloquee = true;
-          document.getElementById("sound").textContent = "Activer le son";
-        });
-      }
-    }, (phrase.duree + 0.23) * 1000);
-  };
-
-  // Le geste d'entrée lance l'ambiance; les effets la suspendent brièvement.
-  document.getElementById("loginForm").addEventListener("submit", () => {
-    if (!TEST_MODE && new Date() < OPEN) return;
-    if (soundMuted) return;
-    musiqueScelle.play().catch(() => {
-      musiqueBloquee = true;
-      document.getElementById("sound").textContent = "Activer le son";
-    });
-  }, true);
-
-  document.getElementById("sound").addEventListener("click", event => {
-    if (musiqueBloquee) {
-      event.stopImmediatePropagation();
-      musiqueScelle.play().then(() => {
-        musiqueBloquee = false;
-        event.target.textContent = "Son activé";
-      }).catch(() => {
-        event.target.textContent = "Activer le son";
+    if(TEST_MODE){
+      const resetWrap=document.createElement("div");resetWrap.className="buttons";
+      const resetButton=document.createElement("button");resetButton.type="button";
+      resetButton.className="button secondary";resetButton.textContent="Recommencer le test";
+      resetWrap.append(resetButton);
+      $("ritual").insertBefore(resetWrap,document.querySelector("#ritual .safety-footer"));
+      resetButton.addEventListener("click",()=>{
+        localStorage.removeItem(storageKey());
+        if(state.photoUrl)URL.revokeObjectURL(state.photoUrl);
+        state.step=0;state.agreement=false;state.accepted=false;state.photoUrl="";
+        testCountdownUntil=null;render();
       });
-      return;
     }
-    if (soundMuted) {
-      if (!effetEnCours) musiqueScelle.play().catch(() => {});
-    } else {
-      musiqueScelle.pause();
-    }
-  }, true);
-
-  document.addEventListener("play", event => {
-    if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.09;
-  }, true);
-  document.addEventListener("pause", event => {
-    if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.42;
-  }, true);
-  document.addEventListener("ended", event => {
-    if (event.target.tagName === "VIDEO") musiqueScelle.volume = 0.42;
-  }, true);
-
-  for (const id of ["leave", "pause"]) {
-    document.getElementById(id).addEventListener("click", () => musiqueScelle.pause(), true);
-  }
-  document.getElementById("resume").addEventListener("click", () => {
-    if (!soundMuted && !effetEnCours) musiqueScelle.play().catch(() => {});
-  }, true);
-
-  new MutationObserver(() => {
-    if (!document.getElementById("login").hidden &&
-        document.getElementById("message").textContent &&
-        !document.getElementById("message").textContent.includes("Vérification")) {
-      musiqueScelle.pause();
-    }
-  }).observe(document.getElementById("message"), {childList: true, subtree: true});
-</script>
-  <script>
-  if (TEST_MODE) {
-    const resetWrap = document.createElement("div");
-    resetWrap.className = "buttons";
-
-    const resetButton = document.createElement("button");
-    resetButton.type = "button";
-    resetButton.className = "button secondary";
-    resetButton.textContent = "Recommencer le test";
-
-    resetWrap.append(resetButton);
-    document.getElementById("ritual").insertBefore(
-      resetWrap,
-      document.querySelector("#ritual .safety-footer")
-    );
-
-    resetButton.addEventListener("click", () => {
-      localStorage.removeItem(storageKey());
-      state.step = 0;
-      state.agreement = false;
-      state.accepted = false;
-      state.photoUrl = "";
-      testCountdownUntil = null;
-      render();
-    });
-  }
-</script>
+  </script>
 </body>
 </html>
