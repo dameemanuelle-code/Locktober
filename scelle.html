@@ -1,331 +1,136 @@
 <!doctype html>
 <html lang="fr-CA">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#10090c">
-  <title>Le Scellé de Dame Émanuelle — Locktober 2026</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{--or:#cda765;--clair:#f5e2bf;--texte:#eee5dc;--muted:#b7a8a0;--ligne:#74583b}
-    *{box-sizing:border-box}html{background:#090608}body{margin:0;min-height:100svh;color:var(--texte);font:16px/1.6 Inter,system-ui,sans-serif;background:radial-gradient(ellipse at 50% 105%,#4d1529 0%,#190c12 48%,#090608 85%);background-attachment:fixed}
-    [hidden]{display:none!important}button,input,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.38;cursor:not-allowed}a{color:var(--or)}
-    header{max-width:840px;margin:auto;padding:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #725633}
-    header a{text-decoration:none;color:var(--clair);letter-spacing:.12em;font-size:.88rem}header strong{color:var(--or);font:700 1.5rem 'Cormorant Garamond',serif}
-    .header-actions{display:flex;gap:8px}main{max-width:760px;margin:auto;padding:22px 18px 54px}
-    .card{position:relative;overflow:hidden;min-height:500px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:clamp(24px,6vw,48px);border:1px solid var(--ligne);border-radius:16px;background:linear-gradient(160deg,#391623ed,#120a0cee);box-shadow:0 26px 75px #0009;text-align:center}
-    .card::before{content:"";position:absolute;inset:-55%;pointer-events:none;background:radial-gradient(circle,#d4a65412 0%,transparent 42%);animation:breath 8s ease-in-out infinite alternate}
-    .card>*{position:relative}h1,h2{font:600 clamp(2.7rem,9vw,5rem)/.97 'Cormorant Garamond',serif;color:var(--clair);margin:12px 0 22px}h2{font-size:clamp(2.3rem,8vw,4rem)}
-    p{max-width:590px;margin:15px auto}.eyebrow{color:var(--or);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}.gold{color:var(--clair);font-weight:600}
-    label{display:block;text-align:left;margin:14px 0 6px;color:var(--muted);font-size:.88rem}
-    input[type=text],input[type=email]{width:100%;padding:13px;border:1px solid #806346;border-radius:7px;background:#100b0d;color:white}
-    form{width:min(100%,560px)}.buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0}
-    .button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 22px;border:1px solid var(--or);border-radius:7px;color:#21120c;background:linear-gradient(#f1d59c,#bb8b43);font-weight:600;text-decoration:none}
-    .button.secondary{background:#130c10;color:var(--clair)}.button.quiet{min-height:38px;padding:7px 12px;font-size:.77rem}
-    :focus-visible{outline:3px solid var(--clair);outline-offset:3px}.check{display:flex;gap:12px;text-align:left;align-items:flex-start;padding:13px;margin:19px 0;border-block:1px solid var(--ligne);width:min(100%,570px)}
-    .check input{width:23px;height:23px;flex:none;accent-color:var(--or)}.check label{margin:0;color:var(--texte);font-size:1rem}
-    .note{padding:12px 16px;border-left:2px solid var(--or);background:#ffffff0b;color:var(--muted);font-size:.82rem;text-align:left}
-    .seal{display:inline-block;margin:18px auto;padding:15px 23px;border:1px solid var(--or);border-radius:8px;color:var(--clair);font-weight:600;letter-spacing:.13em;box-shadow:0 0 28px #cda76518}
-    .list{text-align:left;max-width:460px;margin:20px auto}.list li{padding:5px 0}
-    .agreement{max-height:42vh;overflow:auto;text-align:left;padding:15px;border:1px solid var(--ligne);border-radius:8px}.agreement p{margin:0 0 12px}.agreement p:last-child{margin:0}
-    .count{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin:23px 0}.count span{min-width:65px;color:var(--muted);font-size:.72rem;text-transform:uppercase}
-    .count b{display:block;color:var(--clair);font:600 3rem/1 'Cormorant Garamond',serif}
-    video{display:block;width:min(100%,340px);max-height:68vh;margin:20px auto;border:1px solid var(--or);border-radius:9px;background:#090608}
-    #message{color:#eab1b8;min-height:1.5em}#progress{color:var(--muted);font-size:.76rem;letter-spacing:.12em;text-align:center}
-    #photoPreview{display:block;max-width:100%;max-height:280px;margin:16px auto}#photoPreview[hidden]{display:none}
-    .test-ribbon{max-width:760px;margin:0 auto 16px;padding:8px 14px;border:1px solid var(--ligne);border-radius:7px;color:var(--clair);text-align:center;font-size:.76rem;letter-spacing:.13em}
-    .scene{position:relative;width:min(100%,380px);height:260px;margin:15px auto}.scene-key{position:absolute;top:0;left:calc(50% - 26px);font:600 7rem/1 'Cormorant Garamond',serif;color:var(--clair);filter:drop-shadow(0 0 15px #daa95a88);animation:drop 2.8s .4s both}
-    .scene-envelope{position:absolute;bottom:15px;left:calc(50% - 115px);width:230px;height:125px;display:grid;place-items:center;border:1px solid var(--or);border-radius:5px;background:linear-gradient(145deg,#572137,#1b0a11);box-shadow:0 16px 35px #0009}
-    .scene-envelope::before{content:"";position:absolute;inset:0;clip-path:polygon(0 0,50% 52%,100% 0);border-top:1px solid var(--or);background:#b4863720}
-    .wax{z-index:1;width:58px;height:58px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 28%,#f3d994,#a87835 75%);color:#2b170d;font:700 1.4rem 'Cormorant Garamond',serif;animation:wax 1s 3s both}
-    .reveal>*{animation:appear .9s both}.reveal>*:nth-child(2){animation-delay:.8s}.reveal>*:nth-child(3){animation-delay:1.7s}.reveal>*:nth-child(4){animation-delay:2.6s}
-    .card.enter>*{animation:appear .65s both}.card.enter .reveal>*{animation:appear .9s both}
-    .card.enter .reveal>*:nth-child(2){animation-delay:.8s}.card.enter .reveal>*:nth-child(3){animation-delay:1.7s}.card.enter .reveal>*:nth-child(4){animation-delay:2.6s}
-    .safety-footer{max-width:640px;margin:25px auto;padding:16px;border-top:1px solid #6d5238;color:#ac9b90;font-size:.76rem;text-align:center}
-    dialog{max-width:450px;border:1px solid var(--or);border-radius:12px;padding:25px;background:#1b1015;color:var(--texte)}dialog::backdrop{background:#000b}
-    @keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-    @keyframes breath{from{transform:scale(.8);opacity:.3}to{transform:scale(1.2);opacity:.7}}
-    @keyframes drop{0%{opacity:1;transform:translateY(0) rotate(-25deg)}80%{opacity:1}100%{opacity:0;transform:translateY(130px) scale(.5) rotate(20deg)}}
-    @keyframes wax{from{opacity:0;transform:scale(2)}to{opacity:1;transform:scale(1)}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;scroll-behavior:auto!important}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10090c">
+<title>Le Scellé de Dame Émanuelle — Locktober 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--or:#cda765;--clair:#f5e2bf;--texte:#eee5dc;--muted:#b7a8a0;--ligne:#74583b}
+*{box-sizing:border-box}
+html{background:#090608}
+body{margin:0;min-height:100svh;color:var(--texte);font:16px/1.6 Inter,system-ui,sans-serif;background:radial-gradient(ellipse at 50% 105%,#4d1529 0%,#190c12 48%,#090608 85%);background-attachment:fixed}
+[hidden]{display:none!important}
+button,input,a{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.38;cursor:not-allowed}
+a{color:var(--or)}
+header{max-width:840px;margin:auto;padding:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #725633}
+header a{text-decoration:none;color:var(--clair);letter-spacing:.12em;font-size:.88rem}
+header strong{color:var(--or);font:700 1.5rem 'Cormorant Garamond',serif}
+.header-actions{display:flex;gap:8px}
+main{max-width:760px;margin:auto;padding:22px 18px 54px}
+.card{position:relative;overflow:hidden;min-height:500px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:clamp(24px,6vw,48px);border:1px solid var(--ligne);border-radius:16px;background:linear-gradient(160deg,#391623ed,#120a0cee);box-shadow:0 26px 75px #0009;text-align:center}
+.card::before{content:"";position:absolute;inset:-55%;pointer-events:none;background:radial-gradient(circle,#d4a65412 0%,transparent 42%);animation:breath 8s ease-in-out infinite alternate}
+.card>*{position:relative}
+h1,h2{font:600 clamp(2.7rem,9vw,5rem)/.97 'Cormorant Garamond',serif;color:var(--clair);margin:12px 0 22px}
+h2{font-size:clamp(2.3rem,8vw,4rem)}
+p{max-width:590px;margin:15px auto}
+.eyebrow{color:var(--or);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
+.gold{color:var(--clair);font-weight:600}
+label{display:block;text-align:left;margin:14px 0 6px;color:var(--muted);font-size:.88rem}
+input[type=text],input[type=email]{width:100%;padding:13px;border:1px solid #806346;border-radius:7px;background:#100b0d;color:white}
+form{width:min(100%,560px)}
+.buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 22px;border:1px solid var(--or);border-radius:7px;color:#21120c;background:linear-gradient(#f1d59c,#bb8b43);font-weight:600;text-decoration:none}
+.button.secondary{background:#130c10;color:var(--clair)}
+.button.quiet{min-height:38px;padding:7px 12px;font-size:.77rem}
+:focus-visible{outline:3px solid var(--clair);outline-offset:3px}
+.check{display:flex;gap:12px;text-align:left;align-items:flex-start;padding:13px;margin:19px 0;border-block:1px solid var(--ligne);width:min(100%,570px)}
+.check input{width:23px;height:23px;flex:none;accent-color:var(--or)}
+.check label{margin:0;color:var(--texte);font-size:1rem}
+.note{padding:12px 16px;border-left:2px solid var(--or);background:#ffffff0b;color:var(--muted);font-size:.82rem;text-align:left}
+.seal{display:inline-block;margin:18px auto;padding:15px 23px;border:1px solid var(--or);border-radius:8px;color:var(--clair);font-weight:600;letter-spacing:.13em;box-shadow:0 0 28px #cda76518}
+.list{text-align:left;max-width:460px;margin:20px auto}
+.list li{padding:5px 0}
+.agreement{max-height:42vh;overflow:auto;text-align:left;padding:15px;border:1px solid var(--ligne);border-radius:8px}
+.agreement p{margin:0 0 12px}
+.agreement p:last-child{margin:0}
+.count{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin:23px 0}
+.count span{min-width:65px;color:var(--muted);font-size:.72rem;text-transform:uppercase}
+.count b{display:block;color:var(--clair);font:600 3rem/1 'Cormorant Garamond',serif}
+video{display:block;width:min(100%,340px);max-height:68vh;margin:20px auto;border:1px solid var(--or);border-radius:9px;background:#090608}
+#message{color:#eab1b8;min-height:1.5em}
+#progress{color:var(--muted);font-size:.76rem;letter-spacing:.12em;text-align:center}
+#photoPreview{display:block;max-width:100%;max-height:280px;margin:16px auto}
+.test-ribbon{max-width:760px;margin:0 auto 16px;padding:8px 14px;border:1px solid var(--ligne);border-radius:7px;color:var(--clair);text-align:center;font-size:.76rem;letter-spacing:.13em}
+.scene{position:relative;width:min(100%,380px);height:260px;margin:15px auto}
+.scene-key{position:absolute;top:0;left:calc(50% - 26px);font:600 7rem/1 'Cormorant Garamond',serif;color:var(--clair);filter:drop-shadow(0 0 15px #daa95a88);animation:drop 2.8s .4s both}
+.scene-envelope{position:absolute;bottom:15px;left:calc(50% - 115px);width:230px;height:125px;display:grid;place-items:center;border:1px solid var(--or);border-radius:5px;background:linear-gradient(145deg,#572137,#1b0a11);box-shadow:0 16px 35px #0009}
+.scene-envelope::before{content:"";position:absolute;inset:0;clip-path:polygon(0 0,50% 52%,100% 0);border-top:1px solid var(--or);background:#b4863720}
+.wax{z-index:1;width:58px;height:58px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 28%,#f3d994,#a87835 75%);color:#2b170d;font:700 1.4rem 'Cormorant Garamond',serif;animation:wax 1s 3s both}
+.reveal>*{animation:appear .9s both}
+.reveal>*:nth-child(2){animation-delay:.8s}
+.reveal>*:nth-child(3){animation-delay:1.7s}
+.reveal>*:nth-child(4){animation-delay:2.6s}
+.card.enter>*{animation:appear .65s both}
+.card.enter .reveal>*{animation:appear .9s both}
+.card.enter .reveal>*:nth-child(2){animation-delay:.8s}
+.card.enter .reveal>*:nth-child(3){animation-delay:1.7s}
+.card.enter .reveal>*:nth-child(4){animation-delay:2.6s}
+.safety-footer{max-width:640px;margin:25px auto;padding:16px;border-top:1px solid #6d5238;color:#ac9b90;font-size:.76rem;text-align:center}
+dialog{max-width:450px;border:1px solid var(--or);border-radius:12px;padding:25px;background:#1b1015;color:var(--texte)}
+dialog::backdrop{background:#000b}
+@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes breath{from{transform:scale(.8);opacity:.3}to{transform:scale(1.2);opacity:.7}}
+@keyframes drop{0%{opacity:1;transform:translateY(0) rotate(-25deg)}80%{opacity:1}100%{opacity:0;transform:translateY(130px) scale(.5) rotate(20deg)}}
+@keyframes wax{from{opacity:0;transform:scale(2)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
-  <header>
-    <a href="index.html"><strong>DÉ</strong> · LE SCELLÉ</a>
-    <div class="header-actions"><button id="sound" class="button secondary quiet" type="button" aria-pressed="true">Son activé</button><button id="leave" class="button secondary quiet" type="button">Quitter</button></div>
-  </header>
-  <main>
-    <div id="testRibbon" class="test-ribbon" hidden>RÉPÉTITION · AUCUN COURRIEL ENVOYÉ</div>
-    <section id="login" class="card">
-      <span class="eyebrow">30 septembre 2026</span><h1>Le Scellé de<br>Dame Émanuelle</h1>
-      <p>Entre avec le code et le courriel liés à ton inscription.</p>
-      <form id="loginForm">
-        <label for="code">Code personnel</label><input id="code" type="text" autocomplete="off" required>
-        <label for="email">Courriel d'inscription</label><input id="email" type="email" autocomplete="email" required>
-        <div class="buttons"><button class="button" id="loginButton">Entrer dans le Scellé</button></div>
-      </form>
-      <p id="message" role="status"></p>
-    </section>
-    <section id="ritual" hidden>
-      <p id="progress"></p><article class="card" id="card" tabindex="-1"></article>
-      <div class="buttons"><button class="button secondary" id="back">Retour</button><button class="button" id="next">Continuer</button></div>
-      <div class="buttons"><button class="button secondary" id="pause">Faire une pause ou arrêter</button></div>
-      <p class="safety-footer">Ta deuxième clef reste accessible en tout temps. Tu peux interrompre le parcours et retirer la cage dès que ta santé ou ta sécurité l’exige.</p>
-    </section>
-  </main>
-  <dialog id="exit"><h2>Quitter le parcours?</h2><p>Ta progression sur cet appareil sera conservée.</p><div class="buttons"><button id="resume" class="button secondary">Revenir</button><a href="index.html" class="button">Quitter</a></div></dialog>
-  <script>
-    // Remplacer true par false pour l'ouverture officielle.
-    const TEST_MODE = true;
-    const VIDEO_FILE = "acceptation.mp4";
-    const API="https://script.google.com/macros/s/AKfycbyhhlRxw3miDYY2BF2hC3-Rdf1GQiD8VmMqSwN5dNK91U7o0D4KoL2OfIvYaw8NkHbc/exec";
-    const START=new Date("2026-10-01T00:00:00-04:00");
-    const OPEN=new Date("2026-09-30T00:00:00-04:00");
-    const $=id=>document.getElementById(id);
-    const state={step:0,code:"",email:"",participant:null,agreement:false,accepted:false,photoUrl:""};
-    let audioContext=null, soundMuted=false, testCountdownUntil=null, sealTimer=null;
-    let musicBlocked=false, musicPending=false, alternatingSteps=0;
-    const music=new Audio("ambiance-scelle.mp3");
-    music.loop=true;music.preload="auto";music.volume=.42;
-    $("testRibbon").hidden=!TEST_MODE;
-    const safe=v=>String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-    const name=()=>safe(state.participant?.pseudo||"participant");
-    const plan=()=>safe(state.participant?.forfait||"Le Registre");
-    const number=()=>'<div class="seal">SCELLÉ '+safe(state.code)+'</div>';
-    const check=(id,label)=>'<div class="check"><input type="checkbox" id="'+id+'"><label for="'+id+'">'+label+'</label></div>';
-    const storageKey=()=>`locktober-scelle-${TEST_MODE?"test-":"officiel-"}${state.code}`;
-    const store=()=>localStorage.setItem(storageKey(),JSON.stringify({step:state.step,agreement:state.agreement,accepted:state.accepted}));
-    function restore(){
-      try{
-        const v=JSON.parse(localStorage.getItem(storageKey()));
-        if(Number.isInteger(v?.step)){
-          state.step=Math.max(0,Math.min(13,v.step));
-          state.agreement=!!v.agreement;state.accepted=!!v.accepted;
-          if(state.step>6&&!state.agreement)state.step=6;
-          if(state.step>8&&!state.accepted)state.step=8;
-        }
-      }catch{}
-    }
-    function updateSoundButton(){
-      $("sound").textContent=soundMuted?"Son coupé":musicBlocked&&musicAllowed()?"Activer le son":"Son activé";
-      $("sound").setAttribute("aria-pressed",String(!soundMuted));
-    }
-    // L'ambiance continue pendant les clics et cesse dès l'étape affichée 8.
-    function musicAllowed(){return !soundMuted&&!$("ritual").hidden&&!$("exit").open&&state.step<7}
-    function syncMusic(){
-      if(!musicAllowed()){music.pause();updateSoundButton();return}
-      if(musicPending||!music.paused)return;
-      musicPending=true;
-      music.play().then(()=>{
-        musicBlocked=false;
-        if(!musicAllowed())music.pause();
-      }).catch(()=>{musicBlocked=musicAllowed()}).finally(()=>{
-        musicPending=false;updateSoundButton();
-      });
-    }
-    function unlockSound(){
-      if(soundMuted)return;
-      try{
-        const AudioContextClass=window.AudioContext||window.webkitAudioContext;
-        if(!AudioContextClass)return;
-        audioContext??=new AudioContextClass();
-        if(audioContext.state==="suspended")audioContext.resume().catch(()=>{});
-      }catch{}
-    }
-    function frappe(freq,depart,duree,niveau){
-      const ctx=audioContext,t=ctx.currentTime+depart;
-      const fondamentale=ctx.createOscillator(),couleur=ctx.createOscillator();
-      const mix=ctx.createGain(),filtre=ctx.createBiquadFilter(),enveloppe=ctx.createGain();
-      const echo=ctx.createDelay(.4),echoGain=ctx.createGain();
-      fondamentale.type="triangle";
-      fondamentale.frequency.setValueAtTime(freq*1.012,t);
-      fondamentale.frequency.exponentialRampToValueAtTime(freq,t+.1);
-      couleur.type="sine";couleur.frequency.value=freq*2.003;mix.gain.value=.16;
-      filtre.type="lowpass";filtre.frequency.value=690;
-      enveloppe.gain.setValueAtTime(.0001,t);
-      enveloppe.gain.exponentialRampToValueAtTime(niveau,t+.035);
-      enveloppe.gain.exponentialRampToValueAtTime(.0001,t+duree);
-      echo.delayTime.value=.17;echoGain.gain.value=.13;
-      fondamentale.connect(filtre);couleur.connect(mix).connect(filtre);
-      filtre.connect(enveloppe);enveloppe.connect(ctx.destination);
-      enveloppe.connect(echo).connect(echoGain).connect(ctx.destination);
-      fondamentale.start(t);couleur.start(t);
-      fondamentale.stop(t+duree+.03);couleur.stop(t+duree+.03);
-    }
-    function froissement(depart,niveau){
-      const ctx=audioContext,t=ctx.currentTime+depart;
-      const tampon=ctx.createBuffer(1,Math.round(ctx.sampleRate*.16),ctx.sampleRate);
-      const data=tampon.getChannelData(0);
-      for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
-      const souffle=ctx.createBufferSource(),filtre=ctx.createBiquadFilter(),gain=ctx.createGain();
-      souffle.buffer=tampon;filtre.type="lowpass";filtre.frequency.value=520;
-      gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(niveau,t+.018);
-      gain.gain.exponentialRampToValueAtTime(.0001,t+.15);
-      souffle.connect(filtre).connect(gain).connect(ctx.destination);souffle.start(t);
-    }
-    function cue(kind){
-      if(soundMuted||$("exit").open||!audioContext||audioContext.state!=="running"||state.step===11)return;
-      const phrases={
-        step:[[[146.83,0,.38,.012],[220,.09,.34,.006]],[[130.81,0,.38,.012],[196,.10,.31,.006]]],
-        threshold:[[110,0,1,.015],[174.61,.22,.9,.011],[220,.5,.66,.007]],
-        choice:[[130.81,0,.9,.016],[164.81,.27,.75,.011],[220,.51,.56,.006]],
-        seal:[[98,0,1.2,.017],[146.83,.24,1.08,.012],[196,.62,.72,.008]],
-        open:[[146.83,0,1.02,.014],[174.61,.28,.87,.010],[220,.53,.62,.006]]
-      };
-      const notes=kind==="step"?phrases.step[alternatingSteps++%2]:phrases[kind];
-      if(!notes)return;
-      notes.forEach(note=>frappe(...note));
-      if(kind!=="step")froissement(.02,.007);
-    }
-    $("sound").onclick=()=>{
-      if(musicBlocked&&!soundMuted&&musicAllowed()){
-        unlockSound();syncMusic();return;
-      }
-      soundMuted=!soundMuted;
-      const video=$("video");if(video)video.muted=soundMuted;
-      if(soundMuted){if(audioContext?.state==="running")audioContext.suspend().catch(()=>{})}
-      else unlockSound();
-      updateSoundButton();syncMusic();
-    };
-    $("loginForm").addEventListener("submit",async e=>{
-      e.preventDefault();unlockSound();
-      if(!TEST_MODE&&new Date()<OPEN){$("message").textContent="Le Scellé ouvrira le 30 septembre, à l'heure du Québec.";return}
-      const code=$("code").value.trim().toUpperCase(),email=$("email").value.trim().toLowerCase();
-      if(!code||!email)return;
-      $("loginButton").disabled=true;$("message").textContent="Vérification de ton accès…";
-      try{
-        const response=await fetch(API+"?"+new URLSearchParams({code,email}),{cache:"no-store"});
-        if(!response.ok)throw Error("Service indisponible");
-        const result=await response.json();
-        if(!result.ok){$("message").textContent=result.error||"Accès refusé.";return}
-        state.code=code;state.email=email;state.participant=result.participant;
-        sessionStorage.setItem("locktober-session",JSON.stringify({code,email}));
-        restore();$("login").hidden=true;$("ritual").hidden=false;
-        render();cue("open");
-      }catch{$("message").textContent="Connexion impossible. Réessaie dans quelques instants."}
-      finally{$("loginButton").disabled=false}
-    });
-    const confirmation=()=>TEST_MODE
-      ? '<p class="note">Répétition terminée. Aucun courriel n’est préparé ni envoyé. Le 30 septembre, le parcours officiel repartira au début.</p>'
-      : '<a id="send" class="button" href="#">Envoyer ma confirmation</a><p class="note">Ton application de courriel s’ouvrira. Envoie le message et joins la photo de ton enveloppe si tu en as pris une.</p>';
-    function screen(n){
-      const steps=[
-        '<span class="eyebrow">30 septembre 2026</span><h1>Entre dans le Scellé</h1><p>Bonsoir, <strong>'+name()+'</strong>.</p><p>Ce geste ouvre ton parcours <strong>'+plan()+'</strong>. Prends ton temps : chaque étape t’appartient.</p>'+number(),
-        '<span class="eyebrow">Préparation</span><h2>Dispose les objets devant toi</h2><ul class="list"><li>Ta cage</li><li>Deux clefs</li><li>Une enveloppe opaque</li><li>Un stylo</li></ul>'+check("ready","Tout est prêt. Je veux poursuivre."),
-        '<span class="eyebrow">Le rituel</span><h2>Installe-toi</h2><p>Prends un moment pour entrer dans l’atmosphère. Il n’y a rien à précipiter.</p><p class="gold">Quand tu es prêt, avance.</p>',
-        '<span class="eyebrow">Deux clefs, deux rôles</span><h2>Choisis celle du Scellé</h2><p>Une clef reste avec toi. L’autre devient celle de cette enveloppe.</p>',
-        '<span class="eyebrow">L’enveloppe</span><h2>Inscris ton numéro</h2><p>Glisse la clef principale dans l’enveloppe, inscris ton numéro et ferme-la.</p>'+number()+check("envelope","L’enveloppe est fermée."),
-        '<span class="eyebrow">Le Scellé préparé</span><h2>Garde une trace</h2>'+number()+'<label for="photo">Photo de l’enveloppe fermée</label><input id="photo" type="file" accept="image/jpeg,image/png,image/webp" capture="environment"><img id="photoPreview" alt="Aperçu de l’enveloppe" hidden><p class="note" id="photoNote">La photo reste sur ton appareil. Tu pourras la joindre au courriel final.</p>',
-        '<span class="eyebrow">Avant ton choix</span><h2>Notre entente</h2><p>'+name()+' · '+plan()+' · '+safe(state.code)+'</p><div class="agreement"><p><b>Participation.</b> Tu confirmes avoir au moins 18 ans et choisir librement de participer. Tu peux poser tes limites, demander une pause ou te retirer en tout temps, sans sanction.</p><p><b>Engagement.</b> Du 1er au 31 octobre 2026, tu suis les règles de ta formule et confirmes avoir lu le Guide Locktober 2026.</p><p><b>Confidentialité.</b> Tes renseignements, échanges et photographies demeurent confidentiels. Aucune image identifiable ne sera publiée sans autorisation distincte et explicite.</p><p><b>Fin de participation.</b> Dame Émanuelle peut y mettre fin si les renseignements sont inexacts ou en cas de comportement inapproprié.</p></div>'+check("agreement","J’ai lu cette entente, j’ai au moins 18 ans et j’y consens librement."),
-        '<div class="reveal"><span class="eyebrow">Le seuil</span><h2>Jusqu’ici, tu pouvais encore choisir.</h2><p>Dans quelques instants, tu décideras si cette clef devient la mienne pour Locktober.</p><p class="gold">Je te laisse ce moment.</p></div>',
-        '<span class="eyebrow">La décision</span><h2>Que choisis-tu?</h2><p>La clef du Scellé peut maintenant m’être remise symboliquement.</p><div class="buttons"><button class="button secondary" id="keep">Je garde ma clef</button><button class="button" id="give">Je remets ma clef à Dame Émanuelle</button></div>',
-        '<span class="eyebrow">La remise</span><h2>Le geste est posé</h2><div class="scene"><div class="scene-key" aria-hidden="true">⚿</div><div class="scene-envelope"><div class="wax">DÉ</div></div></div><p>Ton choix vient de franchir le seuil.</p>',
-        '<span class="eyebrow">Mon acceptation</span><div class="reveal"><h2>J’ai ta clef.</h2><p>Tu viens de me confier davantage qu’un objet.</p><p class="gold">Ton choix.</p><p>Pour ce Locktober, j’accepte de guider ton plaisir.</p></div>'+number(),
-        '<span class="eyebrow">Pour toi</span><h2>Écoute-moi</h2><video id="video" controls playsinline preload="metadata" src="'+safe(VIDEO_FILE)+'">Ton navigateur ne peut pas lire cette vidéo.</video><p id="videoStatus" class="note" role="status">Appuie sur Lecture pour m’écouter.</p>',
-        '<span class="eyebrow">Sous clef</span><h2>Locktober commence dans</h2><div id="count" class="count"></div><p>Le Scellé est prêt.</p>'+confirmation(),
-        '<span class="eyebrow">1er octobre 2026</span><h1>Jour 1</h1><p>Le mois commence, <strong>'+name()+'</strong>.</p>'+confirmation()+'<div class="buttons"><a class="button secondary" href="portal.html">Entrer dans mon portail</a></div>'
-      ];
-      return steps[n];
-    }
-    function emailLink(){
-      if(TEST_MODE)return;
-      const subject=encodeURIComponent("Scellé Locktober 2026 — "+state.code);
-      const body=encodeURIComponent("Dame Émanuelle,\n\nJe confirme avoir lu et accepté l’entente de participation au Locktober 2026. J’ai au moins 18 ans, je participe librement et je te remets symboliquement ma clef principale.\n\nPseudonyme : "+(state.participant?.pseudo||"")+"\nCode : "+state.code+"\nFormule : "+(state.participant?.forfait||"")+"\nDate : "+new Date().toLocaleString("fr-CA",{timeZone:"America/Toronto"})+"\n\nPhoto de l’enveloppe : à joindre manuellement si prise.");
-      $("send").href="mailto:cuiretfantaisies@gmail.com?subject="+subject+"&body="+body;
-    }
-    function render(){
-      clearTimeout(sealTimer);
-      const oldVideo=$("video");if(oldVideo)oldVideo.pause();
-      syncMusic();
-      $("progress").textContent="ÉTAPE "+(state.step+1)+" SUR 14 · "+(state.participant?.pseudo||"participant");
-      $("card").innerHTML=screen(state.step);
-      $("card").classList.remove("enter");void $("card").offsetWidth;$("card").classList.add("enter");
-      $("next").hidden=[8,12,13].includes(state.step);
-      $("back").hidden=[0,9,10,13].includes(state.step);
-      $("next").disabled=[1,4,6].includes(state.step);
-      if(state.step===6&&state.agreement){$("agreement").checked=true;$("next").disabled=false}
-      for(const id of ["ready","envelope","agreement"]){
-        const el=$(id);if(el)el.addEventListener("change",()=>{
-          $("next").disabled=!el.checked;
-          if(id==="agreement"){state.agreement=el.checked;store()}
-        });
-      }
-      if(state.step===5)$("photo").addEventListener("change",e=>{
-        const file=e.target.files[0],note=$("photoNote"),preview=$("photoPreview");
-        if(state.photoUrl)URL.revokeObjectURL(state.photoUrl);
-        state.photoUrl="";preview.hidden=true;if(!file)return;
-        if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>10*1024*1024){note.textContent="Choisis une image JPEG, PNG ou WebP de moins de 10 Mo.";return}
-        state.photoUrl=URL.createObjectURL(file);preview.src=state.photoUrl;preview.hidden=false;
-        note.textContent="Photo prête sur cet appareil. Tu pourras la joindre au courriel final.";
-      });
-      if(state.step===8){
-        $("keep").onclick=()=>{
-          state.accepted=false;store();
-          $("card").innerHTML='<h2>Ton choix est respecté</h2><p>Le Scellé reste ouvert tant que tu ne choisis pas de me remettre la clef.</p><button class="button" id="return">Revenir au choix</button>';
-          $("back").hidden=true;$("return").onclick=render;
-        };
-        $("give").onclick=()=>{
-          if(!state.agreement)return;
-          state.accepted=true;state.step=9;store();render();cue("choice");
-          sealTimer=setTimeout(()=>{if(state.step===9&&!$("exit").open)cue("seal")},3000);
-        };
-      }
-      if(state.step===11){
-        const video=$("video"),status=$("videoStatus");video.muted=soundMuted;
-        const videoError=()=>{
-          status.hidden=false;status.textContent="La vidéo ne peut pas être chargée. Réessaie dans quelques instants.";
-        };
-        video.addEventListener("error",videoError);
-        video.addEventListener("playing",()=>{status.hidden=true});
-        // Lecture sur un geste : la voix reste audible même sur mobile.
-        // Les contrôles permettent aussi de revoir la vidéo.
-        video.addEventListener("play",()=>{music.pause()});
-      }
-      if(state.step===12){tick();if(state.step!==12)return}
-      if(!TEST_MODE&&(state.step===12||state.step===13))emailLink();
-      $("card").focus({preventScroll:true});
-      scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
-    }
-    function tick(){
-      if(state.step!==12)return;
-      const target=TEST_MODE?(testCountdownUntil??=Date.now()+15000):START;
-      let seconds=Math.max(0,Math.ceil((target-new Date())/1000));
-      if(seconds===0){state.step=13;store();render();return}
-      const days=Math.floor(seconds/86400);seconds%=86400;
-      const hours=Math.floor(seconds/3600),minutes=Math.floor(seconds%3600/60),secs=seconds%60;
-      $("count").innerHTML=[[days,"jours"],[hours,"heures"],[minutes,"minutes"],[secs,"secondes"]].map(([v,l])=>'<span><b>'+String(v).padStart(2,"0")+'</b>'+l+'</span>').join("");
-    }
-    $("next").onclick=()=>{
-      if(state.step===6&&!state.agreement)return;
-      state.step=Math.min(13,state.step+1);store();render();
-      cue(state.step===7?"threshold":"step");
-    };
-    $("back").onclick=()=>{state.step=Math.max(0,state.step-1);store();render();cue("step")};
-    $("leave").onclick=$("pause").onclick=()=>{
-      clearTimeout(sealTimer);music.pause();
-      const video=$("video");if(video)video.pause();
-      if(audioContext?.state==="running")audioContext.suspend().catch(()=>{});
-      if($("exit").showModal)$("exit").showModal();else location.href="index.html";
-    };
-    $("resume").onclick=()=>$("exit").close();
-    $("exit").addEventListener("close",()=>{unlockSound();syncMusic()});
-    setInterval(tick,1000);
-    if(TEST_MODE){
-      const resetWrap=document.createElement("div");resetWrap.className="buttons";
-      const resetButton=document.createElement("button");resetButton.type="button";
-      resetButton.className="button secondary";resetButton.textContent="Recommencer le test";
-      resetWrap.append(resetButton);
-      $("ritual").insertBefore(resetWrap,document.querySelector("#ritual .safety-footer"));
-      resetButton.addEventListener("click",()=>{
-        localStorage.removeItem(storageKey());
-        if(state.photoUrl)URL.revokeObjectURL(state.photoUrl);
-        state.step=0;state.agreement=false;state.accepted=false;state.photoUrl="";
-        testCountdownUntil=null;render();
-      });
-    }
-  </script>
-</body>
-</html>
+<header>
+  <a href="index.html"><strong>DÉ</strong> · LE SCELLÉ</a>
+  <div class="header-actions">
+    <button id="sound" class="button secondary quiet" type="button" aria-pressed="true">Son activé</button>
+    <button id="leave" class="button secondary quiet" type="button">Quitter</button>
+  </div>
+</header>
+
+<main>
+  <div id="testRibbon" class="test-ribbon" hidden>RÉPÉTITION · AUCUN COURRIEL ENVOYÉ</div>
+
+  <section id="login" class="card">
+    <span class="eyebrow">30 septembre 2026</span>
+    <h1>Le Scellé de<br>Dame Émanuelle</h1>
+    <p>Entre avec le code et le courriel liés à ton inscription.</p>
+
+    <form id="loginForm">
+      <label for="code">Code personnel</label>
+      <input id="code" type="text" autocomplete="off" required>
+      <label for="email">Courriel d'inscription</label>
+      <input id="email" type="email" autocomplete="email" required>
+      <div class="buttons">
+        <button class="button" id="loginButton">Entrer dans le Scellé</button>
+      </div>
+    </form>
+    <p id="message" role="status"></p>
+  </section>
+
+  <section id="ritual" hidden>
+    <p id="progress"></p>
+    <article class="card" id="card" tabindex="-1"></article>
+    <div class="buttons">
+      <button class="button secondary" id="back">Retour</button>
+      <button class="button" id="next">Continuer</button>
+    </div>
+    <div class="buttons">
+      <button class="button secondary" id="pause">Faire une pause ou arrêter</button>
+    </div>
+    <p class="safety-footer">Ta deuxième clef reste accessible en tout temps. Tu peux interrompre le parcours et retirer la cage dès que ta santé ou ta sécurité l’exige.</p>
+  </section>
+</main>
+
+<dialog id="exit">
+  <h2>Quitter le parcours?</h2>
+  <p>Ta progression sur cet appareil sera conservée.</p>
+  <div class="buttons">
+    <button id="resume" class="button secondary">Revenir</button>
+    <a href="index.html" class="button">Quitter</a>
+  </div>
+</dialog>
+
+<script>
