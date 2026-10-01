@@ -122,7 +122,7 @@ textarea{min-height:100px;resize:vertical;padding:12px;color:var(--cream);backgr
       <button class="btn btn-primary" type="submit">Accéder au portail</button>
     </form>
     <p class="login-message" id="loginMessage"></p>
-    <small>Accès réservé aux participants inscrits.<br><a href="scelle.html">Vivre le Scellé du 30 septembre</a></small>
+    <small>Accès réservé aux participants inscrits.</small>
   </div>
 </section>
 
@@ -133,7 +133,7 @@ textarea{min-height:100px;resize:vertical;padding:12px;color:var(--cream);backgr
       <div><strong>LOCKTOBER 2026</strong><span>sous le contrôle de Dame Émanuelle</span></div>
     </div>
     <div class="header-right">
-      <a href="scelle.html" class="logout-btn">Le Scellé</a>
+      <a href="https://script.google.com/macros/s/AKfycbzm2k7JViYehmc6OBpym_SUwcXOWnCgvDzr_IrmvKZhqbIQKjaAsXyqPU3OFstP0nj7ng/exec" class="logout-btn" target="_blank" rel="noopener noreferrer">Le Salon</a>
       <span class="plan-badge" id="headerPlan">—</span>
       <a href="portal-en.html" class="logout-btn">EN</a>
       <button class="logout-btn" id="logoutBtn">Quitter</button>
@@ -142,6 +142,7 @@ textarea{min-height:100px;resize:vertical;padding:12px;color:var(--cream);backgr
 
   <main class="portal-main">
     <div class="test-banner hidden" id="testBanner">Mode essai — les tirages et validations faits ici restent séparés du parcours officiel. Pour revenir au portail normal, enlève <b>?test=1</b> de l’adresse.</div>
+
     <section class="welcome">
       <div>
         <span class="eyebrow">Ton espace personnel</span>
@@ -264,7 +265,7 @@ textarea{min-height:100px;resize:vertical;padding:12px;color:var(--cream);backgr
         </article>
       </div>
     </section>
-https://script.google.com/macros/s/AKfycbzm2k7JViYehmc6OBpym_SUwcXOWnCgvDzr_IrmvKZhqbIQKjaAsXyqPU3OFstP0nj7ng/exec
+
     <section class="history-section">
       <div class="section-header"><span class="eyebrow">Progression</span><h2>Historique des validations</h2></div>
       <div class="history-grid" id="historyGrid"></div>
@@ -448,6 +449,7 @@ $("loginForm").addEventListener("submit", async event => {
   const button = event.currentTarget.querySelector("button");
   button.disabled = true;
   $("loginMessage").textContent = "Vérification de ton accès…";
+
   try {
     const result = await authenticate(accessCode, email);
     if (!result.ok) {
