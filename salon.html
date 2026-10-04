@@ -5,98 +5,651 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#110c0d">
   <title>Salon de chasteté — Dame Émanuelle</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap');
-    :root{--ink:#110c0d;--wine:#64202e;--gold:#cba568;--cream:#f5eade;--muted:#c4b4ad}
+
+    :root{
+      --ink:#110c0d;
+      --panel:#211719;
+      --wine:#64202e;
+      --gold:#cba568;
+      --cream:#f5eade;
+      --muted:#c4b4ad;
+      --line:#765c45
+    }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{margin:0;color:var(--cream);background:var(--ink);font:16px/1.5 'DM Sans',Arial,sans-serif}
+
+    body{
+      margin:0;
+      color:var(--cream);
+      background:var(--ink);
+      font:16px/1.5 'DM Sans',Arial,sans-serif
+    }
+
     button,input,textarea{font:inherit}
     button{cursor:pointer}
     button:disabled{cursor:wait;opacity:.55}
+    a{color:var(--gold)}
     .hidden{display:none!important}
-    .room{min-height:100vh;position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 1%,#f3dcc2 0,#e2bfa2 17%,#70554c 37%,#1d1516 67%,#090708 100%)}
-    .room:before,.room:after{content:"";position:absolute;top:0;bottom:0;z-index:-1;pointer-events:none}
-    .room:before{left:0;width:21%;background:repeating-linear-gradient(92deg,#260909 0 11px,#6e101a 24px,#2c080d 38px,#130608 53px);box-shadow:20px 0 50px #15090a}
-    .room:after{right:0;width:20%;background:repeating-linear-gradient(89deg,#050505 0 15px,#282729 29px,#060607 47px);box-shadow:-20px 0 50px #0c0a0b}
-    .topbar{background:#0b0809ef;border-bottom:1px solid #7c5944;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px max(24px,calc((100vw - 1380px)/2));position:relative;z-index:3}
-    .brand{display:flex;align-items:center;gap:12px}
-    .seal{display:grid;place-items:center;border:1px solid var(--gold);color:var(--gold);border-radius:50%;width:42px;height:42px;font:27px 'Cormorant Garamond',serif}
-    .brand small{display:block;color:#a99b92;font-size:11px;letter-spacing:.13em}
-    .brand strong{letter-spacing:.14em;font-size:13px}
-    .header-actions{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--gold)}
-    .ghost{border:1px solid #8b6a4b;color:var(--gold);background:#120d0dd9;padding:9px 13px;border-radius:5px}
-    .hero{text-align:center;position:relative;padding:73px 20px 86px;max-width:1000px;margin:auto}
-    .pendant{position:absolute;left:50%;top:0;transform:translateX(-50%);height:88px;width:2px;background:#241816}
-    .pendant:after{content:"";position:absolute;top:69px;left:-42px;border-radius:60% 60% 45% 45%;width:86px;height:39px;background:linear-gradient(#070707 5%,#1d1716 62%,#c48a47 88%,#ffdba1);box-shadow:0 18px 46px 20px #dc9c5c67}
-    .hero .eyebrow{color:#6c322b;letter-spacing:.23em;font-size:12px;font-weight:700;text-transform:uppercase;margin:45px 0 8px}
-    .hero h1{color:#221519;text-shadow:0 2px 13px #f5dfc9;font:600 clamp(49px,7vw,87px)/.95 'Cormorant Garamond',Georgia,serif;margin:0}
-    .hero p{color:#382528;text-shadow:0 1px 15px #f7e0c8;font-size:15px;max-width:560px;margin:15px auto 0}
-    .ornament{display:flex;justify-content:center;gap:16px;align-items:center;margin:17px auto;color:#8f6439;font-size:21px}
-    .ornament:before,.ornament:after{content:"";width:78px;height:1px;background:#a27143}
-    .shell{width:min(1380px,calc(100% - 36px));margin:-25px auto 70px;position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(310px,.85fr);gap:22px;align-items:start}
-    .column{display:grid;gap:22px}
-    .panel{border:1px solid #9d7951;background:linear-gradient(145deg,#271a1ded,#160f12fa);box-shadow:0 20px 55px #0009,inset 0 0 0 5px #100c0d,inset 0 0 0 6px #5c4637;border-radius:8px;padding:27px;min-width:0}
-    .panel h2{font:500 39px/1 'Cormorant Garamond',Georgia,serif;margin:0 0 8px}
-    .kicker{color:var(--gold);font-size:11px;letter-spacing:.2em;font-weight:700;text-transform:uppercase;margin:0 0 7px}
-    .sub{color:var(--muted);font-size:13px;margin:0 0 20px}
-    .board{min-height:460px;padding:22px;background:radial-gradient(circle at top,#573026,#291b18 65%,#1c1412);border:12px ridge #9a683d;box-shadow:inset 0 0 0 2px #d4a263,inset 0 0 30px #0009;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-content:start}
-    .empty{grid-column:1/-1;align-self:center;text-align:center;color:#e3cdb0;font:28px 'Cormorant Garamond',serif;padding:50px 12px}
-    .postit{background:#f1d9ad;color:#24171a;padding:20px 18px 16px;box-shadow:5px 8px 14px #0009;min-height:160px;transform:rotate(-1deg);position:relative;overflow-wrap:anywhere}
-    .postit:nth-child(3n){background:#e8b7ab;transform:rotate(1.5deg)}
-    .postit:nth-child(4n){background:#d9d2bb;transform:rotate(-1.8deg)}
-    .postit:before{content:"";position:absolute;top:0;left:50%;width:45px;height:17px;transform:translateX(-50%) rotate(2deg);background:#c99b7966}
-    .postit p{white-space:pre-wrap;margin:11px 0;font:24px/1.05 'Cormorant Garamond',serif}
-    .photo-card{color:#2a1c1b;background:#f3e9d8;padding:9px 9px 16px;box-shadow:5px 8px 14px #0009;transform:rotate(1deg);overflow-wrap:anywhere}
-    .photo-card img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#443232;display:block}
-    .photo-card p{margin:9px 4px;font-size:13px}
-    .photo-card .meta{padding:0 4px}
-    .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;opacity:.8;font-size:11px}
-    .report{border:0;color:inherit;background:transparent;text-decoration:underline;padding:2px;font-size:11px}
-    .composer{margin-top:22px}
-    .tabs{display:flex;gap:8px;margin-bottom:14px}
-    .tab{border:1px solid #7d5b40;border-radius:4px;background:transparent;color:var(--cream);padding:8px 14px}
-    .tab.active{background:var(--wine);border-color:var(--gold)}
-    label{display:block;color:#dec7a8;font-size:13px;margin:12px 0 6px}
-    textarea,input{width:100%;background:#0d090b;border:1px solid #6c5050;color:#fff4eb;border-radius:5px;padding:12px;outline:none}
-    textarea:focus,input:focus{border-color:var(--gold)}
-    textarea{resize:vertical;min-height:80px}
-    input[type=file]{font-size:13px}
-    .hint{font-size:12px;color:var(--muted);margin:8px 0 14px}
-    .preview{max-width:220px;max-height:170px;object-fit:contain;margin:10px 0;border:1px solid #8e6f54}
-    .primary{border:1px solid #b8865d;background:linear-gradient(120deg,#7a2637,#4e1827);color:white;border-radius:5px;padding:11px 18px;font-weight:700}
-    .primary:hover,.ghost:hover{filter:brightness(1.15)}
-    .formline{display:flex;justify-content:space-between;gap:12px;align-items:center}
-    .status{color:#e7bb7b;font-size:12px;min-height:18px;margin:8px 0}
-    .chat-list{height:355px;overflow:auto;display:flex;flex-direction:column-reverse;gap:10px;padding:9px;background:#0c080a;border:1px solid #5d4641;border-radius:5px}
-    .bubble{border-left:2px solid var(--gold);padding:9px 11px;background:#2a1b20;overflow-wrap:anywhere;font-size:13px}
-    .bubble p{margin:4px 0;white-space:pre-wrap}
-    .bubble .meta{color:#c5ad9d}
-    .chat-list .empty{font-size:23px;padding:60px 12px}
-    .praise-list{display:grid;gap:10px;max-height:330px;overflow:auto}
-    .praise{border:1px solid #6c4a42;background:#311b23;padding:13px 15px;overflow-wrap:anywhere}
-    .praise p{font:23px/1.15 'Cormorant Garamond',serif;white-space:pre-wrap;margin:3px 0 10px}
-    .moderation{border-color:#d7a86b}
-    .pending{border:1px dashed #b8865d;margin:12px 0;padding:12px}
-    .pending .controls{display:flex;gap:8px;margin-top:10px}
-    .pending img{max-width:160px;max-height:130px;display:block;margin:7px 0}
-    .footer{text-align:center;color:#ad9990;font-size:12px;padding:0 18px 35px;position:relative;z-index:2}
-    .gate{width:min(460px,calc(100% - 32px));margin:-15px auto 80px;position:relative;z-index:2}
-    .gate .panel{padding:30px}
-    .gate h2{font-size:42px}
-    .gate input{margin-bottom:10px}
-    .gate .primary{width:100%;margin-top:10px}
-    .switch{margin-top:18px;text-align:center}
-    .switch button{border:0;background:transparent;text-decoration:underline;color:var(--gold);font-size:13px}
-    @media(max-width:890px){.shell{grid-template-columns:1fr}.hero{padding-bottom:50px}.panel{padding:20px}.room:before,.room:after{width:13%}}
-    @media(max-width:540px){.topbar{padding:10px 14px}.brand small{display:none}.brand strong{font-size:11px}.header-actions{gap:7px;font-size:11px}.ghost{padding:7px}.hero{padding:65px 18px 43px}.hero h1{font-size:54px}.hero p{font-size:13px}.shell{width:calc(100% - 20px);gap:12px}.column{gap:12px}.panel{padding:17px}.panel h2{font-size:34px}.board{grid-template-columns:1fr;padding:12px;border-width:8px;min-height:280px}.postit{min-height:125px}.room:before,.room:after{width:9%}}
+
+    .room{
+      min-height:100vh;
+      position:relative;
+      isolation:isolate;
+      overflow:hidden;
+      background:
+        radial-gradient(
+          ellipse at 50% 1%,
+          #f3dcc2 0,
+          #e2bfa2 17%,
+          #70554c 37%,
+          #1d1516 67%,
+          #090708 100%
+        )
+    }
+
+    .room:before,.room:after{
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      z-index:-1;
+      pointer-events:none
+    }
+
+    .room:before{
+      left:0;
+      width:21%;
+      background:
+        repeating-linear-gradient(
+          92deg,
+          #260909 0 11px,
+          #6e101a 24px,
+          #2c080d 38px,
+          #130608 53px
+        );
+      box-shadow:20px 0 50px #15090a
+    }
+
+    .room:after{
+      right:0;
+      width:20%;
+      background:
+        repeating-linear-gradient(
+          89deg,
+          #050505 0 15px,
+          #282729 29px,
+          #060607 47px
+        );
+      box-shadow:-20px 0 50px #0c0a0b
+    }
+
+    .topbar{
+      background:#0b0809ef;
+      border-bottom:1px solid #7c5944;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:14px max(24px,calc((100vw - 1380px)/2));
+      position:relative;
+      z-index:3
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px
+    }
+
+    .seal{
+      display:grid;
+      place-items:center;
+      border:1px solid var(--gold);
+      color:var(--gold);
+      border-radius:50%;
+      width:42px;
+      height:42px;
+      font:27px 'Cormorant Garamond',serif
+    }
+
+    .brand small{
+      display:block;
+      color:#a99b92;
+      font-size:11px;
+      letter-spacing:.13em
+    }
+
+    .brand strong{
+      letter-spacing:.14em;
+      font-size:13px
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-size:13px;
+      color:var(--gold)
+    }
+
+    .ghost{
+      border:1px solid #8b6a4b;
+      color:var(--gold);
+      background:#120d0dd9;
+      padding:9px 13px;
+      border-radius:5px
+    }
+
+    .hero{
+      text-align:center;
+      position:relative;
+      padding:73px 20px 86px;
+      max-width:1000px;
+      margin:auto
+    }
+
+    .pendant{
+      position:absolute;
+      left:50%;
+      top:0;
+      transform:translateX(-50%);
+      height:88px;
+      width:2px;
+      background:#241816
+    }
+
+    .pendant:after{
+      content:"";
+      position:absolute;
+      top:69px;
+      left:-42px;
+      border-radius:60% 60% 45% 45%;
+      width:86px;
+      height:39px;
+      background:
+        linear-gradient(
+          #070707 5%,
+          #1d1716 62%,
+          #c48a47 88%,
+          #ffdba1
+        );
+      box-shadow:0 18px 46px 20px #dc9c5c67
+    }
+
+    .hero .eyebrow{
+      color:#6c322b;
+      letter-spacing:.23em;
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      margin:45px 0 8px
+    }
+
+    .hero h1{
+      color:#221519;
+      text-shadow:0 2px 13px #f5dfc9;
+      font:600 clamp(49px,7vw,87px)/.95 'Cormorant Garamond',Georgia,serif;
+      margin:0
+    }
+
+    .hero p{
+      color:#382528;
+      text-shadow:0 1px 15px #f7e0c8;
+      font-size:15px;
+      max-width:560px;
+      margin:15px auto 0
+    }
+
+    .ornament{
+      display:flex;
+      justify-content:center;
+      gap:16px;
+      align-items:center;
+      margin:17px auto;
+      color:#8f6439;
+      font-size:21px
+    }
+
+    .ornament:before,.ornament:after{
+      content:"";
+      width:78px;
+      height:1px;
+      background:#a27143
+    }
+
+    .shell{
+      width:min(1380px,calc(100% - 36px));
+      margin:-25px auto 70px;
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:minmax(0,1.45fr) minmax(310px,.85fr);
+      gap:22px;
+      align-items:start
+    }
+
+    .column{
+      display:grid;
+      gap:22px
+    }
+
+    .panel{
+      border:1px solid #9d7951;
+      background:linear-gradient(145deg,#271a1ded,#160f12fa);
+      box-shadow:
+        0 20px 55px #0009,
+        inset 0 0 0 5px #100c0d,
+        inset 0 0 0 6px #5c4637;
+      border-radius:8px;
+      padding:27px;
+      min-width:0
+    }
+
+    .panel h2{
+      font:500 39px/1 'Cormorant Garamond',Georgia,serif;
+      margin:0 0 8px
+    }
+
+    .kicker{
+      color:var(--gold);
+      font-size:11px;
+      letter-spacing:.2em;
+      font-weight:700;
+      text-transform:uppercase;
+      margin:0 0 7px
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:13px;
+      margin:0 0 20px
+    }
+
+    .board{
+      min-height:460px;
+      padding:22px;
+      background:
+        radial-gradient(
+          circle at top,
+          #573026,
+          #291b18 65%,
+          #1c1412
+        );
+      border:12px ridge #9a683d;
+      box-shadow:
+        inset 0 0 0 2px #d4a263,
+        inset 0 0 30px #0009;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      align-content:start
+    }
+
+    .empty{
+      grid-column:1/-1;
+      align-self:center;
+      text-align:center;
+      color:#e3cdb0;
+      font:28px 'Cormorant Garamond',serif;
+      padding:50px 12px
+    }
+
+    .postit{
+      background:#f1d9ad;
+      color:#24171a;
+      padding:20px 18px 16px;
+      box-shadow:5px 8px 14px #0009;
+      min-height:160px;
+      transform:rotate(-1deg);
+      position:relative;
+      overflow-wrap:anywhere
+    }
+
+    .postit:nth-child(3n){
+      background:#e8b7ab;
+      transform:rotate(1.5deg)
+    }
+
+    .postit:nth-child(4n){
+      background:#d9d2bb;
+      transform:rotate(-1.8deg)
+    }
+
+    .postit:before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:50%;
+      width:45px;
+      height:17px;
+      transform:translateX(-50%) rotate(2deg);
+      background:#c99b7966
+    }
+
+    .postit p{
+      white-space:pre-wrap;
+      margin:11px 0;
+      font:24px/1.05 'Cormorant Garamond',serif
+    }
+
+    .postit small,.photo-card small{
+      font-size:11px
+    }
+
+    .photo-card{
+      color:#2a1c1b;
+      background:#f3e9d8;
+      padding:9px 9px 16px;
+      box-shadow:5px 8px 14px #0009;
+      transform:rotate(1deg);
+      overflow-wrap:anywhere
+    }
+
+    .photo-card img{
+      width:100%;
+      aspect-ratio:4/3;
+      object-fit:cover;
+      background:#443232;
+      display:block
+    }
+
+    .photo-card p{
+      margin:9px 4px;
+      font-size:13px
+    }
+
+    .photo-card .meta{
+      padding:0 4px
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      opacity:.8;
+      font-size:11px
+    }
+
+    .report{
+      border:0;
+      color:inherit;
+      background:transparent;
+      text-decoration:underline;
+      padding:2px;
+      font-size:11px
+    }
+
+    .composer{
+      margin-top:22px
+    }
+
+    .tabs{
+      display:flex;
+      gap:8px;
+      margin-bottom:14px
+    }
+
+    .tab{
+      border:1px solid #7d5b40;
+      border-radius:4px;
+      background:transparent;
+      color:var(--cream);
+      padding:8px 14px
+    }
+
+    .tab.active{
+      background:var(--wine);
+      border-color:var(--gold)
+    }
+
+    label{
+      display:block;
+      color:#dec7a8;
+      font-size:13px;
+      margin:12px 0 6px
+    }
+
+    textarea,input{
+      width:100%;
+      background:#0d090b;
+      border:1px solid #6c5050;
+      color:#fff4eb;
+      border-radius:5px;
+      padding:12px;
+      outline:none
+    }
+
+    textarea:focus,input:focus{
+      border-color:var(--gold)
+    }
+
+    textarea{
+      resize:vertical;
+      min-height:80px
+    }
+
+    input[type=file]{
+      font-size:13px
+    }
+
+    .hint{
+      font-size:12px;
+      color:var(--muted);
+      margin:8px 0 14px
+    }
+
+    .preview{
+      max-width:220px;
+      max-height:170px;
+      object-fit:contain;
+      margin:10px 0;
+      border:1px solid #8e6f54
+    }
+
+    .primary{
+      border:1px solid #b8865d;
+      background:linear-gradient(120deg,#7a2637,#4e1827);
+      color:white;
+      border-radius:5px;
+      padding:11px 18px;
+      font-weight:700
+    }
+
+    .primary:hover,.ghost:hover{
+      filter:brightness(1.15)
+    }
+
+    .formline{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center
+    }
+
+    .status{
+      color:#e7bb7b;
+      font-size:12px;
+      min-height:18px;
+      margin:8px 0
+    }
+
+    .chat-list{
+      height:355px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column-reverse;
+      gap:10px;
+      padding:9px;
+      background:#0c080a;
+      border:1px solid #5d4641;
+      border-radius:5px
+    }
+
+    .bubble{
+      border-left:2px solid var(--gold);
+      padding:9px 11px;
+      background:#2a1b20;
+      overflow-wrap:anywhere;
+      font-size:13px
+    }
+
+    .bubble p{
+      margin:4px 0;
+      white-space:pre-wrap
+    }
+
+    .bubble .meta{
+      color:#c5ad9d
+    }
+
+    .chat-list .empty{
+      font-size:23px;
+      padding:60px 12px
+    }
+
+    .praise-list{
+      display:grid;
+      gap:10px;
+      max-height:330px;
+      overflow:auto
+    }
+
+    .praise{
+      border:1px solid #6c4a42;
+      background:#311b23;
+      padding:13px 15px;
+      overflow-wrap:anywhere
+    }
+
+    .praise p{
+      font:23px/1.15 'Cormorant Garamond',serif;
+      white-space:pre-wrap;
+      margin:3px 0 10px
+    }
+
+    .moderation{
+      border-color:#d7a86b
+    }
+
+    .pending{
+      border:1px dashed #b8865d;
+      margin:12px 0;
+      padding:12px
+    }
+
+    .pending .controls{
+      display:flex;
+      gap:8px;
+      margin-top:10px
+    }
+
+    .pending img{
+      max-width:160px;
+      max-height:130px;
+      display:block;
+      margin:7px 0
+    }
+
+    .footer{
+      text-align:center;
+      color:#ad9990;
+      font-size:12px;
+      padding:0 18px 35px;
+      position:relative;
+      z-index:2
+    }
+
+    .gate{
+      width:min(460px,calc(100% - 32px));
+      margin:-15px auto 80px;
+      position:relative;
+      z-index:2
+    }
+
+    .gate .panel{
+      padding:30px
+    }
+
+    .gate h2{
+      font-size:42px
+    }
+
+    .gate input{
+      margin-bottom:10px
+    }
+
+    .gate .primary{
+      width:100%;
+      margin-top:10px
+    }
+
+    .switch{
+      margin-top:18px;
+      text-align:center
+    }
+
+    .switch button{
+      border:0;
+      background:transparent;
+      text-decoration:underline;
+      color:var(--gold);
+      font-size:13px
+    }
+
+    @media(max-width:890px){
+      .shell{grid-template-columns:1fr}
+      .hero{padding-bottom:50px}
+      .panel{padding:20px}
+      .room:before,.room:after{width:13%}
+    }
+
+    @media(max-width:540px){
+      .topbar{padding:10px 14px}
+      .brand small{display:none}
+      .brand strong{font-size:11px}
+      .header-actions{gap:7px;font-size:11px}
+      .ghost{padding:7px}
+      .hero{padding:65px 18px 43px}
+      .hero h1{font-size:54px}
+      .hero p{font-size:13px}
+      .shell{width:calc(100% - 20px);gap:12px}
+      .column{gap:12px}
+      .panel{padding:17px}
+      .panel h2{font-size:34px}
+      .board{
+        grid-template-columns:1fr;
+        padding:12px;
+        border-width:8px;
+        min-height:280px
+      }
+      .postit{min-height:125px}
+      .room:before,.room:after{width:9%}
+    }
   </style>
 </head>
+
 <body>
   <div class="room">
+
     <header class="topbar">
-      <div class="brand"><span class="seal">E</span><div><strong>DAME ÉMANUELLE</strong><small>LOCKTOBER 2026 · SALON PRIVÉ</small></div></div>
-      <div class="header-actions"><span id="alias"></span><button class="ghost hidden" id="refresh" type="button">Actualiser</button><button class="ghost hidden" id="logout" type="button">Quitter</button></div>
+      <div class="brand">
+        <span class="seal">E</span>
+        <div>
+          <strong>DAME ÉMANUELLE</strong>
+          <small>LOCKTOBER 2026 · SALON PRIVÉ</small>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <span id="alias"></span>
+        <button class="ghost hidden" id="refresh" type="button">Actualiser</button>
+        <button class="ghost hidden" id="logout" type="button">Quitter</button>
+      </div>
     </header>
 
     <div class="hero">
@@ -111,51 +664,111 @@
       <div class="panel">
         <p class="kicker">Entrée du salon</p>
         <h2 id="gateTitle">Bienvenue</h2>
-        <p class="sub" id="gateIntro">Utilise le même code et le même courriel que pour le portail. Les autres participants verront seulement ton alias anonyme.</p>
+
+        <p class="sub" id="gateIntro">
+          Utilise le même code et le même courriel que pour le portail.
+          Les autres participants verront seulement ton alias anonyme.
+        </p>
+
         <form id="loginForm">
           <div id="participantFields">
             <label for="code">Code personnel</label>
             <input id="code" autocomplete="off" required maxlength="40">
+
             <label for="email">Courriel d’inscription</label>
             <input id="email" type="email" autocomplete="email" required maxlength="180">
           </div>
+
           <div id="adminFields" class="hidden">
             <label for="pin">Code de modération</label>
             <input id="pin" type="password" autocomplete="off">
           </div>
+
           <button class="primary" type="submit">Entrer dans le salon</button>
           <p class="status" id="loginStatus" role="status"></p>
         </form>
-        <div class="switch"><button type="button" id="toggleAdmin">Accès de Dame Émanuelle</button></div>
+
+        <div class="switch">
+          <button type="button" id="toggleAdmin">Accès de Dame Émanuelle</button>
+        </div>
       </div>
     </section>
 
     <main id="app" class="shell hidden">
+
       <div class="column">
+
         <section class="panel">
           <p class="kicker">01 · Le mur commun</p>
           <h2>Le grand babillard</h2>
-          <p class="sub">Petites notes et photos du parcours. Les photos sont visibles après approbation.</p>
+
+          <p class="sub">
+            Petites notes et photos du parcours.
+            Les photos sont visibles après approbation.
+          </p>
+
           <div id="board" class="board" aria-live="polite"></div>
 
           <div class="composer">
+
             <div class="tabs">
-              <button type="button" class="tab active" data-kind="note">Écrire un post-it</button>
-              <button type="button" class="tab" data-kind="photo">Ajouter une photo</button>
+              <button type="button" class="tab active" data-kind="note">
+                Écrire un post-it
+              </button>
+
+              <button type="button" class="tab" data-kind="photo">
+                Ajouter une photo
+              </button>
             </div>
+
             <form id="boardForm">
-              <label for="boardText" id="boardLabel">Ton mot pour le groupe</label>
-              <textarea id="boardText" maxlength="800" placeholder="Une pensée, une étape, une anecdote…"></textarea>
+
+              <label for="boardText" id="boardLabel">
+                Ton mot pour le groupe
+              </label>
+
+              <textarea
+                id="boardText"
+                maxlength="800"
+                placeholder="Une pensée, une étape, une anecdote…">
+              </textarea>
+
               <div id="photoFields" class="hidden">
+
                 <label for="photoInput">Photo à partager</label>
-                <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment">
-                <img id="preview" class="preview hidden" alt="Aperçu de la photo choisie">
+
+                <!--
+                  IMPORTANT :
+                  aucun capture="environment".
+                  Le participant peut choisir une photo existante
+                  ou utiliser l'appareil photo selon les options
+                  proposées par son téléphone.
+                -->
+                <input
+                  id="photoInput"
+                  type="file"
+                  accept="image/*">
+
+                <img
+                  id="preview"
+                  class="preview hidden"
+                  alt="Aperçu de la photo choisie">
+
               </div>
-              <p class="hint">Évite les visages et les détails qui permettraient de te reconnaître. Aucun lien ni adresse courriel.</p>
+
+              <p class="hint">
+                Évite les visages et les détails qui permettraient de te reconnaître.
+                Aucun lien ni adresse courriel.
+              </p>
+
               <div class="formline">
-                <button class="primary" type="submit" id="boardSubmit">Afficher mon post-it</button>
+                <button class="primary" type="submit" id="boardSubmit">
+                  Afficher mon post-it
+                </button>
+
                 <span class="status" id="boardStatus" role="status"></span>
               </div>
+
             </form>
           </div>
         </section>
@@ -164,20 +777,35 @@
           <p class="kicker">Réservé à Dame Émanuelle</p>
           <h2>Photos à approuver</h2>
           <div id="pendingList"></div>
+
           <h2>Signalements</h2>
           <div id="reportList"></div>
         </section>
+
       </div>
 
       <div class="column">
+
         <section class="panel">
           <p class="kicker">02 · Conversation</p>
           <h2>À voix basse</h2>
-          <p class="sub">Un chat tranquille, avec les mêmes alias anonymes.</p>
+
+          <p class="sub">
+            Un chat tranquille, avec les mêmes alias anonymes.
+          </p>
+
           <div id="chatList" class="chat-list" aria-live="polite"></div>
+
           <form id="chatForm">
             <label for="chatText">Ton message</label>
-            <textarea id="chatText" maxlength="400" placeholder="Écris au groupe…" required></textarea>
+
+            <textarea
+              id="chatText"
+              maxlength="400"
+              placeholder="Écris au groupe…"
+              required>
+            </textarea>
+
             <div class="formline">
               <button class="primary" type="submit">Envoyer</button>
               <span class="status" id="chatStatus" role="status"></span>
@@ -188,45 +816,67 @@
         <section class="panel">
           <p class="kicker">03 · Livre d’or</p>
           <h2>Pour Dame Émanuelle</h2>
-          <p class="sub">Un compliment, un merci, une pensée pour la Dame qui vous guide.</p>
+
+          <p class="sub">
+            Un compliment, un merci, une pensée pour la Dame qui vous guide.
+          </p>
+
           <div id="praiseList" class="praise-list"></div>
+
           <form id="praiseForm">
             <label for="praiseText">Quelques mots pour elle</label>
-            <textarea id="praiseText" maxlength="800" placeholder="Dame Émanuelle, j’apprécie…" required></textarea>
+
+            <textarea
+              id="praiseText"
+              maxlength="800"
+              placeholder="Dame Émanuelle, j’apprécie…"
+              required>
+            </textarea>
+
             <div class="formline">
               <button class="primary" type="submit">Déposer mes mots</button>
               <span class="status" id="praiseStatus" role="status"></span>
             </div>
           </form>
         </section>
+
       </div>
     </main>
 
-    <footer class="footer">Salon réservé aux participants · Respect, consentement et discrétion · Signale toute publication préoccupante.</footer>
+    <footer class="footer">
+      Salon réservé aux participants · Respect, consentement et discrétion ·
+      Signale toute publication préoccupante.
+    </footer>
+
   </div>
 
   <script>
     const $ = id => document.getElementById(id);
+
     const state = {
       token: sessionStorage.getItem('salon-token') || '',
-      admin: false,
-      kind: 'note',
-      photoCache: new Map(),
-      loading: false
+      admin:false,
+      kind:'note',
+      busy:false,
+      photoCache:new Map(),
+      loading:false
     };
 
     function call(name, ...args) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve,reject) => {
         if (!window.google || !google.script || !google.script.run) {
-          return reject(new Error('Ouvre le lien du salon publié pour utiliser cet espace.'));
+          return reject(
+            new Error('Ouvre le lien du salon publié pour utiliser cet espace.')
+          );
         }
+
         google.script.run
           .withSuccessHandler(resolve)
           .withFailureHandler(reject)[name](...args);
       });
     }
 
-    function status(id, message) {
+    function status(id,message) {
       $(id).textContent = message || '';
     }
 
@@ -234,50 +884,77 @@
       return (e && e.message) || 'Une erreur est survenue. Réessaie.';
     }
 
-    function el(tag, cls, value) {
+    function el(tag,cls,text) {
       const node = document.createElement(tag);
+
       if (cls) node.className = cls;
-      if (value != null) node.textContent = value;
+      if (text != null) node.textContent = text;
+
       return node;
     }
 
     function time(iso) {
-      const date = new Date(iso);
-      return isNaN(date)
+      const d = new Date(iso);
+
+      return isNaN(d)
         ? ''
-        : new Intl.DateTimeFormat('fr-CA', {
-            day: 'numeric',
-            month: 'short',
-            hour: '2-digit',
-            minute: '2-digit'
-          }).format(date);
+        : new Intl.DateTimeFormat(
+            'fr-CA',
+            {
+              day:'numeric',
+              month:'short',
+              hour:'2-digit',
+              minute:'2-digit'
+            }
+          ).format(d);
     }
 
     function meta(item) {
-      const box = el('div', 'meta');
-      box.append(el('span', '', item.alias + ' · ' + time(item.created)));
+      const box = el('div','meta');
+
+      box.append(
+        el('span','',item.alias + ' · ' + time(item.created))
+      );
 
       if (item.status === 'pending') {
-        box.append(el('span', '', 'En attente'));
-      } else if (state.admin) {
-        const btn = el('button', 'report', 'Masquer');
+        box.append(el('span','','En attente'));
+      }
+
+      else if (state.admin) {
+
+        const btn = el('button','report','Masquer');
         btn.type = 'button';
-        btn.addEventListener('click', async () => {
-          if (!confirm('Masquer cette publication pour tout le groupe?')) return;
+
+        btn.addEventListener('click',async() => {
+
+          if (!confirm('Masquer cette publication pour tout le groupe?')) {
+            return;
+          }
+
           btn.disabled = true;
+
           try {
-            await call('moderate', state.token, item.id, 'hidden');
+            await call('moderate',state.token,item.id,'hidden');
             await refresh();
-          } catch (e) {
+          }
+
+          catch(e) {
             alert(errorText(e));
             btn.disabled = false;
           }
+
         });
+
         box.append(btn);
-      } else {
-        const btn = el('button', 'report', 'Signaler');
+      }
+
+      else {
+
+        const btn = el('button','report','Signaler');
         btn.type = 'button';
-        btn.addEventListener('click', () => report(item.id));
+
+        btn.addEventListener('click',() => report(item.id));
+
         box.append(btn);
       }
 
@@ -285,29 +962,42 @@
     }
 
     async function report(id) {
+
       const reason = prompt('Pourquoi signaler cette publication?');
+
       if (reason === null) return;
 
       try {
-        await call('reportPost', state.token, id, reason);
+        await call('reportPost',state.token,id,reason);
+
         alert('Signalement transmis à Dame Émanuelle.');
-      } catch (e) {
+      }
+
+      catch(e) {
         alert(errorText(e));
       }
     }
 
-    function empty(container, message) {
-      container.replaceChildren(el('div', 'empty', message));
+    function empty(container,message) {
+      container.replaceChildren(
+        el('div','empty',message)
+      );
     }
 
-    function showApp(alias, admin) {
+    function showApp(alias,admin) {
+
       state.admin = !!admin;
+
       $('gate').classList.add('hidden');
       $('app').classList.remove('hidden');
+
       $('alias').textContent = alias;
+
       $('refresh').classList.remove('hidden');
       $('logout').classList.remove('hidden');
-      $('moderation').classList.toggle('hidden', !admin);
+
+      $('moderation').classList.toggle('hidden',!admin);
+
       refresh();
     }
 
@@ -317,173 +1007,299 @@
       location.reload();
     }
 
-    async function photoInto(img, id) {
+    async function photoInto(img,id) {
+
       if (state.photoCache.has(id)) {
         img.src = state.photoCache.get(id);
         return;
       }
+
       try {
-        const data = await call('getPhoto', state.token, id);
-        state.photoCache.set(id, data);
+        const data = await call('getPhoto',state.token,id);
+
+        state.photoCache.set(id,data);
         img.src = data;
-      } catch (e) {
+      }
+
+      catch(e) {
         img.alt = 'Photo indisponible';
       }
     }
 
     function renderBoard(items) {
+
       const board = $('board');
+
       board.replaceChildren();
 
       if (!items.length) {
-        empty(board, 'Le babillard attend son premier mot.');
+        empty(board,'Le babillard attend son premier mot.');
         return;
       }
 
       items.forEach(item => {
+
         let card;
 
         if (item.kind === 'photo') {
-          card = el('article', 'photo-card');
+
+          card = el('article','photo-card');
+
           const img = el('img');
+
           img.alt = 'Photo partagée par ' + item.alias;
           img.loading = 'lazy';
+
           card.append(img);
-          if (item.text) card.append(el('p', '', item.text));
-          photoInto(img, item.id);
-        } else {
-          card = el('article', 'postit');
-          card.append(el('p', '', item.text));
+
+          if (item.text) {
+            card.append(el('p','',item.text));
+          }
+
+          photoInto(img,item.id);
+        }
+
+        else {
+
+          card = el('article','postit');
+
+          card.append(
+            el('p','',item.text)
+          );
         }
 
         card.append(meta(item));
+
         board.append(card);
       });
     }
 
     function renderChat(items) {
+
       const list = $('chatList');
+
       list.replaceChildren();
 
       if (!items.length) {
-        empty(list, 'La conversation commence ici.');
+        empty(list,'La conversation commence ici.');
         return;
       }
 
       items.forEach(item => {
-        const box = el('article', 'bubble');
-        box.append(meta(item), el('p', '', item.text));
+
+        const box = el('article','bubble');
+
+        box.append(
+          meta(item),
+          el('p','',item.text)
+        );
+
         list.append(box);
       });
     }
 
     function renderPraise(items) {
+
       const list = $('praiseList');
+
       list.replaceChildren();
 
       if (!items.length) {
-        empty(list, 'Les premiers mots pour Dame Émanuelle apparaîtront ici.');
+        empty(
+          list,
+          'Les premiers mots pour Dame Émanuelle apparaîtront ici.'
+        );
+
         return;
       }
 
       items.forEach(item => {
-        const box = el('article', 'praise');
-        box.append(el('p', '', item.text), meta(item));
+
+        const box = el('article','praise');
+
+        box.append(
+          el('p','',item.text),
+          meta(item)
+        );
+
         list.append(box);
       });
     }
 
     function renderPending(items) {
+
       const list = $('pendingList');
+
       list.replaceChildren();
-      const pending = items.filter(item => item.status === 'pending');
+
+      const pending = items.filter(
+        i => i.status === 'pending'
+      );
 
       if (!pending.length) {
-        list.append(el('p', 'sub', 'Aucune photo en attente.'));
+        list.append(
+          el('p','sub','Aucune photo en attente.')
+        );
+
         return;
       }
 
       pending.forEach(item => {
-        const box = el('article', 'pending');
-        box.append(el('div', '', item.alias + ' · ' + time(item.created)));
+
+        const box = el('article','pending');
+
+        box.append(
+          el(
+            'div',
+            '',
+            item.alias + ' · ' + time(item.created)
+          )
+        );
 
         if (item.hasPhoto) {
+
           const img = el('img');
+
           img.alt = 'Photo à approuver';
+
           box.append(img);
-          photoInto(img, item.id);
+
+          photoInto(img,item.id);
         }
 
-        if (item.text) box.append(el('p', '', item.text));
-        const controls = el('div', 'controls');
+        if (item.text) {
+          box.append(
+            el('p','',item.text)
+          );
+        }
 
-        [['Approuver', 'approved'], ['Masquer', 'hidden']].forEach(([label, action]) => {
-          const btn = el('button', 'ghost', label);
+        const controls = el('div','controls');
+
+        [
+          ['Approuver','approved'],
+          ['Masquer','hidden']
+        ].forEach(([label,action]) => {
+
+          const btn = el('button','ghost',label);
+
           btn.type = 'button';
-          btn.addEventListener('click', async () => {
+
+          btn.addEventListener('click',async() => {
+
             btn.disabled = true;
+
             try {
-              await call('moderate', state.token, item.id, action);
+              await call(
+                'moderate',
+                state.token,
+                item.id,
+                action
+              );
+
               await refresh();
-            } catch (e) {
+            }
+
+            catch(e) {
               alert(errorText(e));
               btn.disabled = false;
             }
+
           });
+
           controls.append(btn);
         });
 
         box.append(controls);
+
         list.append(box);
       });
     }
 
     function renderReports(items) {
+
       const list = $('reportList');
+
       list.replaceChildren();
 
       if (!items.length) {
-        list.append(el('p', 'sub', 'Aucun signalement.'));
+        list.append(
+          el('p','sub','Aucun signalement.')
+        );
+
         return;
       }
 
       items.forEach(item => {
-        const box = el('div', 'pending');
-        box.append(el(
-          'span',
-          '',
-          time(item.created) + ' · ' + item.reason +
-          ' · publication ' + item.id.slice(0, 8)
-        ));
 
-        const btn = el('button', 'ghost', 'Masquer');
+        const box = el('div','pending');
+
+        box.append(
+          el(
+            'span',
+            '',
+            time(item.created) +
+            ' · ' +
+            item.reason +
+            ' · publication ' +
+            item.id.slice(0,8)
+          )
+        );
+
+        const btn = el('button','ghost','Masquer');
+
         btn.type = 'button';
         btn.style.marginLeft = '10px';
-        btn.addEventListener('click', async () => {
+
+        btn.addEventListener('click',async() => {
+
           btn.disabled = true;
+
           try {
-            await call('moderate', state.token, item.id, 'hidden');
+            await call(
+              'moderate',
+              state.token,
+              item.id,
+              'hidden'
+            );
+
             await refresh();
-          } catch (e) {
+          }
+
+          catch(e) {
             alert(errorText(e));
             btn.disabled = false;
           }
+
         });
 
         box.append(btn);
+
         list.append(box);
       });
     }
 
     async function refresh() {
+
       if (!state.token || state.loading) return;
+
       state.loading = true;
 
       try {
-        const feed = await call('getFeed', state.token);
+
+        const feed = await call(
+          'getFeed',
+          state.token
+        );
+
         state.admin = !!feed.admin;
-        $('moderation').classList.toggle('hidden', !feed.admin);
+
+        $('moderation').classList.toggle(
+          'hidden',
+          !feed.admin
+        );
+
         $('alias').textContent = feed.alias;
+
         renderBoard(feed.board);
         renderChat(feed.chat);
         renderPraise(feed.praise);
@@ -492,209 +1308,513 @@
           renderPending(feed.pending);
           renderReports(feed.reports);
         }
-      } catch (e) {
+      }
+
+      catch(e) {
+
         if (/Session expirée/.test(errorText(e))) {
           logout();
           return;
         }
-        status('chatStatus', errorText(e));
-      } finally {
+
+        status(
+          'chatStatus',
+          errorText(e)
+        );
+      }
+
+      finally {
         state.loading = false;
       }
     }
 
-    $('loginForm').addEventListener('submit', async event => {
-      event.preventDefault();
-      const btn = event.currentTarget.querySelector('button[type=submit]');
-      btn.disabled = true;
-      status('loginStatus', 'Vérification…');
+    $('loginForm').addEventListener(
+      'submit',
+      async event => {
 
-      try {
-        const auth = state.admin
-          ? await call('loginAdmin', $('pin').value.trim())
-          : await call('login', $('code').value.trim(), $('email').value.trim());
+        event.preventDefault();
 
-        state.token = auth.token;
-        sessionStorage.setItem('salon-token', auth.token);
-        status('loginStatus', '');
-        showApp(auth.alias, auth.admin);
-      } catch (e) {
-        status('loginStatus', errorText(e));
-      } finally {
-        btn.disabled = false;
-      }
-    });
+        const btn =
+          event.currentTarget.querySelector(
+            'button[type=submit]'
+          );
 
-    $('toggleAdmin').addEventListener('click', () => {
-      state.admin = !state.admin;
-      $('participantFields').classList.toggle('hidden', state.admin);
-      $('adminFields').classList.toggle('hidden', !state.admin);
-      $('participantFields').querySelectorAll('input').forEach(input => {
-        input.required = !state.admin;
-      });
-      $('pin').required = state.admin;
-      $('gateTitle').textContent = state.admin ? 'Entrée de la Dame' : 'Bienvenue';
-      $('gateIntro').textContent = state.admin
-        ? 'Entre ton code de modération.'
-        : 'Utilise le même code et le même courriel que pour le portail. Les autres participants verront seulement ton alias anonyme.';
-      $('toggleAdmin').textContent = state.admin
-        ? 'Accès des participants'
-        : 'Accès de Dame Émanuelle';
-      status('loginStatus', '');
-    });
+        btn.disabled = true;
 
-    document.querySelectorAll('.tab').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.kind = btn.dataset.kind;
-        document.querySelectorAll('.tab').forEach(tab => {
-          tab.classList.toggle('active', tab === btn);
-        });
-        $('photoFields').classList.toggle('hidden', state.kind !== 'photo');
-        $('boardLabel').textContent = state.kind === 'photo'
-          ? 'Une légende (facultative)'
-          : 'Ton mot pour le groupe';
-        $('boardSubmit').textContent = state.kind === 'photo'
-          ? 'Soumettre ma photo'
-          : 'Afficher mon post-it';
-        status('boardStatus', '');
-      });
-    });
+        status(
+          'loginStatus',
+          'Vérification…'
+        );
 
-    $('photoInput').addEventListener('change', () => {
-      const file = $('photoInput').files[0];
-      const img = $('preview');
+        try {
 
-      if (!file) {
-        img.classList.add('hidden');
-        return;
-      }
+          const auth =
+            state.admin
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        img.src = reader.result;
-        img.classList.remove('hidden');
-      };
-      reader.readAsDataURL(file);
-    });
+            ? await call(
+                'loginAdmin',
+                $('pin').value.trim()
+              )
 
-    function compress(file) {
-      return new Promise((resolve, reject) => {
-        const image = new Image();
-        const url = URL.createObjectURL(file);
+            : await call(
+                'login',
+                $('code').value.trim(),
+                $('email').value.trim()
+              );
 
-        image.onerror = () => {
-          URL.revokeObjectURL(url);
-          reject(new Error('Impossible de lire cette image.'));
-        };
+          state.token = auth.token;
 
-        image.onload = () => {
-          URL.revokeObjectURL(url);
-          const ratio = Math.min(1, 1100 / Math.max(image.width, image.height));
-          const canvas = document.createElement('canvas');
-          canvas.width = Math.round(image.width * ratio);
-          canvas.height = Math.round(image.height * ratio);
+          sessionStorage.setItem(
+            'salon-token',
+            auth.token
+          );
 
-          const ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#fff';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+          status(
+            'loginStatus',
+            ''
+          );
 
-          let quality = .8;
-          let data = '';
-          do {
-            data = canvas.toDataURL('image/jpeg', quality);
-            quality -= .12;
-          } while (data.length > 1100000 && quality > .35);
-
-          if (data.length > 1200000) {
-            reject(new Error('Photo trop grande. Essaie une autre image.'));
-          } else {
-            resolve(data);
-          }
-        };
-
-        image.src = url;
-      });
-    }
-
-    $('boardForm').addEventListener('submit', async event => {
-      event.preventDefault();
-      const btn = $('boardSubmit');
-      btn.disabled = true;
-      status('boardStatus', 'Envoi…');
-
-      try {
-        const payload = { kind: state.kind, text: $('boardText').value };
-
-        if (state.kind === 'photo') {
-          const file = $('photoInput').files[0];
-          if (!file) throw new Error('Choisis une photo.');
-          if (!/^image\/(jpeg|png|webp)$/.test(file.type)) {
-            throw new Error('Choisis une image JPEG, PNG ou WebP.');
-          }
-          payload.image = await compress(file);
+          showApp(
+            auth.alias,
+            auth.admin
+          );
         }
 
-        const result = await call('publish', state.token, payload);
-        $('boardText').value = '';
-        $('photoInput').value = '';
-        $('preview').classList.add('hidden');
+        catch(e) {
+          status(
+            'loginStatus',
+            errorText(e)
+          );
+        }
+
+        finally {
+          btn.disabled = false;
+        }
+      }
+    );
+
+    $('toggleAdmin').addEventListener(
+      'click',
+      () => {
+
+        state.admin = !state.admin;
+
+        $('participantFields')
+          .classList
+          .toggle('hidden',state.admin);
+
+        $('adminFields')
+          .classList
+          .toggle('hidden',!state.admin);
+
+        $('participantFields')
+          .querySelectorAll('input')
+          .forEach(
+            x => x.required = !state.admin
+          );
+
+        $('pin').required = state.admin;
+
+        $('gateTitle').textContent =
+          state.admin
+            ? 'Entrée de la Dame'
+            : 'Bienvenue';
+
+        $('gateIntro').textContent =
+          state.admin
+            ? 'Entre ton code de modération.'
+            : 'Utilise le même code et le même courriel que pour le portail. Les autres participants verront seulement ton alias anonyme.';
+
+        $('toggleAdmin').textContent =
+          state.admin
+            ? 'Accès des participants'
+            : 'Accès de Dame Émanuelle';
+
+        status('loginStatus','');
+      }
+    );
+
+    document
+      .querySelectorAll('.tab')
+      .forEach(btn =>
+
+        btn.addEventListener(
+          'click',
+          () => {
+
+            state.kind = btn.dataset.kind;
+
+            document
+              .querySelectorAll('.tab')
+              .forEach(
+                x => x.classList.toggle(
+                  'active',
+                  x === btn
+                )
+              );
+
+            $('photoFields')
+              .classList
+              .toggle(
+                'hidden',
+                state.kind !== 'photo'
+              );
+
+            $('boardLabel').textContent =
+              state.kind === 'photo'
+                ? 'Une légende (facultative)'
+                : 'Ton mot pour le groupe';
+
+            $('boardSubmit').textContent =
+              state.kind === 'photo'
+                ? 'Soumettre ma photo'
+                : 'Afficher mon post-it';
+
+            status('boardStatus','');
+          }
+        )
+      );
+
+    $('photoInput').addEventListener(
+      'change',
+      () => {
+
+        const file =
+          $('photoInput').files[0];
+
+        const img =
+          $('preview');
+
+        if (!file) {
+          img.classList.add('hidden');
+          return;
+        }
+
+        const reader =
+          new FileReader();
+
+        reader.onload = () => {
+          img.src = reader.result;
+          img.classList.remove('hidden');
+        };
+
+        reader.readAsDataURL(file);
+      }
+    );
+
+    function compress(file) {
+
+      return new Promise(
+        (resolve,reject) => {
+
+          const image = new Image();
+
+          const url =
+            URL.createObjectURL(file);
+
+          image.onerror = () => {
+
+            URL.revokeObjectURL(url);
+
+            reject(
+              new Error(
+                'Impossible de lire cette image.'
+              )
+            );
+          };
+
+          image.onload = () => {
+
+            URL.revokeObjectURL(url);
+
+            const ratio =
+              Math.min(
+                1,
+                1100 /
+                Math.max(
+                  image.width,
+                  image.height
+                )
+              );
+
+            const canvas =
+              document.createElement('canvas');
+
+            canvas.width =
+              Math.round(
+                image.width * ratio
+              );
+
+            canvas.height =
+              Math.round(
+                image.height * ratio
+              );
+
+            const ctx =
+              canvas.getContext('2d');
+
+            ctx.fillStyle = '#fff';
+
+            ctx.fillRect(
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+
+            ctx.drawImage(
+              image,
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+
+            let quality = .8;
+            let data = '';
+
+            do {
+
+              data =
+                canvas.toDataURL(
+                  'image/jpeg',
+                  quality
+                );
+
+              quality -= .12;
+
+            }
+
+            while (
+              data.length > 1100000 &&
+              quality > .35
+            );
+
+            if (data.length > 1200000) {
+
+              reject(
+                new Error(
+                  'Photo trop grande. Essaie une autre image.'
+                )
+              );
+            }
+
+            else {
+              resolve(data);
+            }
+          };
+
+          image.src = url;
+        }
+      );
+    }
+
+    $('boardForm').addEventListener(
+      'submit',
+      async event => {
+
+        event.preventDefault();
+
+        const btn =
+          $('boardSubmit');
+
+        btn.disabled = true;
 
         status(
           'boardStatus',
-          result.pending
-            ? 'Photo reçue; elle attend une approbation.'
-            : 'Ton post-it est affiché.'
+          'Envoi…'
         );
-        await refresh();
-      } catch (e) {
-        status('boardStatus', errorText(e));
-      } finally {
-        btn.disabled = false;
-      }
-    });
 
-    async function submitText(kind, inputId, statusId, event) {
+        try {
+
+          const payload = {
+            kind:state.kind,
+            text:$('boardText').value
+          };
+
+          if (state.kind === 'photo') {
+
+            const file =
+              $('photoInput').files[0];
+
+            if (!file) {
+              throw new Error(
+                'Choisis une photo.'
+              );
+            }
+
+            /*
+              Accepte une image provenant de la
+              photothèque ou de l'appareil photo.
+            */
+            if (!file.type.startsWith('image/')) {
+              throw new Error(
+                'Choisis une image valide.'
+              );
+            }
+
+            payload.image =
+              await compress(file);
+          }
+
+          const result =
+            await call(
+              'publish',
+              state.token,
+              payload
+            );
+
+          $('boardText').value = '';
+          $('photoInput').value = '';
+
+          $('preview')
+            .classList
+            .add('hidden');
+
+          status(
+            'boardStatus',
+            result.pending
+              ? 'Photo reçue; elle attend une approbation.'
+              : 'Ton post-it est affiché.'
+          );
+
+          await refresh();
+        }
+
+        catch(e) {
+          status(
+            'boardStatus',
+            errorText(e)
+          );
+        }
+
+        finally {
+          btn.disabled = false;
+        }
+      }
+    );
+
+    async function submitText(
+      kind,
+      inputId,
+      statusId,
+      event
+    ) {
+
       event.preventDefault();
-      const btn = event.currentTarget.querySelector('button[type=submit]');
+
+      const btn =
+        event.currentTarget.querySelector(
+          'button[type=submit]'
+        );
+
       btn.disabled = true;
-      status(statusId, 'Envoi…');
+
+      status(
+        statusId,
+        'Envoi…'
+      );
 
       try {
-        await call('publish', state.token, {
-          kind,
-          text: $(inputId).value
-        });
+
+        await call(
+          'publish',
+          state.token,
+          {
+            kind,
+            text:$(inputId).value
+          }
+        );
+
         $(inputId).value = '';
-        status(statusId, 'Publié.');
+
+        status(
+          statusId,
+          'Publié.'
+        );
+
         await refresh();
-      } catch (e) {
-        status(statusId, errorText(e));
-      } finally {
+      }
+
+      catch(e) {
+        status(
+          statusId,
+          errorText(e)
+        );
+      }
+
+      finally {
         btn.disabled = false;
       }
     }
 
-    $('chatForm').addEventListener('submit', event =>
-      submitText('chat', 'chatText', 'chatStatus', event)
+    $('chatForm').addEventListener(
+      'submit',
+      event =>
+        submitText(
+          'chat',
+          'chatText',
+          'chatStatus',
+          event
+        )
     );
-    $('praiseForm').addEventListener('submit', event =>
-      submitText('praise', 'praiseText', 'praiseStatus', event)
+
+    $('praiseForm').addEventListener(
+      'submit',
+      event =>
+        submitText(
+          'praise',
+          'praiseText',
+          'praiseStatus',
+          event
+        )
     );
-    $('refresh').addEventListener('click', refresh);
-    $('logout').addEventListener('click', logout);
+
+    $('refresh').addEventListener(
+      'click',
+      refresh
+    );
+
+    $('logout').addEventListener(
+      'click',
+      logout
+    );
 
     if (state.token) {
-      $('gate').classList.add('hidden');
-      $('app').classList.remove('hidden');
-      $('refresh').classList.remove('hidden');
-      $('logout').classList.remove('hidden');
+
+      $('gate')
+        .classList
+        .add('hidden');
+
+      $('app')
+        .classList
+        .remove('hidden');
+
+      $('refresh')
+        .classList
+        .remove('hidden');
+
+      $('logout')
+        .classList
+        .remove('hidden');
+
       refresh();
     }
 
-    setInterval(() => {
-      if (state.token && !document.hidden) refresh();
-    }, 12000);
+    setInterval(
+      () => {
+
+        if (
+          state.token &&
+          !document.hidden
+        ) {
+          refresh();
+        }
+
+      },
+      12000
+    );
   </script>
+
 </body>
 </html>
